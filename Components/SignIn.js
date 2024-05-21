@@ -1,23 +1,45 @@
 import React, { useState } from 'react';
-import { Button, TextInput, View, Text } from 'react-native';
-import auth from '@react-native-firebase/auth';
+import { Button, TextInput, View, Text, ActivityIndicator } from 'react-native';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { FIREBASE_AUTH } from '../firebase/FirebaseConfig';
+import tw from 'twrnc';
+// import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Added loading statem
 
+  const auth = FIREBASE_AUTH;
   const handleSignIn = async () => {
+    setIsLoading(true); // Set loading state to true before sign-in
+
     try {
-      await auth().signInWithEmailAndPassword(email, password);
-      navigation.navigate('Home'); // navigate to home screen after successful signin
-    } catch (error) {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      // const user = userCredential.user;
+
+      console.log('Signed in with user:', user.email); // Log the user's email for debugging
+      // navigation.navigate('Home');
+    }
+    catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      if (errorCode === 'auth/wrong-password') {
+        alert('Incorrect password. Please try again.');
+      } else if (errorCode === 'auth/user-not-found') {
+        alert('User account not found. Please create an account.');
+      } else {
+        alert('An error occurred. Please try again later.');
+      }
       console.error(error);
-      // handle signin errors (e.g., display an error message)
+    }finally {
+      setIsLoading(false); // Set loading state to false regardless of success/failure
     }
   };
 
   return (
-    <View>
+    <View style={ tw`text-xl` }>
       <TextInput
         value={email}
         onChangeText={setEmail}
@@ -29,8 +51,14 @@ const SignIn = ({ navigation }) => {
         placeholder="Password"
         secureTextEntry
       />
-      <Button title="Sign In" onPress={handleSignIn} />
-      <Text onPress={() => navigation.navigate('SignUp')}>Don't have an account? Sign Up</Text>
+      {isLoading ? (
+        <ActivityIndicator size="small" color="#0000ff" />
+      ) : (
+        <Button title="Sign In" onPress={handleSignIn} />
+      )}
+      <Text style={ tw`text-xl` } onPress={() => navigation.navigate('SignUp')}>
+        Don't have an account? Sign In
+      </Text>
     </View>
   );
 };
