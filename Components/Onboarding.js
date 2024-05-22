@@ -41,8 +41,8 @@ const DATA = [
     location: 'Stay informed with real-time prompts and updates from our intelligent AI assistant.',
     date: 'Sept 3rd, 2020',
     poster:
-    require('../assets/undraw_ArtificialIntelligence.png'),
-    titleColor: '#6C63FF'
+    require('../assets/undraw_Artificial.png'),
+    titleColor: '#7DF926'
   },
   {
     title: 'Healthy Living Tips',

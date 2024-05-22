@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextInput, View, Text, Dimensions, Image } from 'react-native';
+import { Button, TextInput, View, Text, Dimensions, Image, KeyboardAvoidingView } from 'react-native';
 // import auth from '@react-native-firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../firebase/FirebaseConfig';
@@ -19,30 +19,37 @@ const SignUp = ({ navigation }) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log('User signed up successfully!'); // Log success for debugging
-      // navigation.navigate('Home');
+      navigation.navigate('Home');
     } catch (error) {
       console.error(error);
       // handle signup errors (e.g., display an error message)
+    } finally {
+      setIsLoading(false); // Set loading state to false after sign-up attempt
     }
   };
 const ITEM_WIDTH = width * 1;
-const ITEM_HEIGHT = ITEM_WIDTH * 0.8;
+const ITEM_HEIGHT = ITEM_WIDTH * 0.7;
 
   return (
+<KeyboardAvoidingView behavior="position">
     <View style={tw`flex`}>
-    <View>
+    <View style={tw`rounded-b overflow-hidden`}>
     <Image
       source={require('../assets/undraw_medicine.png')}
       style={{
         width: ITEM_WIDTH,
         height: ITEM_HEIGHT,
+        borderBottomLeftRadius: 40, 
+        borderBottomRightRadius: 40,
         // borderRadius: 14,
         resizeMode: 'contain'
       }}
     />
     </View>
     <View style={ tw`rounded-lg m-4` }>
-     <Text> SIGN UP</Text>
+    <View style={tw`flex justify-center items-center`}>
+     <Text style={tw`text-2xl font-bold flex items-center text-[#6C63FF]`}> SIGN UP</Text>
+    </View>
     <View style={ tw`text-xl p-2` }>
     <View style={ tw`mt-12` }>
       <TextInput
@@ -70,15 +77,23 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.8;
         secureTextEntry
       />
       </View>
-      <View style={ tw`mt-12` }>
-      <Button style={ tw`rounded-lg p-8 h-16` } title="Sign Up" onPress={handleSignUp} />
+      <View style={ tw`bg-[#6C63FF] mt-12` }>
+      <Button
+        style={tw`rounded-lg p-8 h-16 flex justify-center items-center`} // Adjust styles as needed
+        title={isLoading ? '' : 'Sign In'} // Set title based on loading state
+        onPress={handleSignUp}
+        disabled={isLoading} // Disable button while loading
+      >
+        {isLoading && <ActivityIndicator size="small" color="blue" />} {/* Show ActivityIndicator when loading */}
+      </Button>
       </View>
-      <View style={ tw`mt-12` }>
-      <Text style={ tw`text-xl` } onPress={() => navigation.navigate('SignIn')}>Already have an account? Sign In</Text>
+      <View style={ tw`flex justify-center items-center mt-12` }>
+      <Text style={ tw`text-xl` }>Already have an account?<Text style={tw`text-[#6C63FF] text-xl`} onPress={() => navigation.navigate('SignIn')}>Sign In</Text></Text>
       </View>
     </View>
     </View>
     </View>
+     </KeyboardAvoidingView>
   );
 };
 
