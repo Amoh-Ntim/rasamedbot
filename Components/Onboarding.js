@@ -23,88 +23,99 @@ import {
   State,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
-
+import tw from 'twrnc';
 
 
 // https://www.creative-flyers.com
 const DATA = [
   {
-    title: 'Afro vibes',
-    location: 'Mumbai, India',
+    title: 'Medical Diagnosis',
+    location: 'Our AI-powered system provides accurate medical diagnoses based on advanced algorithms and data analysis.',
     date: 'Nov 17th, 2020',
     poster:
     require('../assets/undraw_medicine.png'),
-    // #6C63FF
+    titleColor: '#6C63FF'
   },
   {
-    title: 'Jungle Party',
-    location: 'Unknown',
+    title: 'AI Prompting',
+    location: 'Stay informed with real-time prompts and updates from our intelligent AI assistant.',
     date: 'Sept 3rd, 2020',
     poster:
     require('../assets/undraw_ArtificialIntelligence.png'),
+    titleColor: '#6C63FF'
   },
   {
-    title: '4th Of July',
-    location: 'New York, USA',
+    title: 'Healthy Living Tips',
+    location: 'Discover practical lifestyle habits that can positively impact your health. From nutrition to exercise, we provide personalized advice based on our disease prediction insights. Take charge of your well-being with our expert recommendations!',
     date: 'Oct 11th, 2020',
     poster:
     require('../assets/undraw_fitness.png'),
+    titleColor: '#F92688'
   },
 //   #F9A826
 // #26BBF9
 // #F92688
 // #7DF926
   {
-    title: 'Summer festival',
-    location: 'Bucharest, Romania',
+    title: 'Privacy of Data',
+    location: 'Your health data is secure and confidential. We prioritize privacy and comply with industry standards.',
     date: 'Aug 17th, 2020',
     poster:
     require('../assets/undraw_MobileEncryption.png'),
+    titleColor: '#F9A826'
 
   },
   {
-    title: 'BBQ with friends',
-    location: 'Prague, Czech Republic',
+    title: 'Medically Approved',
+    location: 'Our system has been reviewed and approved by medical experts.',
     date: 'Sept 11th, 2020',
     poster:
     require('../assets/undraw_Doctors_p6aq.png'),
+    titleColor: '#6C63FF',
+    sign:'Click to Sign In Or SignUp'
 
   },
 ];
 
-const OVERFLOW_HEIGHT = 70;
+const OVERFLOW_HEIGHT = 180;
 const SPACING = 10;
 const ITEM_WIDTH = width * 0.9;
-const ITEM_HEIGHT = ITEM_WIDTH * 1.7;
+const ITEM_HEIGHT = ITEM_WIDTH * 0.8;
 const VISIBLE_ITEMS = 3;
 
-const OverflowItems = ({ data, scrollXAnimated }) => {
+const OverflowItems = ({ data, scrollXAnimated, navigation }) => {
   const inputRange = [-1, 0, 1];
   const translateY = scrollXAnimated.interpolate({
     inputRange,
     outputRange: [OVERFLOW_HEIGHT, 0, -OVERFLOW_HEIGHT],
   });
   return (
+    // captions for onboarding screens
     <View style={styles.overflowContainer}>
       <Animated.View style={{ transform: [{ translateY }] }}>
         {data.map((item, index) => {
           return (
             <View key={index} style={styles.itemContainer}>
-              <Text style={[styles.title]} numberOfLines={1}>
+              <Text style={[styles.title, { color: item.titleColor , textAlign: 'center'}]} numberOfLines={1}>
                 {item.title}
               </Text>
               <View style={styles.itemContainerRow}>
-                <Text style={[styles.location]}>
-                  <EvilIcons
+                <Text style={[styles.location,{ textAlign: 'center'}]}>
+                  {/* <EvilIcons
                     name='location'
                     size={16}
                     color='black'
                     style={{ marginRight: 5 }}
-                  />
+                  /> */}
                   {item.location}
                 </Text>
-                <Text style={[styles.date]}>{item.date}</Text>
               </View>
+                <View>
+                <Text style={[styles.location,{ textAlign: 'center', color: item.titleColor },]}
+                 onPress={() => navigation.navigate('SignUp')}
+                >
+                 {item.sign}</Text>
+                </View>
             </View>
           );
         })}
@@ -113,7 +124,7 @@ const OverflowItems = ({ data, scrollXAnimated }) => {
   );
 };
 
-export default function Onboarding() {
+export default function Onboarding({ navigation }) {
   const [data, setData] = React.useState(DATA);
   const scrollXIndex = React.useRef(new Animated.Value(0)).current;
   const scrollXAnimated = React.useRef(new Animated.Value(0)).current;
@@ -167,7 +178,6 @@ export default function Onboarding() {
       >
         <SafeAreaView style={styles.container}>
           <StatusBar hidden />
-          <OverflowItems data={data} scrollXAnimated={scrollXAnimated} />
           <FlatList
             data={data}
             keyExtractor={(_, index) => String(index)}
@@ -236,7 +246,8 @@ export default function Onboarding() {
                 </Animated.View>
               );
             }}
-          />
+          /> 
+          <OverflowItems data={data} scrollXAnimated={scrollXAnimated} navigation={navigation} />
         </SafeAreaView>
       </FlingGestureHandler>
     </FlingGestureHandler>
@@ -251,13 +262,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
-    fontSize: 28,
+    fontSize: 36,
     fontWeight: '900',
     textTransform: 'uppercase',
     letterSpacing: -1,
+
   },
   location: {
-    fontSize: 16,
+    fontSize: 20,
+    marginBottom:10
   },
   date: {
     fontSize: 12,
@@ -274,5 +287,6 @@ const styles = StyleSheet.create({
   overflowContainer: {
     height: OVERFLOW_HEIGHT,
     overflow: 'hidden',
+    marginBottom: 120,
   },
 });

@@ -19,7 +19,7 @@ const App = () => {
         <Stack.Screen name="Onboarding" component={Onboarding} options={{ title: 'Onboarding' }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ title: 'SignUp' }} />
         <Stack.Screen name="SignIn" component={SignIn} options={{ title: 'SignIn' }} />
-        {/* <Stack.Screen name="Home" component={Home} options={{ title: 'Home' }} />   */}
+        <Stack.Screen name="Home" component={Home} options={{ title: 'Home' }} />  
       </Stack.Navigator>
     </NavigationContainer>
   );
