@@ -21,7 +21,8 @@
     "react-native": "0.74.1",
     "react-native-web": "~0.19.6",
     "twrnc": "^4.2.0",
-    "ws": "^8.17.0"
+    "ws": "^8.17.0",
+    "react-native-gesture-handler": "~2.16.1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0"
