@@ -6,10 +6,12 @@ import { ref, uploadBytes } from "firebase/storage";
 import { FIREBASE_STORAGE } from "../firebase/FirebaseConfig";
 import { doc, setDoc } from "firebase/firestore"; 
 import { FIREBASE_DATABASE } from '../firebase/FirebaseConfig';
+import uuid from 'react-native-uuid';
+
 
 
 const Home = ({ navigation }) => {
-  const { width } = Dimensions.get('screen');
+  const { width } = Dimensions.get('screen'); 
   const [focused, setFocused] = useState(false);
   const [image, setImage] = useState(null);
   const [username, setUsername] = useState('');
@@ -19,25 +21,15 @@ const Home = ({ navigation }) => {
   const ITEM_WIDTH = width * 1;
   const ITEM_HEIGHT = ITEM_WIDTH * 0.7;
   
-  // const create = () => {
-  //   setDoc(doc(FIREBASE_DATABASE, "users", "eJi1FNZ7xFvYctcLTwmW"), // collection name and its id in firestore database
-  //   {
-  //     username: username,
-  //   }).then(() =>{
-  //     console.log("data submitted");
-  //   }).catch((error) => {
-  //     console.log(error);
-    
-  //   });
-    
-  // };
 
   const upload = () => {
     setDoc(doc(FIREBASE_DATABASE, "users", "eJi1FNZ7xFvYctcLTwmW"), // collection name and its id in firestore database
     {
       username: username,
     })
-    const storageRef = ref(FIREBASE_STORAGE, 'image');
+    const fileType = image.split('.').pop();
+    const uniqueImageName = uuid.v4();
+    const storageRef = ref(FIREBASE_STORAGE, `${uniqueImageName}.${fileType}`);
     // 'file' comes from the Blob or File API
     uploadBytes(storageRef, image).then((snapshot) => {
       console.log('Uploaded a blob or file!');
@@ -47,27 +39,7 @@ const Home = ({ navigation }) => {
     });
 }
 
-// const handleCreate = async () => {
-//   if (!image) {
-//     console.error("Please select an image to upload.");
-//     return; // Prevent further execution if no image is selected
-//   }
 
-//   try {
-//     const storageRef = ref(FIREBASE_STORAGE, 'image');
-//     const uploadResult = await uploadBytes(storageRef, image); // Upload the image
-
-//     const userData = {
-//       username: username,
-//       imageUrl: uploadResult.metadata.fullPath // Get the uploaded image URL
-//     };
-
-//     await setDoc(doc(FIREBASE_DATABASE, "users", "eJi1FNZ7xFvYctcLTwmW"), userData);
-//     console.log("Data submitted successfully!");
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// };
 
 
   const pickImage = async () => {
@@ -83,6 +55,9 @@ const Home = ({ navigation }) => {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      console.log('Image URI:', result.assets[0].uri);
+
+      // upload();
     }
   };
 
@@ -154,3 +129,26 @@ const styles = StyleSheet.create({
 });
 
 export default Home
+
+
+// const handleCreate = async () => {
+//   if (!image) {
+//     console.error("Please select an image to upload.");
+//     return; // Prevent further execution if no image is selected
+//   }
+
+//   try {
+//     const storageRef = ref(FIREBASE_STORAGE, 'image');
+//     const uploadResult = await uploadBytes(storageRef, image); // Upload the image
+
+//     const userData = {
+//       username: username,
+//       imageUrl: uploadResult.metadata.fullPath // Get the uploaded image URL
+//     };
+
+//     await setDoc(doc(FIREBASE_DATABASE, "users", "eJi1FNZ7xFvYctcLTwmW"), userData);
+//     console.log("Data submitted successfully!");
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// };

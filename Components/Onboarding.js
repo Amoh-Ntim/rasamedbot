@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 const { width } = Dimensions.get('screen');
 import { EvilIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import {
   FlingGestureHandler,
   Directions,
@@ -114,8 +115,15 @@ const OverflowItems = ({ data, scrollXAnimated, navigation }) => {
                 <Text style={[styles.location,{ textAlign: 'center', color: item.titleColor },]}
                  onPress={() => navigation.navigate('SignUp')}
                 >
-                 {item.sign}</Text>
+                 {item.sign}
+                </Text>
                 </View>
+                {/* <View style={tw`flex flex-row justify-center items-center gap-x-2`}>
+                <FontAwesome name="circle" size={24} color={item.titleColor} />
+                <FontAwesome name="circle" size={24} color={item.titleColor} />
+                <FontAwesome name="circle" size={24} color={item.titleColor} />
+                <FontAwesome name="circle" size={24} color={item.titleColor} />
+                </View> */}
             </View>
           );
         })}
