@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.1",
+    "@expo/vector-icons": "^14.0.2",
     "@react-native-firebase/app": "^19.2.2",
     "@react-native-firebase/auth": "^19.2.2",
+    "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native-stack": "^6.9.26",
     "expo": "^51.0.8",
     "expo-file-system": "~17.0.1",

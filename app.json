@@ -7,9 +7,9 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/precognosis.jpg",
+      "resizeMode": "cover",
+      "backgroundColor": "#D9D9D9"
     },
     "plugins": [
       [

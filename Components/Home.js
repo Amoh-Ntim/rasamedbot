@@ -15,6 +15,7 @@ const Home = ({ navigation }) => {
   const [focused, setFocused] = useState(false);
   const [image, setImage] = useState(null);
   const [username, setUsername] = useState('');
+  const [uniqueImageName, setUniqueImageName] = useState('');
 
   const handleFocus = () => setFocused(true);
   const handleBlur = () => setFocused(false);
@@ -22,24 +23,29 @@ const Home = ({ navigation }) => {
   const ITEM_HEIGHT = ITEM_WIDTH * 0.7;
   
 
-  const upload = () => {
+  const upload = async () => {
     setDoc(doc(FIREBASE_DATABASE, "users", "eJi1FNZ7xFvYctcLTwmW"), // collection name and its id in firestore database
     {
       username: username,
     })
     const fileType = image.split('.').pop();
     const uniqueImageName = uuid.v4();
+    setUniqueImageName(uniqueImageName);
     const storageRef = ref(FIREBASE_STORAGE, `${uniqueImageName}.${fileType}`);
-    // 'file' comes from the Blob or File API
-    uploadBytes(storageRef, image).then((snapshot) => {
+  
+    // Convert the image URI to a blob
+    const response = await fetch(image);
+    const blob = await response.blob();
+  
+    // Upload the blob to Firebase Storage
+    uploadBytes(storageRef, blob).then((snapshot) => {
       console.log('Uploaded a blob or file!');
-      navigation.navigate('Welcome');
+      navigation.navigate('Welcome',{ uniqueImageName , fileType});
     }).catch((error) => {
       console.log(error.message);
     });
-}
-
-
+  }
+  
 
 
   const pickImage = async () => {

@@ -9,6 +9,7 @@ import Welcome from './Components/Welcome';
 
 const Stack = createNativeStackNavigator();
 
+
 // const MyScreen = ({ title }) => {
 //   return <Text>{title}</Text>;
 // };

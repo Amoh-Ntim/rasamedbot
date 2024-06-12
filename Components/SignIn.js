@@ -21,7 +21,7 @@ const SignIn = ({ navigation }) => {
       const user = userCredential.user;
 
       console.log('Signed in with user:', user.email); // Log the user's email for debugging
-      navigation.navigate('Home');
+      navigation.navigate('Welcome');
     }
     catch (error) {
       const errorCode = error.code;
