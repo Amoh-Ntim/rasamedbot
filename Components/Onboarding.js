@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 const { width } = Dimensions.get('screen');
 import { EvilIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import {
   FlingGestureHandler,
   Directions,
@@ -41,8 +42,8 @@ const DATA = [
     location: 'Stay informed with real-time prompts and updates from our intelligent AI assistant.',
     date: 'Sept 3rd, 2020',
     poster:
-    require('../assets/undraw_ArtificialIntelligence.png'),
-    titleColor: '#6C63FF'
+    require('../assets/undraw_Artificial.png'),
+    titleColor: '#7DF926'
   },
   {
     title: 'Healthy Living Tips',
@@ -114,8 +115,15 @@ const OverflowItems = ({ data, scrollXAnimated, navigation }) => {
                 <Text style={[styles.location,{ textAlign: 'center', color: item.titleColor },]}
                  onPress={() => navigation.navigate('SignUp')}
                 >
-                 {item.sign}</Text>
+                 {item.sign}
+                </Text>
                 </View>
+                {/* <View style={tw`flex flex-row justify-center items-center gap-x-2`}>
+                <FontAwesome name="circle" size={24} color={item.titleColor} />
+                <FontAwesome name="circle" size={24} color={item.titleColor} />
+                <FontAwesome name="circle" size={24} color={item.titleColor} />
+                <FontAwesome name="circle" size={24} color={item.titleColor} />
+                </View> */}
             </View>
           );
         })}

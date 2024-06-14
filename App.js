@@ -5,8 +5,10 @@ import SignIn from './Components/SignIn';
 import SignUp from './Components/SignUp';
 import Home from './Components/Home';
 import Onboarding from './Components/Onboarding';
+import Welcome from './Components/Welcome';
 
 const Stack = createNativeStackNavigator();
+
 
 // const MyScreen = ({ title }) => {
 //   return <Text>{title}</Text>;
@@ -20,6 +22,7 @@ const App = () => {
         <Stack.Screen name="SignUp" component={SignUp} options={{ title: 'SignUp' }} />
         <Stack.Screen name="SignIn" component={SignIn} options={{ title: 'SignIn' }} />
         <Stack.Screen name="Home" component={Home} options={{ title: 'Home' }} />  
+        <Stack.Screen name="Welcome" component={Welcome} options={{ title: 'Welcome' }} />  
       </Stack.Navigator>
     </NavigationContainer>
   );
