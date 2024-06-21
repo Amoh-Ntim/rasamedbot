@@ -5,70 +5,67 @@ import { useState, useEffect, useCallback } from 'react';
 import GlobalApi from '../../Services/GlobalApi';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import axios from 'axios'
 // import AsyncStorage from '@react-native-async-storage/async-storage';
+const BASE_URL = 'http://192.168.193.69:3000/bardapi'; // Replace with your Next.js API's URL
 
-export default function ChatScreen() {
-    const [messages, setMessages] = useState([]);
-    const [loading, setLoading] = useState(false);
+export default function ChatScreen () {
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        setMessages([
-        {
-          _id: 1,
-          text: 'Hello, I am your chat bot, How Can I help you?',
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: 'Hello, I am your chat bot, How Can I help you?',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+        },
+      },
+    ]);
+  }, []);
+
+  const onSend = useCallback((messages = []) => {
+    setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
+    if (messages[0].text) {
+      getBardResp(messages[0].text);
+    }
+  }, []);
+
+  const getBardResp = async (userMsg) => {
+    setLoading(true);
+    try {
+      const response = await axios.post(BASE_URL, { userInput: userMsg }); // Use POST for sending data
+      const generatedText = response.data.generatedText;
+      setLoading(false);
+      const chatAIResp = {
+        _id: Math.random() * (9999999 - 1),
+        text: generatedText,
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+        },
+      };
+      setMessages(previousMessages => GiftedChat.append(previousMessages, chatAIResp));
+    } catch (error) {
+      console.error('Error fetching response from API:', error);
+      setLoading(false);
+      setMessages(previousMessages =>
+        GiftedChat.append(previousMessages, {
+          _id: Math.random() * (9999999 - 1),
+          text: 'Sorry, I encountered an error. Please try again later.',
           createdAt: new Date(),
           user: {
             _id: 2,
             name: 'React Native',
           },
-        },
-      ])
-    }, [])
-
-    const onSend = useCallback((messages = []) => {
-      setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-      if(messages[0].text)
-      {
-        getBardResp(messages[0].text);
-      }
-    }, [])
-
-    const getBardResp=(msg)=>{
-        setLoading(true)
-        GlobalApi.getBardApi(msg).then(resp=>{
-            if(resp.data.resp[1].content)
-            {
-                setLoading(false)
-                const chatAIResp={
-                    _id: Math.random()* (9999999 - 1),
-                    text: resp.data.resp[1].content,
-                    createdAt: new Date(),
-                    user: {
-                      _id: 2,
-                      name: 'React Native',
-                  }
-                }
-                setMessages(previousMessages => GiftedChat.append(previousMessages, chatAIResp))  
-            }
-            else{
-                setLoading(false)
-                const chatAIResp={
-                    _id: Math.random()* (9999999 - 1),
-                    text: "Sorry, I can not help with it",
-                    createdAt: new Date(),
-                    user: {
-                      _id: 2,
-                      name: 'React Native',
-                  }
-                }
-                setMessages(previousMessages => GiftedChat.append(previousMessages, chatAIResp))  
-            }
-        },
-        error=>{
-          
         })
+      );
     }
-
+  };
    const renderBubble =(props)=> {
         return (
           <Bubble
