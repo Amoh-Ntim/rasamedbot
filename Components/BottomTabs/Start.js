@@ -72,7 +72,7 @@ export default function ChatScreen () {
             {...props}
             wrapperStyle={{
               right: {
-                backgroundColor: '#671ddf',
+                backgroundColor: '#0D4CEF',
                
               },left:{
                
@@ -85,7 +85,7 @@ export default function ChatScreen () {
                     padding:2
                 },
                 left: {
-                  color: '#671ddf',
+                  color: '#0D4CEF',
                   // fontSize:20,
                   padding:2
                 }
@@ -100,7 +100,7 @@ export default function ChatScreen () {
        containerStyle={{
        padding:3,
       
-        backgroundColor:'#671ddf',
+        backgroundColor:'#0D4CEF',
         color:'#fff',
         }} 
         

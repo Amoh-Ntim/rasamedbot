@@ -40,7 +40,7 @@ const Home = ({ navigation }) => {
     // Upload the blob to Firebase Storage
     uploadBytes(storageRef, blob).then((snapshot) => {
       console.log('Uploaded a blob or file!');
-      navigation.navigate('Welcome',{ uniqueImageName , fileType});
+      navigation.navigate('Welcome',{ uniqueImageName , fileType });
     }).catch((error) => {
       console.log(error.message);
     });
