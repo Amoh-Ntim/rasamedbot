@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Button, TextInput, View, Text, ActivityIndicator, KeyboardAvoidingView, Image, Dimensions } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { FIREBASE_AUTH } from '../firebase/FirebaseConfig';
+import { FIREBASE_STORAGE } from '../firebase/FirebaseConfig';
 import tw from 'twrnc';
+import { Firestore } from 'firebase/firestore';
 // import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const SignIn = ({ navigation }) => {
@@ -20,9 +22,52 @@ const SignIn = ({ navigation }) => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      console.log('Signed in with user:', user.email); // Log the user's email for debugging
-      navigation.navigate('Welcome');
+      if (user) {
+        // Replace with your actual logic to retrieve image name and type
+        const userId = user.uid;
+        const getUniqueImagePath = async (userId) => {
+          try {
+            const userDoc = await Firestore()
+              .collection('users')
+              .doc(userId)
+              .get();
+        
+            if (userDoc.exists) {
+              const userData = userDoc.data();
+              return userData.users; // Replace with the actual field name
+            } else {
+              console.warn('User data not found.');
+              return null;
+            }
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+            return null;
+          }
+        };
+        
+        const uniqueImagePath = await getUniqueImagePath(userId);
+
+        // if (uniqueImagePath) {
+        //   const storage = FIREBASE_STORAGE; // Import getStorage
+        //   const storageRef = ref(storage, uniqueImagePath);
+
+        //   try {
+        //     const imageRef = await getDownloadURL(storageRef);
+        //     // Use imageRef to display the user's profile picture
+        //     console.log('Profile picture URL:', imageRef);
+        //     // Further logic to display image (e.g., using Image component)
+        //   } catch (error) {
+        //     console.error('Error getting download URL:', error);
+        //     // Handle error, e.g., display a default image
+        //   }
+        // } else {
+        //   console.log('User has no profile picture set.');
+
+        navigation.navigate('Welcome', { uniqueImagePath});
+        console.log('Signed in with user:', user.email); // Log the user's email for debugging
+      // }
     }
+  }
     catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -37,6 +82,7 @@ const SignIn = ({ navigation }) => {
     }finally {
       setIsLoading(false); // Set loading state to false regardless of success/failure
     }
+  
   };
 
   const ITEM_WIDTH = width * 1;

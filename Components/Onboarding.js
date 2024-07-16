@@ -30,8 +30,8 @@ import tw from 'twrnc';
 // https://www.creative-flyers.com
 const DATA = [
   {
-    title: 'Medical Diagnosis',
-    location: 'Our AI-powered system provides accurate medical diagnoses based on advanced algorithms and data analysis.',
+    title: 'Medical Prediction',
+    location: 'Our AI-powered system provides accurate medical predictions based on advanced algorithms and data analysis.',
     date: 'Nov 17th, 2020',
     poster:
     require('../assets/undraw_medicine.png'),
