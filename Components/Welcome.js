@@ -13,9 +13,9 @@ import axios from 'axios';
 import moment from 'moment';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
-import tw from 'twrnc'
+import tw from 'twrnc' 
 
-function Welcome({ route }) {
+function Welcome( { route } ) {
   const { uniqueImageName, fileType } = route.params; 
   const [username, setUsername] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
@@ -29,13 +29,14 @@ function Welcome({ route }) {
     // If no unique identifier exists, create a combination of index and url
     return `${index}-${item.url}`;
   }
-  
+  const keywords = ["kidney","heart", "liver", "diabetes"];
 
   useEffect(() => {
+    
     const fetchData = async () => {
       // Fetch news data from NewsAPI
       const apiKey = '85dd4bb2a84e4780aa0f552c7202aa38'; // Replace with your actual NewsAPI key
-      const newsApiUrl = `https://newsapi.org/v2/everything?q=disease&apiKey=${apiKey}`;
+      const newsApiUrl = `https://newsapi.org/v2/everything?q=kidney&apiKey=${apiKey}`;
       try {
         const newsResponse = await axios.get(newsApiUrl);
         setNewsData(newsResponse.data.articles);
@@ -64,7 +65,7 @@ function Welcome({ route }) {
       } catch (error) {
         console.log("Error getting image:", error);
       }
-    };
+     };
   
     fetchData();
   }, [uniqueImageName]);
@@ -73,14 +74,14 @@ function Welcome({ route }) {
   // 85dd4bb2a84e4780aa0f552c7202aa38
 
   const renderNewsItem = ({ item }) => (
-    <View style={[styles.articleContainer,tw`px-4`]}>
+    <View style={[styles.card,tw`px-4`]}>
     <View style={tw`flex`}>
-    <View>
-      <Image source={{ uri: item.urlToImage }} style={[styles.image, tw`rounded-xl`]} />
+    <View style={styles.cardTop}>
+      <Image source={{ uri: item.urlToImage }} style={[styles.cardImg, tw`rounded-xl`]} />
     </View>
     <View>
       <Text style={tw`font-bold text-xl`}>{item.title}</Text>
-      <Text style={tw`text-gray-600`}>{moment(item.publishedAt).format('MMM D, YYYY')}</Text>
+      <Text style={styles.cardDuration}>{moment(item.publishedAt).format('MMM D, YYYY')}</Text>
       <Text style={tw`font-semibold`}>{item.description}</Text>
     </View>
     </View>
@@ -152,6 +153,26 @@ const styles = StyleSheet.create({
   articleContainer: {
     marginBottom: 16,
   },
+   card: {
+    padding: 12,
+    borderRadius: 24,
+    marginBottom: 24,
+    backgroundColor: '#fff',
+  },
+  cardImg: {
+    width: '100%',
+    height: 180,
+    borderRadius: 24,
+  },
+  cardTop: {
+    position: 'relative',
+    borderRadius: 24,
+  },
+  cardDuration: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#6a6bff',
+  },
   image: {
     width: 100,
     height: 100,
@@ -162,21 +183,3 @@ const styles = StyleSheet.create({
 export default Welcome
 
 
-// const docRef = firebase.firestore().doc("users/eJi1FNZ7xFvYctcLTwmW");
-// docRef.get().then((doc) => {
-//   if (doc.exists) {
-//     console.log("Username:", doc.data().username);
-//   } else {
-//     console.log("No such document!");
-//   }
-// }).catch((error) => {
-//   console.log("Error getting document:", error);
-// });
-
-// const storageRef = firebase.storage().ref('images/uniqueImageName.fileType');
-// storageRef.getDownloadURL().then((url) => {
-//   // `url` is the download URL for the image
-//   console.log(url);
-// }).catch((error) => {
-//   console.log("Error getting image:", error);
-// });
