@@ -80,7 +80,7 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.7;
       <View style={ tw`bg-[#6C63FF] mt-12` }>
       <Button
         style={tw`rounded-lg p-8 h-16 flex justify-center items-center`} // Adjust styles as needed
-        title={isLoading ? '' : 'Sign In'} // Set title based on loading state
+        title={isLoading ? '' : 'Sign Up'} // Set title based on loading state
         onPress={handleSignUp}
         disabled={isLoading} // Disable button while loading
       >
