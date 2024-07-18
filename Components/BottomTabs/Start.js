@@ -7,7 +7,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import axios from 'axios'
 // import AsyncStorage from '@react-native-async-storage/async-storage';
-const BASE_URL = 'http://192.168.16.69:8000/gemini'; // Replace with your Next.js API's URL
+const BASE_URL = 'http://192.168.146.69:8000/gemini'; // Replace with your Next.js API's URL
 
 export default function ChatScreen () {
   const [messages, setMessages] = useState([]);
@@ -69,7 +69,7 @@ export default function ChatScreen () {
     try {
       setLoading(true); // Can potentially move this inside the try block
       const messageArray = Array.isArray(msg) ? msg : [msg];
-      const resp = await axios.post('http://192.168.16.69:8000/gemini', { message: messageArray }); // Assuming Bard API expects a POST request
+      const resp = await axios.post('http://192.168.146.69:8000/gemini', { message: messageArray }); // Assuming Bard API expects a POST request
       console.log('API response:', resp);
       if (resp && resp.data && resp.data.generatedText) { // Assuming successful response has data
         console.log(resp.data);

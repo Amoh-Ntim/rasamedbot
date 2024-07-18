@@ -7,7 +7,7 @@ import Home from './Components/Home';
 import Onboarding from './Components/Onboarding';
 import Welcome from './Components/Welcome';
 import { Appearance, StyleSheet, useColorScheme } from 'react-native';
-
+import { ThemeProvider } from './Mode/ThemeContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +24,7 @@ const App = () => {
   colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
 
   return (
+      <ThemeProvider>
     <NavigationContainer style={[themeContainerStyle,themeTextStyle]}>
       <Stack.Navigator>
         <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
@@ -33,6 +34,7 @@ const App = () => {
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />  
       </Stack.Navigator>
     </NavigationContainer>
+      </ThemeProvider>
   );
 };
 const styles = StyleSheet.create({
