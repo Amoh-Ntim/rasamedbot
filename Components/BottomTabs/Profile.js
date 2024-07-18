@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-
+import { ThemeContext } from '../../Mode/ThemeContext';
 import * as SystemUI from 'expo-system-ui';
 
 // ...
@@ -31,9 +31,11 @@ export default function Profile() {
     pushNotifications: false,
   });
 
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: isDarkMode ? '#000' : '#fff' }]}>
         <View style={styles.profile}>
           <TouchableOpacity
             onPress={() => {
@@ -100,10 +102,10 @@ export default function Profile() {
 
               <Text style={styles.rowLabel}>Dark Mode</Text>
 
-              <View style={styles.rowSpacer} />
+              <View style={styles.rowSpacer}/>
 
               <Switch
-                onValueChange={darkMode => setForm({ ...form, darkMode })}
+                onValueChange={toggleTheme}
                 value={form.darkMode} />
             </View>
 
