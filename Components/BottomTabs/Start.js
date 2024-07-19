@@ -35,6 +35,8 @@ export default function ChatScreen () {
       // Call getBardResp to fetch response from Bard API
       getBardResp(messages[0].text)
         .then(response => {
+          if (response && response.data) { // Check for response and data existence
+            console.log(response.data);
           setLoading(false); // Update loading state after successful response
           const chatAIResp = {
             _id: Math.random() * (9999999 - 1),
@@ -46,21 +48,22 @@ export default function ChatScreen () {
             },
           };
           setMessages(previousMessages => GiftedChat.append(previousMessages, chatAIResp));
+        }
         })
         .catch(error => {
           console.error('Error fetching response from API:', error);
           setLoading(false); // Update loading state after error
-          // setMessages((previousMessages) =>
-          //   GiftedChat.append(previousMessages, {
-          //     _id: Math.random() * (9999999 - 1),
-          //     text: 'Sorry, I encountered an error. Please try again later.',
-          //     createdAt: new Date(),
-          //     user: {
-          //       _id: 2,
-          //       name: 'React Native',
-          //     },
-          //   })
-          // );
+          setMessages((previousMessages) =>
+            GiftedChat.append(previousMessages, {
+              _id: Math.random() * (9999999 - 1),
+              text: 'Sorry, I encountered an error. Please try again later.',
+              createdAt: new Date(),
+              user: {
+                _id: 2,
+                name: 'React Native',
+              },
+            })
+          );
         });
       }
     }, []);
@@ -69,7 +72,7 @@ export default function ChatScreen () {
     try {
       setLoading(true); // Can potentially move this inside the try block
       const messageArray = Array.isArray(msg) ? msg : [msg];
-      const resp = await axios.post('http://192.168.146.69:8000/gemini', { message: messageArray }); // Assuming Bard API expects a POST request
+      const resp = await axios.post('http://192.168.127.69:5000/gemini', { message: messageArray }); // Assuming Bard API expects a POST request
       console.log('API response:', resp);
       if (resp && resp.data && resp.data.generatedText) { // Assuming successful response has data
         console.log(resp.data);
