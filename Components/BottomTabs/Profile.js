@@ -14,6 +14,16 @@ import { ThemeContext } from '../../Mode/ThemeContext';
 import * as SystemUI from 'expo-system-ui';
 
 // ...
+import { FIREBASE_AUTH } from '../../firebase/FirebaseConfig';
+
+const logoutUser = async () => {
+  try {
+    await FIREBASE_AUTH().signOut();
+    console.log('User signed out!');
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const handleDarkModeToggle = async (darkMode) => {
   setForm({ ...form, darkMode });
@@ -36,7 +46,7 @@ export default function Profile() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={[styles.container, { backgroundColor: isDarkMode ? '#000' : '#fff' }]}>
-        <View style={styles.profile}>
+        {/* <View style={styles.profile}>
           <TouchableOpacity
             onPress={() => {
               // handle onPress
@@ -70,7 +80,7 @@ export default function Profile() {
               123 Maple Street. Anytown, PA 17101
             </Text>
           </View>
-        </View>
+        </View> */}
 
         <ScrollView>
           <View style={styles.section}>
