@@ -15,6 +15,7 @@ import {
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
+import DotsPagination from 'react-native-dots-pagination';
 const { width } = Dimensions.get('screen');
 import { EvilIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -137,6 +138,7 @@ export default function Onboarding({ navigation }) {
   const scrollXIndex = React.useRef(new Animated.Value(0)).current;
   const scrollXAnimated = React.useRef(new Animated.Value(0)).current;
   const [index, setIndex] = React.useState(0);
+  // const [currentIndex, setCurrentIndex] = React.useState(0);
   const setActiveIndex = React.useCallback((activeIndex) => {
     scrollXIndex.setValue(activeIndex);
     setIndex(activeIndex);
@@ -148,8 +150,9 @@ export default function Onboarding({ navigation }) {
       // fetch more data
       const newData = [...data, ...data];
       setData(newData);
+      setIndex(0);
     }
-  });
+  },[index, data.length, VISIBLE_ITEMS]);
 
   React.useEffect(() => {
     Animated.spring(scrollXAnimated, {
@@ -251,11 +254,23 @@ export default function Onboarding({ navigation }) {
                       resizeMode: 'contain'
                     }}
                   />
+          
                 </Animated.View>
               );
             }}
           /> 
           <OverflowItems data={data} scrollXAnimated={scrollXAnimated} navigation={navigation} />
+          <View style={styles.paginationContainer}>
+          {index < 5 && (
+    <DotsPagination
+      length={DATA.length}
+      active={index}
+      dotsColor={'#fff'}
+      inactiveDotsColor={'#fff222'}
+      activeDotColor={'#fff'}
+    />
+          )}
+          </View>
         </SafeAreaView>
       </FlingGestureHandler>
     </FlingGestureHandler>
@@ -282,6 +297,11 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 12,
+  },
+  paginationContainer: {
+    position: 'absolute',
+    bottom: 20, // Adjust positioning as needed
+    alignSelf: 'center',
   },
   itemContainer: {
     height: OVERFLOW_HEIGHT,
