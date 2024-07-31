@@ -61,6 +61,10 @@ const Kidney = () => {
   };
 
   return (
+    <>
+    <View style={tw`flex justify-center items-center`}>
+    <Text style={tw`text-black font-bold`}>KIDNEY DISEASE</Text>
+    </View>
     <ScrollView style={tw`flex-1 p-4`}>
       <Text style={tw`text-black mb-2`}>Age</Text>
       <TextInput
@@ -210,6 +214,7 @@ const Kidney = () => {
 
       <Button title="Predict" onPress={handlePredictPress} />
     </ScrollView>
+    </>
   );
 };
 

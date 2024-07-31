@@ -33,7 +33,7 @@ const Home = ({ navigation }) => {
     setUniqueImageName(uniqueImageName);
     const storageRef = ref(FIREBASE_STORAGE, `${uniqueImageName}.${fileType}`);
   
-    // Convert the image URI to a blob
+    // Convert the image URI to a blob  6
     const response = await fetch(image);
     const blob = await response.blob();
   
