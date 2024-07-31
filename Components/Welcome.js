@@ -3,7 +3,7 @@ import { getDownloadURL } from "firebase/storage";
 import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Linking } from 'react-native';
 import { FIREBASE_DATABASE } from "../firebase/FirebaseConfig";
 import { FIREBASE_STORAGE } from "../firebase/FirebaseConfig";
 import { ref } from 'firebase/storage';
@@ -74,10 +74,14 @@ function Welcome( { route } ) {
     fetchData();
   }, [uniqueImageName]);
   
+  const handlePress = (url) => {
+    Linking.openURL(url);
+  };
 
   // 85dd4bb2a84e4780aa0f552c7202aa38
 
   const renderNewsItem = ({ item }) => (
+    <TouchableOpacity onPress={() => handlePress(item.url)}>
     <View style={[styles.card,tw`px-4`]}>
     <View style={tw`flex`}>
     <View style={styles.cardTop}>
@@ -90,6 +94,7 @@ function Welcome( { route } ) {
     </View>
     </View>
     </View>
+    </TouchableOpacity>
   );
   return (
     <Tab.Navigator screenOptions={{

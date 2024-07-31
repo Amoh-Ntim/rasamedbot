@@ -66,6 +66,8 @@ const Kidney = () => {
     <Text style={tw`text-black font-bold`}>KIDNEY DISEASE</Text>
     </View>
     <ScrollView style={tw`flex-1 p-4`}>
+    <View>
+
       <Text style={tw`text-black mb-2`}>Age</Text>
       <TextInput
         keyboardType="numeric"
@@ -161,11 +163,14 @@ const Kidney = () => {
         items={hypertensionItems}
         setOpen={setOpenHypertension}
         setValue={setHypertension}
+        
         // setItems={setHypertensionItems}
         placeholder="Select Hypertension"
       />
 
       <Text style={tw`text-black mb-2`}>Diabetes Mellitus</Text>
+      <View>
+
       <DropDownPicker
         open={openDiabetesMellitus}
         value={diabetesMellitus}
@@ -175,8 +180,10 @@ const Kidney = () => {
         // setItems={setDiabetesMellitusItems}
         placeholder="Select Diabetes Mellitus"
       />
+      </View>
 
       <Text style={tw`text-black mb-2`}>Appetite</Text>
+      <View>
       <DropDownPicker
         open={openAppetite}
         value={appetite}
@@ -186,6 +193,7 @@ const Kidney = () => {
         // setItems={setAppetiteItems}
         placeholder="Select Appetite"
       />
+      </View>
 
       <Text style={tw`text-black mb-2`}>Red Blood Cells</Text>
       <DropDownPicker
@@ -212,8 +220,9 @@ const Kidney = () => {
 
       {/* ... other dropdowns */}
 
+    </View>
     </ScrollView>
-      <Button title="Predict" onPress={handlePredictPress} />
+      <Button style={tw`mt-4`} title="Predict" onPress={handlePredictPress} />
     </>
   );
 };
