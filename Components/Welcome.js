@@ -14,6 +14,10 @@ import moment from 'moment';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
 import tw from 'twrnc' 
+import Diabetes from "./BottomTabs/Diabetes";
+import Kidney from "./BottomTabs/Kidney";
+import Liver from "./BottomTabs/Liver";
+import Heart from "./BottomTabs/Heart"
 
 function Welcome( { route } ) {
   const { uniqueImageName, fileType } = route.params; 
@@ -133,12 +137,49 @@ function Welcome( { route } ) {
     },
   }} 
        />
+
       <Tab.Screen name="Profile" 
       component={Profile} 
       options={{
       tabBarIcon: ({ focused, color, size }) => {
       let iconName = focused ? 'settings-sharp' : 'settings-outline'; // choose appropriate icon names
       return <Ionicons name={iconName} size={size} color={color} />;
+    },
+  }} 
+      />
+      <Tab.Screen name="Liver" 
+      component={Liver} 
+      options={{
+      tabBarIcon: ({ focused, color, size }) => {
+      let iconName = focused ? require('../assets/liver.png') : require('../assets/heart.png'); // choose appropriate icon names
+      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
+    },
+  }} 
+      />
+      <Tab.Screen name="Heart" 
+      component={Heart} 
+      options={{
+      tabBarIcon: ({ focused, color, size }) => {
+      let iconName = focused ? require('../assets/heart.png') : require('../assets/heartout.png'); // choose appropriate icon names
+      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
+    },
+  }} 
+      />
+      <Tab.Screen name="Kidney" 
+      component={Kidney} 
+      options={{
+      tabBarIcon: ({ focused, color, size }) => {
+      let iconName = focused ? require('../assets/heart.png') : require('../assets/heart.png'); // choose appropriate icon names
+      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
+    },
+  }} 
+      />
+      <Tab.Screen name="Diabetes" 
+      component={Diabetes} 
+      options={{
+      tabBarIcon: ({ focused, color, size }) => {
+      let iconName = focused ? require('../assets/heart.png') : require('../assets/heart.png'); // choose appropriate icon names
+      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
     },
   }} 
       />

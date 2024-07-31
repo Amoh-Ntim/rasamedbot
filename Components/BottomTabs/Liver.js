@@ -3,7 +3,7 @@ import { View, ScrollView,Text, SafeAreaView, TextInput, Button } from 'react-na
 import tw from 'twrnc';
 import DropdownPicker from 'react-native-dropdown-picker';
 
-const InputForm = () => {
+const Liver = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [age, setAge] = useState('');
@@ -131,10 +131,11 @@ const InputForm = () => {
         value={albuminGlobulinRatio}
         onChangeText={setAlbuminGlobulinRatio}
       />
-      <Button title="Predict" onPress={handlePredictPress} />
     </ScrollView>
+      <Button title="Predict" onPress={handlePredictPress} />
+
     </SafeAreaView>
   );
 };
 
-export default InputForm;
+export default Liver;

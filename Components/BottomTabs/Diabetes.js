@@ -78,6 +78,7 @@ const heavyAlcoholConsumptionItems = [
   };
 
   return (
+    <>
     <ScrollView style={tw`flex-1 p-4`}>
       <Text style={tw`text-black mb-2`}>BMI</Text>
       <TextInput
@@ -105,7 +106,7 @@ const heavyAlcoholConsumptionItems = [
 
       <Text style={tw`text-black mb-2`}>Income</Text>
       <DropDownPicker
-      open={openIncome}
+      open={income}
       value={income}
       items={incomeItems}
       setOpen={setOpenIncome}
@@ -177,8 +178,10 @@ const heavyAlcoholConsumptionItems = [
         // ... dropdown props for heavy alcohol consumption (yes/no)
       />
 
-      <Button title="Predict" onPress={handlePredictPress} />
     </ScrollView>
+      <Button title="Predict" onPress={handlePredictPress} />
+
+    </>
   );
 };
 

@@ -212,8 +212,8 @@ const Kidney = () => {
 
       {/* ... other dropdowns */}
 
-      <Button title="Predict" onPress={handlePredictPress} />
     </ScrollView>
+      <Button title="Predict" onPress={handlePredictPress} />
     </>
   );
 };
