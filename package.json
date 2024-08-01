@@ -20,7 +20,7 @@
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native-stack": "^6.9.26",
     "axios": "^1.7.2",
-    "expo": "^51.0.20",
+    "expo": "~51.0.24",
     "expo-file-system": "~17.0.1",
     "expo-image-picker": "^15.0.7",
     "expo-status-bar": "~1.12.1",
@@ -42,7 +42,8 @@
     "ws": "^8.17.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0"
+    "@babel/core": "^7.24.0",
+    "@types/react-native": "^0.73.0"
   },
   "private": true
 }

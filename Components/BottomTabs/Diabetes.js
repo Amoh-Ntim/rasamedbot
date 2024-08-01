@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, TextInput, Button, View, DatePicker } from 'react-native';
+import { FlatList, Text, TextInput, Button, View } from 'react-native';
 import tw from 'twrnc';
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -15,7 +15,38 @@ const Diabetes = () => {
   const [highCholesterol, setHighCholesterol] = useState(null);
   const [heavyAlcoholConsumption, setHeavyAlcoholConsumption] = useState(null);
 
-  // ... dropdown items and states for dropdowns
+  const [openIncome, setOpenIncome] = useState(false);
+  const [openEducationalLevel, setOpenEducationalLevel] = useState(false);
+  const [openSex, setOpenSex] = useState(false);
+  const [openHighCholesterol, setOpenHighCholesterol] = useState(false);
+  const [openHeavyAlcoholConsumption, setOpenHeavyAlcoholConsumption] = useState(false);
+
+  const incomeItems = [
+    { label: '<$10,000', value: '0' },
+    { label: '$10,000 - $15,000', value: '1' },
+    // ... other income ranges
+  ];
+
+  const educationalLevelItems = [
+    { label: 'Never attended school or only kindergarten', value: '0' },
+    { label: 'Grade 1 through 8 (elementary)', value: '1' },
+    // ... other educational levels
+  ];
+
+  const sexItems = [
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+  ];
+
+  const highCholesterolItems = [
+    { label: 'Yes', value: 'yes' },
+    { label: 'No', value: 'no' },
+  ];
+
+  const heavyAlcoholConsumptionItems = [
+    { label: 'Yes', value: 'yes' },
+    { label: 'No', value: 'no' },
+  ];
 
   const handleMentalHealthChange = (date, score) => {
     if (score < 1 || score > 10) {
@@ -32,33 +63,6 @@ const Diabetes = () => {
     }
     setPhysicalHealthData({ ...physicalHealthData, [date.toISOString()]: score });
   };
-  const incomeItems = [
-  { label: '<$10,000', value: '0' },
-  { label: '$10,000 - $15,000', value: '1' },
-  // ... other income ranges
-];
-
-const educationalLevelItems = [
-  { label: 'Never attended school or only kindergarten', value: '0' },
-  { label: 'Grade 1 through 8 (elementary)', value: '1' },
-  // ... other educational levels
-];
-
-const sexItems = [
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
-];
-
-const highCholesterolItems = [
-  { label: 'Yes', value: 'yes' },
-  { label: 'No', value: 'no' },
-];
-
-const heavyAlcoholConsumptionItems = [
-  { label: 'Yes', value: 'yes' },
-  { label: 'No', value: 'no' },
-];
-
 
   const handlePredictPress = () => {
     // Handle prediction logic here
@@ -77,110 +81,63 @@ const heavyAlcoholConsumptionItems = [
     });
   };
 
+  const data = [
+    { key: 'bmi', label: 'BMI', value: bmi, setter: setBmi, keyboardType: 'numeric' },
+    { key: 'age', label: 'Age', value: age, setter: setAge, keyboardType: 'numeric' },
+    { key: 'generalHealth', label: 'General Health', value: generalHealth, setter: setGeneralHealth, keyboardType: 'numeric' },
+    { key: 'income', label: 'Income', value: income, setter: setIncome, items: incomeItems, open: openIncome, setOpen: setOpenIncome },
+    { key: 'educationalLevel', label: 'Educational Level', value: educationalLevel, setter: setEducationalLevel, items: educationalLevelItems, open: openEducationalLevel, setOpen: setOpenEducationalLevel },
+    { key: 'sex', label: 'Sex', value: sex, setter: setSex, items: sexItems, open: openSex, setOpen: setOpenSex },
+    { key: 'highCholesterol', label: 'High Cholesterol', value: highCholesterol, setter: setHighCholesterol, items: highCholesterolItems, open: openHighCholesterol, setOpen: setOpenHighCholesterol },
+    { key: 'heavyAlcoholConsumption', label: 'Heavy Alcohol Consumption', value: heavyAlcoholConsumption, setter: setHeavyAlcoholConsumption, items: heavyAlcoholConsumptionItems, open: openHeavyAlcoholConsumption, setOpen: setOpenHeavyAlcoholConsumption },
+    // Add entries for Mental Health and Physical Health if needed
+  ];
+
+  const renderItem = ({ item, index }) => {
+    const zIndex = data.length - index;
+    if (item.items) {
+      return (
+        <View key={item.key} style={tw`mb-4`}>
+          <Text style={tw`text-black mb-2`}>{item.label}</Text>
+          <DropDownPicker
+            open={item.open}
+            value={item.value}
+            items={item.items}
+            setOpen={item.setOpen}
+            setValue={item.setter}
+            placeholder={`Select ${item.label}`}
+            // zIndex={zIndex}
+            // containerStyle={{ zIndex }}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View key={item.key} style={tw`mb-4`}>
+          <Text style={tw`text-black mb-2`}>{item.label}</Text>
+          <TextInput
+            keyboardType={item.keyboardType}
+            placeholder={item.label}
+            value={item.value}
+            onChangeText={item.setter}
+          />
+        </View>
+      );
+    }
+  };
+
   return (
     <>
-    <ScrollView style={tw`flex-1 p-4`}>
-      <Text style={tw`text-black mb-2`}>BMI</Text>
-      <TextInput
-        keyboardType="numeric"
-        placeholder="BMI"
-        value={bmi}
-        onChangeText={setBmi}
+      <View style={tw`flex justify-center items-center`}>
+        <Text style={tw`text-black font-bold`}>DIABETES PREDICTION</Text>
+      </View>
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => item.key}
+        contentContainerStyle={tw`p-4`}
       />
-
-      <Text style={tw`text-black mb-2`}>Age</Text>
-      <TextInput
-        keyboardType="numeric"
-        placeholder="Age"
-        value={age}
-        onChangeText={setAge}
-      />
-
-      <Text style={tw`text-black mb-2`}>General Health</Text>
-      <TextInput
-        keyboardType="numeric"
-        placeholder="General Health (1-5)"
-        value={generalHealth}
-        onChangeText={setGeneralHealth}
-      />
-
-      <Text style={tw`text-black mb-2`}>Income</Text>
-      <DropDownPicker
-      open={income}
-      value={income}
-      items={incomeItems}
-      setOpen={setOpenIncome}
-      setValue={setIncome}
-      setItems={setIncomeItems}
-      placeholder="Select Income"
-        // ... dropdown props for income
-        
-      />
-
-      <Text style={tw`text-black mb-2`}>Mental Health</Text>
-      <DatePicker
-        // ... date picker props
-        onDateChange={(date) => {
-          // Set the date for mental health input
-        }}
-      />
-      <TextInput
-        keyboardType="numeric"
-        placeholder="Mental Health Score (1-10)"
-        // ... other props
-        onChangeText={(score) => {
-          handleMentalHealthChange(selectedDate, score);
-        }}
-      />
-
-      <Text style={tw`text-black mb-2`}>Physical Health</Text>
-      {/* Similar setup for physical health */}
-
-      <Text style={tw`text-black mb-2`}>Educational Level</Text>
-      <DropDownPicker
-        // ... dropdown props for educational level
-      />
-
-      <Text style={tw`text-black mb-2`}>Sex</Text>
-      <DropDownPicker
-      open={openSex}
-  value={sex}
-  items={sexItems}
-  setOpen={setOpenSex}
-  setValue={setSex}
-  setItems={setSexItems}
-  placeholder="Select Sex"
-
-        // ... dropdown props for sex
-      />
-
-      <Text style={tw`text-black mb-2`}>High Cholesterol</Text>
-      <DropDownPicker
-      open={openHighCholesterol}
-  value={highCholesterol}
-  items={highCholesterolItems}
-  setOpen={setOpenHighCholesterol}
-  setValue={setHighCholesterol}
-  setItems={setHighCholesterolItems}
-  placeholder="Select High Cholesterol"
-        // ... dropdown props for high cholesterol (yes/no)
-      />
-
-      <Text style={tw`text-black mb-2`}>Heavy Alcohol Consumption</Text>
-      <DropDownPicker
-      open={openHeavyAlcoholConsumption}
-  value={heavyAlcoholConsumption}
-  items={heavyAlcoholConsumptionItems}
-  setOpen={setOpenHeavyAlcoholConsumption}
-  setValue={setHeavyAlcoholConsumption}
-  setItems={setHeavyAlcoholConsumptionItems}
-  placeholder="Select Heavy Alcohol Consumption"
-        // ... dropdown props for heavy alcohol consumption (yes/no)
-      />
-
-    </ScrollView>
-      <Button title="Predict" onPress={handlePredictPress} />
-
+      <Button style={tw`mt-4`} title="Predict" onPress={handlePredictPress} />
     </>
   );
 };
