@@ -72,7 +72,7 @@ export default function ChatScreen () {
     try {
       setLoading(true); // Can potentially move this inside the try block
       const messageArray = Array.isArray(msg) ? msg : [msg];
-      const resp = await axios.post('http://192.168.236.69:5000/gemini', { message: messageArray }); // Assuming Bard API expects a POST request
+      const resp = await axios.post('http://192.168.154.69:5000/gemini', { message: messageArray }); // Assuming Bard API expects a POST request
       console.log('API response:', resp);
       if (resp && resp.data && resp.data.generatedText) { // Assuming successful response has data
         console.log(resp.data);

@@ -90,6 +90,7 @@ const InputForm = () => {
   };
 
   return (
+    <>
     <ScrollView style={tw`flex-1 p-4`}>
       <Text style={tw`text-black mb-2`}>Age</Text>
       <TextInput
@@ -171,8 +172,9 @@ const InputForm = () => {
         placeholder="Select Thalassemia"
       />
 
-      <Button title="Predict" onPress={handlePredictPress} />
     </ScrollView>
+      <Button title="Predict" onPress={handlePredictPress} />
+      </>
   );
 };
 

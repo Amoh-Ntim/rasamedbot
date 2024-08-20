@@ -3,7 +3,7 @@ import { getDownloadURL } from "firebase/storage";
 import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Linking } from 'react-native';
 import { FIREBASE_DATABASE } from "../firebase/FirebaseConfig";
 import { FIREBASE_STORAGE } from "../firebase/FirebaseConfig";
 import { ref } from 'firebase/storage';
@@ -14,9 +14,13 @@ import moment from 'moment';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
 import tw from 'twrnc' 
+import Diabetes from "./BottomTabs/Diabetes";
+import Kidney from "./BottomTabs/Kidney";
+import Liver from "./BottomTabs/Liver";
+import Heart from "./BottomTabs/Heart"
 
 function Welcome( { route } ) {
-  const { uniqueImageName, fileType } = route.params; 
+  // const { uniqueImageName, fileType } = route.params; 
   const [username, setUsername] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [newsData, setNewsData] = useState([]);
@@ -58,22 +62,26 @@ function Welcome( { route } ) {
       }
   
       // Fetch image URL from Firebase Storage
-      const storageRef = ref(FIREBASE_STORAGE, `${uniqueImageName}.${fileType}`);
-      try {
-        const url = await getDownloadURL(storageRef);
-        setImageUrl(url);
-      } catch (error) {
-        console.log("Error getting image:", error);
-      }
+    //   const storageRef = ref(FIREBASE_STORAGE, `${uniqueImageName}.${fileType}`);
+    //   try {
+    //     const url = await getDownloadURL(storageRef);
+    //     setImageUrl(url);
+    //   } catch (error) {
+    //     console.log("Error getting image:", error);
+    //   }
      };
   
     fetchData();
-  }, [uniqueImageName]);
+  }, []);
   
+  const handlePress = (url) => {
+    Linking.openURL(url);
+  };
 
   // 85dd4bb2a84e4780aa0f552c7202aa38
 
   const renderNewsItem = ({ item }) => (
+    <TouchableOpacity onPress={() => handlePress(item.url)}>
     <View style={[styles.card,tw`px-4`]}>
     <View style={tw`flex`}>
     <View style={styles.cardTop}>
@@ -86,6 +94,7 @@ function Welcome( { route } ) {
     </View>
     </View>
     </View>
+    </TouchableOpacity>
   );
   return (
     <Tab.Navigator screenOptions={{
@@ -106,10 +115,10 @@ function Welcome( { route } ) {
         <Text style={tw`text-xl font-bold flex items-center`}>Welcome</Text>
         <Text style={tw`text-4xl font-bold flex items-center text-blue-800`}>{username}!</Text>
       </View>
-      <View>
-        <Image source={{ uri: imageUrl }} style={{ width: 50, height: 50, borderRadius: 25 }} />
+      {/* <View>
+        {/* <Image source={{ uri: imageUrl }} style={{ width: 50, height: 50, borderRadius: 25 }} /> */}
         {/* <Image source={require('../assets/undraw_medicine.png')} style={{ width: 50, height: 50, borderRadius: 25 }}/> */}
-      </View>
+      {/* </View>  */}
       </View>
       {/* grid view */}
       <View style={tw`py-4`}>
@@ -133,12 +142,49 @@ function Welcome( { route } ) {
     },
   }} 
        />
+
       <Tab.Screen name="Profile" 
       component={Profile} 
       options={{
       tabBarIcon: ({ focused, color, size }) => {
       let iconName = focused ? 'settings-sharp' : 'settings-outline'; // choose appropriate icon names
       return <Ionicons name={iconName} size={size} color={color} />;
+    },
+  }} 
+      />
+      <Tab.Screen name="Liver" 
+      component={Liver} 
+      options={{
+      tabBarIcon: ({ focused, color, size }) => {
+      let iconName = focused ? require('../assets/liver.png') : require('../assets/heart.png'); // choose appropriate icon names
+      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
+    },
+  }} 
+      />
+      <Tab.Screen name="Heart" 
+      component={Heart} 
+      options={{
+      tabBarIcon: ({ focused, color, size }) => {
+      let iconName = focused ? require('../assets/heart.png') : require('../assets/heartout.png'); // choose appropriate icon names
+      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
+    },
+  }} 
+      />
+      <Tab.Screen name="Kidney" 
+      component={Kidney} 
+      options={{
+      tabBarIcon: ({ focused, color, size }) => {
+      let iconName = focused ? require('../assets/heart.png') : require('../assets/heart.png'); // choose appropriate icon names
+      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
+    },
+  }} 
+      />
+      <Tab.Screen name="Diabetes" 
+      component={Diabetes} 
+      options={{
+      tabBarIcon: ({ focused, color, size }) => {
+      let iconName = focused ? require('../assets/heart.png') : require('../assets/heart.png'); // choose appropriate icon names
+      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
     },
   }} 
       />
