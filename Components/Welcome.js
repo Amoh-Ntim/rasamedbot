@@ -20,7 +20,7 @@ import Liver from "./BottomTabs/Liver";
 import Heart from "./BottomTabs/Heart"
 
 function Welcome( { route } ) {
-  const { uniqueImageName, fileType } = route.params; 
+  // const { uniqueImageName, fileType } = route.params; 
   const [username, setUsername] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [newsData, setNewsData] = useState([]);
@@ -62,17 +62,17 @@ function Welcome( { route } ) {
       }
   
       // Fetch image URL from Firebase Storage
-      const storageRef = ref(FIREBASE_STORAGE, `${uniqueImageName}.${fileType}`);
-      try {
-        const url = await getDownloadURL(storageRef);
-        setImageUrl(url);
-      } catch (error) {
-        console.log("Error getting image:", error);
-      }
+    //   const storageRef = ref(FIREBASE_STORAGE, `${uniqueImageName}.${fileType}`);
+    //   try {
+    //     const url = await getDownloadURL(storageRef);
+    //     setImageUrl(url);
+    //   } catch (error) {
+    //     console.log("Error getting image:", error);
+    //   }
      };
   
     fetchData();
-  }, [uniqueImageName]);
+  }, []);
   
   const handlePress = (url) => {
     Linking.openURL(url);
@@ -115,10 +115,10 @@ function Welcome( { route } ) {
         <Text style={tw`text-xl font-bold flex items-center`}>Welcome</Text>
         <Text style={tw`text-4xl font-bold flex items-center text-blue-800`}>{username}!</Text>
       </View>
-      <View>
-        <Image source={{ uri: imageUrl }} style={{ width: 50, height: 50, borderRadius: 25 }} />
+      {/* <View>
+        {/* <Image source={{ uri: imageUrl }} style={{ width: 50, height: 50, borderRadius: 25 }} /> */}
         {/* <Image source={require('../assets/undraw_medicine.png')} style={{ width: 50, height: 50, borderRadius: 25 }}/> */}
-      </View>
+      {/* </View>  */}
       </View>
       {/* grid view */}
       <View style={tw`py-4`}>

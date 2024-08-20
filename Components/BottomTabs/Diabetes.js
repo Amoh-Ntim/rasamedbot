@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, Text, TextInput, Button, View } from 'react-native';
 import tw from 'twrnc';
 import DropDownPicker from 'react-native-dropdown-picker';
+import axios from 'axios';
 
 const Diabetes = () => {
   const [bmi, setBmi] = useState('');
@@ -64,21 +65,39 @@ const Diabetes = () => {
     setPhysicalHealthData({ ...physicalHealthData, [date.toISOString()]: score });
   };
 
-  const handlePredictPress = () => {
-    // Handle prediction logic here
-    console.log('Predict button pressed');
-    console.log({
-      bmi,
-      age,
-      generalHealth,
-      income,
-      mentalHealthData,
-      physicalHealthData,
-      educationalLevel,
-      sex,
-      highCholesterol,
-      heavyAlcoholConsumption,
-    });
+  const handlePredictPress = async () => {
+    // Structure the data to match the expected keys in your Flask API
+    const dataToSend = {
+      bmi: bmi,
+      age: age,
+      general_health: generalHealth,
+      income: income,
+      mental_health_data: mentalHealthData,
+      physical_health_data: physicalHealthData,
+      educational_level: educationalLevel,
+      sex: sex,
+      high_cholesterol: highCholesterol,
+      heavy_alcohol_consumption: heavyAlcoholConsumption,
+    };
+  
+    console.log('Data to send:', dataToSend);
+  
+    try {
+      // Send POST request to Flask API
+      const response = await axios.post('/predict_diabetes', dataToSend);
+      
+      // Handle the response from the API
+      const { prediction, probability } = response.data;
+      console.log('Prediction:', prediction);
+      console.log('Probability:', probability);
+  
+      // You can display the prediction and probability to the user or handle it as needed
+      alert(`Prediction: ${prediction}\nProbability: ${probability}`);
+  
+    } catch (error) {
+      console.error('Error making prediction:', error);
+      alert('There was an error making the prediction. Please try again later.');
+    }
   };
 
   const data = [

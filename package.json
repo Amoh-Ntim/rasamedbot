@@ -12,15 +12,15 @@
     "userInterfaceStyle": "automatic"
   },
   "dependencies": {
-    "@expo/metro-runtime": "~3.2.1",
+    "@expo/metro-runtime": "~3.2.3",
     "@expo/vector-icons": "^14.0.2",
-    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-async-storage/async-storage": "1.22.3",
     "@react-native-firebase/app": "^19.2.2",
     "@react-native-firebase/auth": "^19.2.2",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native-stack": "^6.9.26",
     "axios": "^1.7.2",
-    "expo": "~51.0.24",
+    "expo": "^51.0.28",
     "expo-file-system": "~17.0.1",
     "expo-image-picker": "^15.0.7",
     "expo-status-bar": "~1.12.1",
@@ -29,11 +29,11 @@
     "moment": "^2.30.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "^0.74.3",
+    "react-native": "^0.74.0",
     "react-native-dots-pagination": "^0.3.1",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-elements": "^3.4.3",
-    "react-native-gesture-handler": "~2.16.1",
+    "react-native-gesture-handler": "~2.18.1",
     "react-native-gifted-chat": "^2.4.0",
     "react-native-uuid": "^2.0.2",
     "react-native-web": "~0.19.6",
@@ -42,8 +42,8 @@
     "ws": "^8.17.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
-    "@types/react-native": "^0.73.0"
+    "@babel/core": "^7.24.0"
   },
-  "private": true
+  "private": true,
+  "proxy": "http://127.0.0.1/5000"
 }
