@@ -142,6 +142,7 @@ const Kidney = () => {
             setOpen={item.setOpen}
             setValue={item.setter}
             placeholder={`Select ${item.label}`}
+            dropDownContainerStyle={tw`z-50 elevation-50 border border-gray-400 rounded bg-white`}
             // zIndex={zIndex}  // Uncomment if needed
             // containerStyle={{ zIndex }}  // Uncomment if needed
           />

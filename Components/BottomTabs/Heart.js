@@ -89,7 +89,7 @@ const InputForm = () => {
             setValue={item.setter}
             placeholder={`Select ${item.label}`}
             containerStyle={tw`border border-gray-300`}
-            style={tw`border border-gray-300`}
+            style={tw`z-50 elevation-50 border border-gray-300`}
             dropDownStyle={tw`border border-gray-300`}
           />
         </View>
