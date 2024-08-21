@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
-import { View, ScrollView,Text, SafeAreaView, TextInput, Button } from 'react-native';
+import { View, ScrollView, Text, SafeAreaView, TextInput, Button, FlatList } from 'react-native';
 import tw from 'twrnc';
-import DropdownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const Liver = () => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [openGender, setOpenGender] = useState(false);
+  const [genderValue, setGenderValue] = useState(null);
   const [age, setAge] = useState('');
-  const [genderItems, setGenderItems] = useState( [
-    { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' }
-  ]);
   const [totalBilirubin, setTotalBilirubin] = useState('');
   const [directBilirubin, setDirectBilirubin] = useState('');
   const [alkanePhosphatase, setAlkanePhosphatase] = useState('');
@@ -20,12 +16,64 @@ const Liver = () => {
   const [albumin, setAlbumin] = useState('');
   const [albuminGlobulinRatio, setAlbuminGlobulinRatio] = useState('');
 
+  const [genderItems, setGenderItems] = useState([
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+  ]);
+
+  const formFields = [
+    { key: 'age', label: 'Age', value: age, setter: setAge, keyboardType: 'numeric', type: 'text' },
+    { key: 'gender', label: 'Gender', value: genderValue, setter: setGenderValue, items: genderItems, open: openGender, setOpen: setOpenGender, type: 'dropdown' },
+    { key: 'totalBilirubin', label: 'Total Bilirubin', value: totalBilirubin, setter: setTotalBilirubin, keyboardType: 'decimal-pad', type: 'text' },
+    { key: 'directBilirubin', label: 'Direct Bilirubin', value: directBilirubin, setter: setDirectBilirubin, keyboardType: 'decimal-pad', type: 'text' },
+    { key: 'alkanePhosphatase', label: 'Alkane Phosphatase', value: alkanePhosphatase, setter: setAlkanePhosphatase, keyboardType: 'numeric', type: 'text' },
+    { key: 'alanineAminotransferase', label: 'Alanine Aminotransferase', value: alanineAminotransferase, setter: setAlanineAminotransferase, keyboardType: 'numeric', type: 'text' },
+    { key: 'aspartateAminotransferase', label: 'Aspartate Aminotransferase', value: aspartateAminotransferase, setter: setAspartateAminotransferase, keyboardType: 'numeric', type: 'text' },
+    { key: 'totalProteins', label: 'Total Proteins', value: totalProteins, setter: setTotalProteins, keyboardType: 'decimal-pad', type: 'text' },
+    { key: 'albumin', label: 'Albumin', value: albumin, setter: setAlbumin, keyboardType: 'decimal-pad', type: 'text' },
+    { key: 'albuminGlobulinRatio', label: 'Albumin and Globulin Ratio', value: albuminGlobulinRatio, setter: setAlbuminGlobulinRatio, keyboardType: 'decimal-pad', type: 'text' },
+  ];
+
+  const renderItem = ({ item }) => {
+    if (item.type === 'dropdown') {
+      return (
+        <View style={tw`mb-4`}>
+          <Text style={tw`text-black mb-2`}>{item.label}</Text>
+          <DropDownPicker
+            open={item.open}
+            value={item.value}
+            items={item.items}
+            setOpen={item.setOpen}
+            setValue={item.setter}
+            placeholder={`Select ${item.label}`}
+            containerStyle={tw`border border-gray-300`}
+            style={tw`border border-gray-300`}
+            dropDownStyle={tw`border border-gray-300`}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={tw`mb-4`}>
+          <Text style={tw`text-black mb-2`}>{item.label}</Text>
+          <TextInput
+            keyboardType={item.keyboardType}
+            placeholder={`Enter ${item.label}`}
+            value={item.value}
+            onChangeText={item.setter}
+            style={tw`border border-gray-300 p-2`}
+          />
+        </View>
+      );
+    }
+  };
+
   const handlePredictPress = () => {
     // Handle prediction logic here
     console.log('Predict button pressed');
     console.log({
       age,
-      gender: value,
+      gender: genderValue,
       totalBilirubin,
       directBilirubin,
       alkanePhosphatase,
@@ -36,104 +84,23 @@ const Liver = () => {
       albuminGlobulinRatio,
     });
   };
-  const genderOptions = [
-    { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' },
-  ];
 
   return (
     <SafeAreaView style={tw`flex-1`}>
-    <View style={tw`flex justify-center items-center`}>
-     <Text style={tw`font-bold`}>LIVER DISEASE PREDICTION
-     </Text>
-    </View>
-    <ScrollView style={tw`flex-1 p-4`}>
-      <Text style={tw`text-black mb-2`}>Age</Text>
-      <TextInput
-        style={tw`border border-gray-300 p-2 mb-2 text-black`}
-        keyboardType="numeric"
-        placeholder="0"
-        value={age}
-        onChangeText={setAge}
-      />
-
-      <Text style={tw`text-black mb-2`}>Gender</Text>
-      <DropdownPicker
-        open={open}
-        value={value}
-        items={genderItems}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setGenderItems}
-        placeholder="Select Gender"
-      />
-       <Text style={tw`text-black mb-2`}>Total Bilirubin</Text>
-      <TextInput
-        style={tw`border border-gray-300 p-2 mb-2 text-black`}
-        keyboardType="decimal-pad"
-        placeholder="0"
-        value={totalBilirubin}
-        onChangeText={setTotalBilirubin}
-      />
-       <Text style={tw`text-black mb-2`}>Direct Bilirubin</Text>
-      <TextInput
-        style={tw`border border-gray-300 p-2 mb-2 text-black`}
-        keyboardType="decimal-pad"
-        placeholder="0"
-        value={directBilirubin}
-        onChangeText={setDirectBilirubin}
-      />
-       <Text style={tw`text-black mb-2`}>Alkane Phosphatase</Text>
-      <TextInput
-        style={tw`border border-gray-300 p-2 mb-2 text-black`}
-        keyboardType="numeric"
-        placeholder="0"
-        value={alkanePhosphatase}
-        onChangeText={setAlkanePhosphatase}
-      />
-       <Text style={tw`text-black mb-2`}>Alanine Aminotransferase</Text>
-      <TextInput
-        style={tw`border border-gray-300 p-2 mb-2 text-black`}
-        keyboardType="numeric"
-        placeholder="0"
-        value={alanineAminotransferase}
-        onChangeText={setAlanineAminotransferase}
-      />
-       <Text style={tw`text-black mb-2`}>Aspartate Aminotransferase</Text>
-      <TextInput
-        style={tw`border border-gray-300 p-2 mb-2 text-black`}
-        keyboardType="numeric"
-        placeholder="0"
-        value={aspartateAminotransferase}
-        onChangeText={setAspartateAminotransferase}
-      />
-       <Text style={tw`text-black mb-2`}>Total Proteins</Text>
-      <TextInput
-        style={tw`border border-gray-300 p-2 mb-2 text-black`}
-        keyboardType="decimal-pad"
-        placeholder="0"
-        value={totalProteins}
-        onChangeText={setTotalProteins}
-      />
-       <Text style={tw`text-black mb-2`}>Albumin</Text>
-      <TextInput
-        style={tw`border border-gray-300 p-2 mb-2 text-black`}
-        keyboardType="decimal-pad"
-        placeholder="0"
-        value={albumin}
-        onChangeText={setAlbumin}
-      />
-       <Text style={tw`text-black mb-2`}>Albumin and Globulin Ratio</Text>
-      <TextInput
-        style={tw`border border-gray-300 p-2 mb-2 text-black`}
-        keyboardType="decimal-pad"
-        placeholder="0"
-        value={albuminGlobulinRatio}
-        onChangeText={setAlbuminGlobulinRatio}
-      />
-    </ScrollView>
-      <Button title="Predict" onPress={handlePredictPress} />
-
+      <View style={tw`flex justify-center items-center p-4`}>
+        <Text style={tw`font-bold text-xl`}>LIVER DISEASE PREDICTION</Text>
+      </View>
+      <View style={tw`flex-1 p-4`}>
+        <FlatList
+          data={formFields}
+          renderItem={renderItem}
+          keyExtractor={item => item.key}
+          contentContainerStyle={tw`pb-4`}
+        />
+      </View>
+      <View style={tw`p-4`}>
+        <Button title="Predict" onPress={handlePredictPress} />
+      </View>
     </SafeAreaView>
   );
 };
