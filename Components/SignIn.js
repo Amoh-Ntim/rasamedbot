@@ -69,7 +69,7 @@ const SignIn = ({ navigation }) => {
         // } else {
         //   console.log('User has no profile picture set.');
 
-        navigation.navigate('Welcome', { uniqueImagePath});
+        navigation.navigate('Welcome');
         console.log('Signed in with user:', user.email); // Log the user's email for debugging
       // }
     }

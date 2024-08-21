@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, Text, TextInput, Button, View, Alert } from 'react-native';
 import tw from 'twrnc';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -22,7 +22,7 @@ const Kidney = () => {
   const [redBloodCells, setRedBloodCells] = useState(null);
   const [anemia, setAnemia] = useState(null);
   const [prediction, setPrediction] = useState('');
-  const [probability, setProbability] = useState(null);
+  const [probability, setProbability] = useState('');
   const [error, setError] = useState('');  // Define state for error handling
 
   const hypertensionItems = [
@@ -77,38 +77,22 @@ const Kidney = () => {
     };
 
     console.log('Request Body:', requestBody);  // Log the request body
-    // Stringify the request body before sending
-  // const stringifiedData = JSON.stringify(requestBody);
-  // console.log('Stringified Request Body:', stringifiedData);
 
     try {
-      const response = await axios.post(
-        'http://192.168.108.69:5000/api/predict_kidney_disease',
-        requestBody,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-     setPrediction(response.data.prediction);
+      const response = await axios.post('http://192.168.202.69:5000/api/predict_kidney_disease', requestBody);
+
+      setPrediction(response.data.predicted_class);
       setProbability(response.data.probability);
-      setError('');  // Clear any previous errors 
+      console.log('API Response:', response.data);
+      setError('');  // Clear any previous errors
     } catch (error) {
+      console.error('Error object:', error);
+      console.error('Error response:', error.response);
       console.error('Error:', error);
-      if (error.response) {
-        const statusCode = error.response.status;
-        console.error('Status Code:', statusCode);
-        // Handle specific error based on status code
-      } else if (error.request) {
-        console.error('Request Error:', error.request);
-      } else {
-        console.error('General Error:', error.message);
-      }
+      setError(error.response?.data?.error || error.message);
+      Alert.alert('Error', error.response?.data?.error || error.message);
     }
-  }
-
-
+  };
 
   const data = [
     { key: 'age', label: 'Age', value: age, setter: setAge, keyboardType: 'numeric' },
@@ -142,7 +126,6 @@ const Kidney = () => {
             setOpen={item.setOpen}
             setValue={item.setter}
             placeholder={`Select ${item.label}`}
-            dropDownContainerStyle={tw`z-50 elevation-50 border border-gray-400 rounded bg-white`}
             // zIndex={zIndex}  // Uncomment if needed
             // containerStyle={{ zIndex }}  // Uncomment if needed
           />
@@ -173,14 +156,13 @@ const Kidney = () => {
         keyExtractor={item => item.key}
         contentContainerStyle={tw`p-4`}
       />
-      {prediction && (
-        <View>
-          <Text>Prediction: {prediction}</Text>
-          <Text>Probability: {probability}</Text>
-        </View>
-      )}
+      <View>
+
+      {prediction ? <Text>Prediction: {prediction}</Text> : null}
+      {probability ? <Text>Probability: {probability}</Text> : null}
       {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
       <Button style={tw`mt-4`} title="Predict" onPress={handlePredictPress} />
+      </View>
     </>
   );
 };

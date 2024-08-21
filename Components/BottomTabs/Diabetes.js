@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Text, TextInput, Button, View } from 'react-native';
+import { FlatList, Text, TextInput, Button, View, Alert } from 'react-native';
 import tw from 'twrnc';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
@@ -7,92 +7,107 @@ import axios from 'axios';
 const Diabetes = () => {
   const [bmi, setBmi] = useState('');
   const [age, setAge] = useState('');
-  const [generalHealth, setGeneralHealth] = useState('');
+  const [generalHealth, setGeneralHealth] = useState(null);
   const [income, setIncome] = useState(null);
-  const [mentalHealthData, setMentalHealthData] = useState({});
-  const [physicalHealthData, setPhysicalHealthData] = useState({});
+  const [mentalHealth, setMentalHealth] = useState('');
+  const [physicalHealth, setPhysicalHealth] = useState('');
   const [educationalLevel, setEducationalLevel] = useState(null);
   const [sex, setSex] = useState(null);
   const [highCholesterol, setHighCholesterol] = useState(null);
   const [heavyAlcoholConsumption, setHeavyAlcoholConsumption] = useState(null);
+  const [prediction, setPrediction] = useState('');
+  const [probability, setProbability] = useState('');
+  const [error, setError] = useState(''); 
 
   const [openIncome, setOpenIncome] = useState(false);
   const [openEducationalLevel, setOpenEducationalLevel] = useState(false);
   const [openSex, setOpenSex] = useState(false);
   const [openHighCholesterol, setOpenHighCholesterol] = useState(false);
   const [openHeavyAlcoholConsumption, setOpenHeavyAlcoholConsumption] = useState(false);
+  const [openGeneralHealth, setOpenGeneralHealth] = useState(false); // New state for general health dropdown
 
   const incomeItems = [
-    { label: '<$10,000', value: '0' },
-    { label: '$10,000 - $15,000', value: '1' },
-    // ... other income ranges
+    { label: '<$10,000', value: 1 },
+    { label: '$10,000 - $15,000', value: 2 },
+    { label: '$15,000 - $20,000', value: 3 },
+    { label: '$20,000 - $25,000', value: 4 },
+    { label: '$25,000 - $35,000', value: 5 },
+    { label: '$35,000 - $50,000', value: 6 },
+    { label: '$50,000 - $75,000', value: 7 },
+    { label: '>$75,000', value: 8 },
   ];
 
   const educationalLevelItems = [
-    { label: 'Never attended school or only kindergarten', value: '0' },
-    { label: 'Grade 1 through 8 (elementary)', value: '1' },
-    // ... other educational levels
+    { label: 'Never attended school or only kindergarten', value: 1 },
+    { label: 'Grade 1 through 8 (elementary)', value: 2 },
+    { label: 'Grade 9 through 11 (Some high school)', value: 3 },
+    { label: 'Grade 12 or GED (High school graduate)', value: 4},
+    { label: 'College 1 year to 3 years(Some college or technical school', value: 5 },
+    { label: 'College 4 years or more (College graduate)', value: 6 },
   ];
 
   const sexItems = [
-    { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' },
+    { label: 'Male', value: 1 },
+    { label: 'Female', value: 0 },
   ];
 
   const highCholesterolItems = [
-    { label: 'Yes', value: 'yes' },
-    { label: 'No', value: 'no' },
+    { label: 'Yes', value: 1 },
+    { label: 'No', value: 0 },
   ];
 
   const heavyAlcoholConsumptionItems = [
-    { label: 'Yes', value: 'yes' },
-    { label: 'No', value: 'no' },
+    { label: 'Yes', value: 1 },
+    { label: 'No', value: 0},
   ];
 
-  const handleMentalHealthChange = (date, score) => {
-    if (score < 1 || score > 10) {
-      // Handle invalid input, e.g., show an error message
+  const generalHealthItems = [
+    { label: 'Excellent', value: 1 },
+    { label: 'Very Good', value: 2 },
+    { label: 'Good', value: 3 },
+    { label: 'Fair', value: 4 },
+    { label: 'Poor', value: 5 },
+  ];
+
+  const handleMentalHealthChange = (value) => {
+    if (value < 0 || value > 30) {
+      Alert.alert('Invalid Input', 'Please enter a value between 0 and 30 for Mental Health.');
       return;
     }
-    setMentalHealthData({ ...mentalHealthData, [date.toISOString()]: score });
+    setMentalHealth(value);
   };
 
-  const handlePhysicalHealthChange = (date, score) => {
-    if (score < 1 || score > 10) {
-      // Handle invalid input, e.g., show an error message
+  const handlePhysicalHealthChange = (value) => {
+    if (value < 0 || value > 30) {
+      Alert.alert('Invalid Input', 'Please enter a value between 0 and 30 for Physical Health.');
       return;
     }
-    setPhysicalHealthData({ ...physicalHealthData, [date.toISOString()]: score });
+    setPhysicalHealth(value);
   };
 
   const handlePredictPress = async () => {
-    // Structure the data to match the expected keys in your Flask API
     const dataToSend = {
-      bmi: bmi,
-      age: age,
-      general_health: generalHealth,
-      income: income,
-      mental_health_data: mentalHealthData,
-      physical_health_data: physicalHealthData,
-      educational_level: educationalLevel,
-      sex: sex,
-      high_cholesterol: highCholesterol,
-      heavy_alcohol_consumption: heavyAlcoholConsumption,
+      BMI: bmi,
+      Age: age,
+      GenHlth: generalHealth,
+      Income: income,
+      MentHlth: mentalHealth,
+      PhysHlth: physicalHealth,
+      Education: educationalLevel,
+      Sex: sex,
+      HighChol: highCholesterol,
+      HvyAlcoholConsump: heavyAlcoholConsumption,
     };
   
     console.log('Data to send:', dataToSend);
   
     try {
-      // Send POST request to Flask API
-      const response = await axios.post('/predict_diabetes', dataToSend);
+      const response = await axios.post('http://192.168.202.69:5000/api/predict_diabetes', dataToSend);
       
-      // Handle the response from the API
-      const { prediction, probability } = response.data;
-      console.log('Prediction:', prediction);
-      console.log('Probability:', probability);
+      setPrediction(response.data.predicted_class);
+      setProbability(response.data.probability);
   
-      // You can display the prediction and probability to the user or handle it as needed
-      alert(`Prediction: ${prediction}\nProbability: ${probability}`);
+      // alert(`Prediction: ${response.data.predicted_class}\nProbability: ${response.data.probability}`);
   
     } catch (error) {
       console.error('Error making prediction:', error);
@@ -103,13 +118,14 @@ const Diabetes = () => {
   const data = [
     { key: 'bmi', label: 'BMI', value: bmi, setter: setBmi, keyboardType: 'numeric' },
     { key: 'age', label: 'Age', value: age, setter: setAge, keyboardType: 'numeric' },
-    { key: 'generalHealth', label: 'General Health', value: generalHealth, setter: setGeneralHealth, keyboardType: 'numeric' },
+    { key: 'generalHealth', label: 'General Health', value: generalHealth, setter: setGeneralHealth, items: generalHealthItems, open: openGeneralHealth, setOpen: setOpenGeneralHealth },
+    { key: 'mentalHealth', label: 'Mental Health (Days)', value: mentalHealth, setter: handleMentalHealthChange, keyboardType: 'numeric' },
+    { key: 'physicalHealth', label: 'Physical Health (Days)', value: physicalHealth, setter: handlePhysicalHealthChange, keyboardType: 'numeric' },
     { key: 'income', label: 'Income', value: income, setter: setIncome, items: incomeItems, open: openIncome, setOpen: setOpenIncome },
     { key: 'educationalLevel', label: 'Educational Level', value: educationalLevel, setter: setEducationalLevel, items: educationalLevelItems, open: openEducationalLevel, setOpen: setOpenEducationalLevel },
     { key: 'sex', label: 'Sex', value: sex, setter: setSex, items: sexItems, open: openSex, setOpen: setOpenSex },
     { key: 'highCholesterol', label: 'High Cholesterol', value: highCholesterol, setter: setHighCholesterol, items: highCholesterolItems, open: openHighCholesterol, setOpen: setOpenHighCholesterol },
     { key: 'heavyAlcoholConsumption', label: 'Heavy Alcohol Consumption', value: heavyAlcoholConsumption, setter: setHeavyAlcoholConsumption, items: heavyAlcoholConsumptionItems, open: openHeavyAlcoholConsumption, setOpen: setOpenHeavyAlcoholConsumption },
-    // Add entries for Mental Health and Physical Health if needed
   ];
 
   const renderItem = ({ item, index }) => {
@@ -125,8 +141,7 @@ const Diabetes = () => {
             setOpen={item.setOpen}
             setValue={item.setter}
             placeholder={`Select ${item.label}`}
-            // zIndex={zIndex}
-            // containerStyle={{ zIndex }}
+            containerStyle={{ zIndex }}
           />
         </View>
       );
@@ -156,6 +171,9 @@ const Diabetes = () => {
         keyExtractor={item => item.key}
         contentContainerStyle={tw`p-4`}
       />
+      {prediction ? <Text>Prediction: {prediction}</Text> : null}
+      {probability ? <Text>Probability: {probability}</Text> : null}
+      {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
       <Button style={tw`mt-4`} title="Predict" onPress={handlePredictPress} />
     </>
   );

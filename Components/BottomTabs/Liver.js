@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, Text, SafeAreaView, TextInput, Button, FlatList } from 'react-native';
 import tw from 'twrnc';
 import DropDownPicker from 'react-native-dropdown-picker';
+import axios from 'axios';
 
 const Liver = () => {
   const [openGender, setOpenGender] = useState(false);
@@ -15,10 +16,13 @@ const Liver = () => {
   const [totalProteins, setTotalProteins] = useState('');
   const [albumin, setAlbumin] = useState('');
   const [albuminGlobulinRatio, setAlbuminGlobulinRatio] = useState('');
+  const [prediction, setPrediction] = useState('');
+  const [probability, setProbability] = useState('');
+  const [error, setError] = useState('');  // Define state for error handling
 
   const [genderItems, setGenderItems] = useState([
-    { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' },
+    { label: 'Male', value: 1 },
+    { label: 'Female', value: 0 },
   ]);
 
   const formFields = [
@@ -68,21 +72,37 @@ const Liver = () => {
     }
   };
 
-  const handlePredictPress = () => {
-    // Handle prediction logic here
-    console.log('Predict button pressed');
-    console.log({
-      age,
-      gender: genderValue,
-      totalBilirubin,
-      directBilirubin,
-      alkanePhosphatase,
-      alanineAminotransferase,
-      aspartateAminotransferase,
-      totalProteins,
-      albumin,
-      albuminGlobulinRatio,
-    });
+  const handlePredictPress = async () => {
+    const requestBody = {
+      Age: age,  // Assuming 'age' is a variable in your component
+  Gender: genderValue,  // Assuming 'genderValue' is defined somewhere in your component
+  Total_Bilirubin: totalBilirubin,  // Assuming 'totalBilirubin' is a state or variable
+  Direct_Bilirubin: directBilirubin,  // Assuming 'directBilirubin' is a state or variable
+  Alkaline_Phosphotase: alkanePhosphatase,  // Assuming 'alkanePhosphatase' is a state or variable
+  Alamine_Aminotransferase: alanineAminotransferase,  // Assuming 'alanineAminotransferase' is a state or variable
+  Aspartate_Aminotransferase: aspartateAminotransferase,  // Assuming 'aspartateAminotransferase' is a state or variable
+  Total_Protiens: totalProteins,  // Assuming 'totalProteins' is a state or variable
+  Albumin: albumin,  // Assuming 'albumin' is a state or variable
+  Albumin_and_Globulin_Ratio: albuminGlobulinRatio,  // Assuming 'albuminGlobulinRatio' is a state or variable
+
+    };
+
+    console.log('Request Body:', requestBody);  // Log the request body
+
+    try {
+      const response = await axios.post('http://192.168.202.69:5000/api/predict_liver_disease', requestBody);
+
+      setPrediction(response.data.predicted_class);
+      setProbability(response.data.probability);
+      console.log('API Response:', response.data);
+      setError('');  // Clear any previous errors
+    } catch (error) {
+      console.error('Error object:', error);
+      console.error('Error response:', error.response);
+      console.error('Error:', error);
+      setError(error.response?.data?.error || error.message);
+      Alert.alert('Error', error.response?.data?.error || error.message);
+    }
   };
 
   return (
@@ -99,6 +119,9 @@ const Liver = () => {
         />
       </View>
       <View style={tw`p-4`}>
+      {prediction ? <Text>Prediction: {prediction}</Text> : null}
+      {probability ? <Text>Probability: {probability}</Text> : null}
+      {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
         <Button title="Predict" onPress={handlePredictPress} />
       </View>
     </SafeAreaView>

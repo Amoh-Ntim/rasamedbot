@@ -20,44 +20,42 @@ const InputForm = () => {
 
   const [openSex, setOpenSex] = useState(false);
   const [sexItems, setSexItems] = useState([
-    { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' },
+    { label: 'Male', value: 1 },
+    { label: 'Female', value: 0 },
   ]);
 
   const [openChestPain, setOpenChestPain] = useState(false);
   const [chestPainItems, setChestPainItems] = useState([
-    { label: '0', value: '0' },
-    { label: '1', value: '1' },
-    { label: '2', value: '2' },
-    { label: '3', value: '3' },
-    { label: '4', value: '4' },
+    { label: 'Typical Angina', value: 0 },
+    { label: 'Atypical Angina', value: 1 },
+    { label: 'Non-Anginal Pain', value: 2 },
+    { label: 'Asymptotic', value: 3},
   ]);
 
   const [openFastingBloodSugar, setOpenFastingBloodSugar] = useState(false);
   const [fastingBloodSugarItems, setFastingBloodSugarItems] = useState([
-    { label: '0', value: '0' },
-    { label: '1', value: '1' },
+    { label: 'False', value: 0 },
+    { label: 'True', value: 1 },
   ]);
 
   const [openExerciseInducedAngina, setOpenExerciseInducedAngina] = useState(false);
   const [exerciseInducedAnginaItems, setExerciseInducedAnginaItems] = useState([
-    { label: '0', value: '0' },
-    { label: '1', value: '1' },
+    { label: 'No', value: 0 },
+    { label: 'Yes', value: 1 },
   ]);
 
   const [openStSlope, setOpenStSlope] = useState(false);
   const [stSlopeItems, setStSlopeItems] = useState([
-    { label: '0', value: '0' },
-    { label: '1', value: '1' },
-    { label: '2', value: '2' },
+    { label: 'Upsloping', value: 0 },
+    { label: 'Flat', value: 1 },
+    { label: 'Downsloping', value: 2 },
   ]);
 
   const [openThalassemia, setOpenThalassemia] = useState(false);
   const [thalassemiaItems, setThalassemiaItems] = useState([
-    { label: '0', value: '0' },
-    { label: '1', value: '1' },
-    { label: '2', value: '2' },
-    { label: '3', value: '3' },
+    { label: 'Normal', value: 0 },
+    { label: 'Fixed Defect', value: 1 },
+    { label: 'Reversible Defect', value: 2 },
   ]);
 
   const formFields = [
