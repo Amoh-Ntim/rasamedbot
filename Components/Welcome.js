@@ -106,15 +106,12 @@ function Welcome( { route } ) {
       >
         {() => (
     <View style={tw`flex-1`}>
-      <View style={tw`h-1/6 px-4 flex flex-row justify-between items-center bg-blue-200 rounded-bl-3xl rounded-br-3xl`}>
+      <View style={tw`h-1/6 px-4 flex flex-row justify-between items-center rounded-bl-3xl rounded-br-3xl`}>
       <View style={tw``}>
-        <Text style={tw`text-xl font-bold flex items-center`}>Welcome</Text>
-        <Text style={tw`text-4xl font-bold flex items-center text-blue-800`}>{username}!</Text>
+        <Text style={tw`text-lg font-bold flex items-center`}>Welcome</Text>
+        <Text style={tw`text-5xl font-bold flex items-center text-black`}>{username}!</Text>
       </View>
-      {/* <View>
-        {/* <Image source={{ uri: imageUrl }} style={{ width: 50, height: 50, borderRadius: 25 }} /> */}
-        {/* <Image source={require('../assets/undraw_medicine.png')} style={{ width: 50, height: 50, borderRadius: 25 }}/> */}
-      {/* </View>  */}
+    
       </View>
       {/* grid view */}
       <View style={tw`py-4`}>
