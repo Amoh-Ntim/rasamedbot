@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Button, TextInput, View, Text, ActivityIndicator, KeyboardAvoidingView, Image, Dimensions } from 'react-native';
+import { Button, TextInput, View, Text, ActivityIndicator, KeyboardAvoidingView, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { FIREBASE_AUTH } from '../firebase/FirebaseConfig';
 import { FIREBASE_STORAGE } from '../firebase/FirebaseConfig';
 import tw from 'twrnc';
 import { Firestore } from 'firebase/firestore';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 // import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const SignIn = ({ navigation }) => {
@@ -12,7 +14,11 @@ const SignIn = ({ navigation }) => {
   const [password, setPassword] = useState('');
   // const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false); // Added loading statem
+  const [showPassword, setShowPassword] = useState(false);
 
+  const toggleShowPassword = () => {
+      setShowPassword(!showPassword);
+  };
   const auth = FIREBASE_AUTH;
   const { width } = Dimensions.get('screen');
   const handleSignIn = async () => {
@@ -110,7 +116,7 @@ const SignIn = ({ navigation }) => {
     <View style={ tw`text-xl p-2` }>
     <View style={ tw`mt-12` }>
       <TextInput
-      style={ tw`text-xl` }
+      style={ tw`text-xl border border-gray-400 rounded p-2 text-black bg-white` }
         value={email}
         onChangeText={setEmail}
         placeholder="Email"
@@ -118,12 +124,19 @@ const SignIn = ({ navigation }) => {
     </View>
       <View style={ tw`mt-12` }>
       <TextInput
-      style={ tw`text-xl` }
+      style={ tw`text-xl border border-gray-400 rounded p-2 text-black bg-white` }
         value={password}
         onChangeText={setPassword}
         placeholder="Password"
-        secureTextEntry
+        secureTextEntry={!showPassword}
       />
+      <TouchableOpacity onPress={toggleShowPassword}>
+                <MaterialCommunityIcons
+                    name={showPassword ? 'eye-off' : 'eye'}
+                    size={24}
+                    color="gray"
+                />
+            </TouchableOpacity>
       </View>
       <View style={ tw`bg-[#6C63FF] mt-12` }>
       <Button

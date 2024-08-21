@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, TextInput, Button, FlatList } from 'react-native';
 import tw from 'twrnc';
 import DropDownPicker from 'react-native-dropdown-picker';
-// const styles = StyleSheet.create({
-//   dropdownContainer: {
-//     zIndex: 10, // Ensure dropdown is above other elements
-//     position: 'absolute', // Position dropdown absolutely
-//     top: 0,
-//     left: 0,
-//     right: 0,
-//     bottom: 0,
-//   },
-// });
+
 const InputForm = () => {
   const [age, setAge] = useState('');
   const [sex, setSex] = useState(null);
@@ -69,6 +60,56 @@ const InputForm = () => {
     { label: '3', value: '3' },
   ]);
 
+  const formFields = [
+    { key: 'age', label: 'Age', value: age, setter: setAge, keyboardType: 'numeric', type: 'text' },
+    { key: 'sex', label: 'Sex', value: sex, setter: setSex, items: sexItems, open: openSex, setOpen: setOpenSex, type: 'dropdown' },
+    { key: 'chestPainType', label: 'Chest Pain Type', value: chestPainType, setter: setChestPainType, items: chestPainItems, open: openChestPain, setOpen: setOpenChestPain, type: 'dropdown' },
+    { key: 'restingBP', label: 'Resting Blood Pressure', value: restingBP, setter: setRestingBP, keyboardType: 'numeric', type: 'text' },
+    { key: 'serumCholesterol', label: 'Serum Cholesterol', value: serumCholesterol, setter: setSerumCholesterol, keyboardType: 'numeric', type: 'text' },
+    { key: 'fastingBloodSugar', label: 'Fasting Blood Sugar', value: fastingBloodSugar, setter: setFastingBloodSugar, items: fastingBloodSugarItems, open: openFastingBloodSugar, setOpen: setOpenFastingBloodSugar, type: 'dropdown' },
+    { key: 'restingECG', label: 'Resting ECG', value: restingECG, setter: setRestingECG, keyboardType: 'numeric', type: 'text' },
+    { key: 'maxHeartRate', label: 'Max Heart Rate', value: maxHeartRate, setter: setMaxHeartRate, keyboardType: 'numeric', type: 'text' },
+    { key: 'exerciseInducedAngina', label: 'Exercise Induced Angina', value: exerciseInducedAngina, setter: setExerciseInducedAngina, items: exerciseInducedAnginaItems, open: openExerciseInducedAngina, setOpen: setOpenExerciseInducedAngina, type: 'dropdown' },
+    { key: 'stDepression', label: 'ST Depression', value: stDepression, setter: setStDepression, keyboardType: 'numeric', type: 'text' },
+    { key: 'stSlope', label: 'Slope of the Peak Exercise ST Segment', value: stSlope, setter: setStSlope, items: stSlopeItems, open: openStSlope, setOpen: setOpenStSlope, type: 'dropdown' },
+    { key: 'majorVessels', label: 'Number of Major Vessels Colored by Fluoroscopy', value: majorVessels, setter: setMajorVessels, keyboardType: 'numeric', type: 'text' },
+    { key: 'thalassemia', label: 'Thalassemia', value: thalassemia, setter: setThalassemia, items: thalassemiaItems, open: openThalassemia, setOpen: setOpenThalassemia, type: 'dropdown' },
+  ];
+
+  const renderItem = ({ item }) => {
+    if (item.type === 'dropdown') {
+      return (
+        <View style={tw`mb-4`}>
+          <Text style={tw`text-black mb-2`}>{item.label}</Text>
+          <DropDownPicker
+            open={item.open}
+            value={item.value}
+            items={item.items}
+            setOpen={item.setOpen}
+            setValue={item.setter}
+            placeholder={`Select ${item.label}`}
+            containerStyle={tw`border border-gray-300`}
+            style={tw`border border-gray-300`}
+            dropDownStyle={tw`border border-gray-300`}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={tw`mb-4`}>
+          <Text style={tw`text-black mb-2`}>{item.label}</Text>
+          <TextInput
+            keyboardType={item.keyboardType}
+            placeholder={item.label}
+            value={item.value}
+            onChangeText={item.setter}
+            style={tw`border border-gray-300 p-2`}
+          />
+        </View>
+      );
+    }
+  };
+
   const handlePredictPress = () => {
     // Handle prediction logic here
     console.log('Predict button pressed');
@@ -91,90 +132,17 @@ const InputForm = () => {
 
   return (
     <>
-    <ScrollView style={tw`flex-1 p-4`}>
-      <Text style={tw`text-black mb-2`}>Age</Text>
-      <TextInput
-        style={tw`border border-gray-300 p-2 mb-2 text-black`}
-        keyboardType="numeric"
-        placeholder="0"
-        value={age}
-        onChangeText={setAge}
+
+    <View style={tw`flex-1 p-4`}>
+      <FlatList
+        data={formFields}
+        renderItem={renderItem}
+        keyExtractor={item => item.key}
+        contentContainerStyle={tw`pb-4`}
       />
-
-      <Text style={tw`text-black mb-2`}>Sex</Text>
-      
-      <DropDownPicker
-        open={openSex}
-        value={sex}
-        items={sexItems}
-        setOpen={setOpenSex}
-        setValue={setSex}
-        setItems={setSexItems}
-        placeholder="Select Sex"
-      />
-
-      <Text style={tw`text-black mb-2`}>Chest Pain Type</Text>
-      <DropDownPicker
-        open={openChestPain}
-        value={chestPainType}
-        items={chestPainItems}
-        setOpen={setOpenChestPain}
-        setValue={setChestPainType}
-        setItems={setChestPainItems}
-        placeholder="Select Chest Pain Type"
-      />
-
-      {/* ... other inputs and dropdowns */}
-
-      <Text style={tw`text-black mb-2`}>Fasting Blood Sugar</Text>
-      <DropDownPicker
-        open={openFastingBloodSugar}
-        value={fastingBloodSugar}
-        items={fastingBloodSugarItems}
-        setOpen={setOpenFastingBloodSugar}
-        setValue={setFastingBloodSugar}
-        setItems={setFastingBloodSugarItems}
-        placeholder="Select Fasting Blood Sugar"
-      />
-
-      <Text style={tw`text-black mb-2`}>Exercise Induced Angina</Text>
-      <View>
-      <DropDownPicker
-        open={openExerciseInducedAngina}
-        value={exerciseInducedAngina}
-        items={exerciseInducedAnginaItems}
-        setOpen={setOpenExerciseInducedAngina}
-        setValue={setExerciseInducedAngina}
-        setItems={setExerciseInducedAnginaItems}
-        placeholder="Select Exercise Induced Angina"
-      />
-      </View>
-
-      <Text style={tw`text-black mb-2`}>Slope of the Peak Exercise ST Segment</Text>
-      <DropDownPicker
-        open={openStSlope}
-        value={stSlope}
-        items={stSlopeItems}
-        setOpen={setOpenStSlope}
-        setValue={setStSlope}
-        setItems={setStSlopeItems}
-        placeholder="Select ST Slope"
-      />
-
-      <Text style={tw`text-black mb-2`}>Thalassemia</Text>
-      <DropDownPicker
-        open={openThalassemia}
-        value={thalassemia}
-        items={thalassemiaItems}
-        setOpen={setOpenThalassemia}
-        setValue={setThalassemia}
-        setItems={setThalassemiaItems}
-        placeholder="Select Thalassemia"
-      />
-
-    </ScrollView>
+    </View>
       <Button title="Predict" onPress={handlePredictPress} />
-      </>
+    </>
   );
 };
 

@@ -18,6 +18,7 @@ import Diabetes from "./BottomTabs/Diabetes";
 import Kidney from "./BottomTabs/Kidney";
 import Liver from "./BottomTabs/Liver";
 import Heart from "./BottomTabs/Heart"
+import Diseases from "./BottomTabs/Diseases";
 
 function Welcome( { route } ) {
   // const { uniqueImageName, fileType } = route.params; 
@@ -60,15 +61,6 @@ function Welcome( { route } ) {
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
-  
-      // Fetch image URL from Firebase Storage
-    //   const storageRef = ref(FIREBASE_STORAGE, `${uniqueImageName}.${fileType}`);
-    //   try {
-    //     const url = await getDownloadURL(storageRef);
-    //     setImageUrl(url);
-    //   } catch (error) {
-    //     console.log("Error getting image:", error);
-    //   }
      };
   
     fetchData();
@@ -100,11 +92,15 @@ function Welcome( { route } ) {
     <Tab.Navigator screenOptions={{
       headerShown: false,  // This line hides the header
     }}>
-      <Tab.Screen name="Welcome" 
+      <Tab.Screen name="News" 
       options={{
       tabBarIcon: ({ focused, color, size }) => {
       let iconName = focused ? 'home' : 'home-outline'; // choose appropriate icon names
       return <Ionicons name={iconName} size={size} color={color} />;
+    },
+    tabBarLabelStyle: {
+      fontSize: 16, // Increase the font size
+      fontWeight: 'bold', // Make the text bold
     },
   }}
       >
@@ -133,61 +129,48 @@ function Welcome( { route } ) {
   )}
       </Tab.Screen>
       {/* Add more Tab.Screen components here for other tabs */}
-      <Tab.Screen name="Start" 
+      <Tab.Screen name="Chatbot" 
       component={Start}
       options={{
       tabBarIcon: ({ focused, color, size }) => {
       let iconName = focused ? 'robot' : 'robot-outline'; // choose appropriate icon names
       return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
     },
+    tabBarLabelStyle: {
+      fontSize: 16, // Increase the font size
+      fontWeight: 'bold', // Make the text bold
+    },
   }} 
        />
 
-      <Tab.Screen name="Profile" 
+       <Tab.Screen name="Predictions" 
+      component={Diseases} 
+      options={{
+      tabBarIcon: ({ focused, color, size }) => {
+      let iconName = focused ? require('../assets/liver.png') : require('../assets/heart.png'); // choose appropriate icon names
+      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
+    },
+    tabBarLabelStyle: {
+      fontSize: 16, // Increase the font size
+      fontWeight: 'bold', // Make the text bold
+    },
+  }} 
+      />
+
+<Tab.Screen name="Profile" 
       component={Profile} 
       options={{
       tabBarIcon: ({ focused, color, size }) => {
       let iconName = focused ? 'settings-sharp' : 'settings-outline'; // choose appropriate icon names
       return <Ionicons name={iconName} size={size} color={color} />;
     },
-  }} 
-      />
-      <Tab.Screen name="Liver" 
-      component={Liver} 
-      options={{
-      tabBarIcon: ({ focused, color, size }) => {
-      let iconName = focused ? require('../assets/liver.png') : require('../assets/heart.png'); // choose appropriate icon names
-      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
+    tabBarLabelStyle: {
+      fontSize: 16, // Increase the font size
+      fontWeight: 'bold', // Make the text bold
     },
   }} 
       />
-      <Tab.Screen name="Heart" 
-      component={Heart} 
-      options={{
-      tabBarIcon: ({ focused, color, size }) => {
-      let iconName = focused ? require('../assets/heart.png') : require('../assets/heartout.png'); // choose appropriate icon names
-      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
-    },
-  }} 
-      />
-      <Tab.Screen name="Kidney" 
-      component={Kidney} 
-      options={{
-      tabBarIcon: ({ focused, color, size }) => {
-      let iconName = focused ? require('../assets/heart.png') : require('../assets/heart.png'); // choose appropriate icon names
-      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
-    },
-  }} 
-      />
-      <Tab.Screen name="Diabetes" 
-      component={Diabetes} 
-      options={{
-      tabBarIcon: ({ focused, color, size }) => {
-      let iconName = focused ? require('../assets/heart.png') : require('../assets/heart.png'); // choose appropriate icon names
-      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
-    },
-  }} 
-      />
+      
     </Tab.Navigator>
   )
 }

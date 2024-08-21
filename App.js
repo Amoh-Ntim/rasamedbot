@@ -6,6 +6,10 @@ import SignUp from './Components/SignUp';
 import Home from './Components/Home';
 import Onboarding from './Components/Onboarding';
 import Welcome from './Components/Welcome';
+import Liver from './Components/BottomTabs/Liver';
+import Kidney from './Components/BottomTabs/Kidney';
+import Diabetes from './Components/BottomTabs/Diabetes';
+import Heart from './Components/BottomTabs/Heart';
 import { Appearance, StyleSheet, useColorScheme } from 'react-native';
 import { ThemeProvider } from './Mode/ThemeContext';
 
@@ -32,6 +36,12 @@ const App = () => {
         <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />  
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />  
+        {/* Adding the new screens */}
+        <Stack.Screen name="Liver" component={Liver} options={{ headerShown: false }} />
+        <Stack.Screen name="Kidney" component={Kidney} options={{ headerShown: false }} />
+        <Stack.Screen name="Diabetes" component={Diabetes} options={{ headerShown: false }} />
+        <Stack.Screen name="Heart" component={Heart} options={{ headerShown: false }} />
+
       </Stack.Navigator>
     </NavigationContainer>
       </ThemeProvider>

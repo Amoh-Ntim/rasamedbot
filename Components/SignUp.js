@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, TextInput, View, Text, Dimensions, Image, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { Button, TextInput, View, Text, Dimensions, Image, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity } from 'react-native';
 // import auth from '@react-native-firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../firebase/FirebaseConfig';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'twrnc';
 
 const SignUp = ({ navigation }) => {
@@ -10,8 +11,12 @@ const SignUp = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false); // Added loading state
+  const [showPassword, setShowPassword] = useState(false);
 
   const auth = FIREBASE_AUTH;
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+};
   const { width } = Dimensions.get('screen');
   const handleSignUp = async () => {
     setIsLoading(true); // Set loading state to true before sign-up
@@ -53,29 +58,47 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.7;
     <View style={ tw`text-xl p-2` }>
     <View style={ tw`mt-12` }>
       <TextInput
-      style={ tw`text-xl` }
+      style={ tw`text-xl border border-gray-400 rounded p-2 text-black bg-white` }
         value={email}
         onChangeText={setEmail}
         placeholder="Email"
       />
     </View>
       <View style={ tw`mt-12` }>
+      <View>
       <TextInput
-      style={ tw`text-xl` }
+      style={ tw`text-xl border border-gray-400 rounded p-2 text-black bg-white` }
         value={password}
         onChangeText={setPassword}
         placeholder="Password"
-        secureTextEntry
+        secureTextEntry={!showPassword}
       />
+      </View>
+      <View>
+      <TouchableOpacity onPress={toggleShowPassword}>
+                <MaterialCommunityIcons
+                    name={showPassword ? 'eye-off' : 'eye'}
+                    size={24}
+                    color="gray"
+                />
+            </TouchableOpacity>
+      </View>
       </View>
       <View style={ tw`mt-12` }>
       <TextInput
-        style={ tw`text-xl` }
+        style={ tw`text-xl border border-gray-400 rounded p-2 text-black bg-white` }
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         placeholder="Confirm Password"
-        secureTextEntry
+        secureTextEntry={!showPassword}
       />
+      <TouchableOpacity onPress={toggleShowPassword}>
+                <MaterialCommunityIcons
+                    name={showPassword ? 'eye-off' : 'eye'}
+                    size={24}
+                    color="gray"
+                />
+            </TouchableOpacity>
       </View>
       <View style={ tw`bg-[#6C63FF] mt-12` }>
       <Button
