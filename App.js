@@ -31,7 +31,7 @@ const App = () => {
   return (
       <ThemeProvider>
     <NavigationContainer style={[themeContainerStyle,themeTextStyle]}>
-      <Stack.Navigator initialRouteName="Welcome">
+      <Stack.Navigator>
         <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
