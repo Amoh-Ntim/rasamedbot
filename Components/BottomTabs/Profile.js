@@ -12,6 +12,8 @@ import {
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { ThemeContext } from '../../Mode/ThemeContext';
 import * as SystemUI from 'expo-system-ui';
+import { useNavigation } from '@react-navigation/native';
+import { Linking } from 'react-native';
 
 // ...
 import { FIREBASE_AUTH } from '../../firebase/FirebaseConfig';
@@ -35,6 +37,23 @@ const handleDarkModeToggle = async (darkMode) => {
 
 
 export default function Profile() {
+  const navigation = useNavigation();
+
+  const handleNavigation = (screenName) => {
+    navigation.navigate(screenName);
+  }; 
+
+  const handleWhatsAppLink = () => {
+    const whatsappUrl = 'https://wa.me/+233206750494';
+  
+    Linking.openURL(whatsappUrl)
+      .then(data => {
+        console.log('WhatsApp opened successfully:', data);
+      })
+      .catch((error) => {
+        console.error('Error opening WhatsApp:', error);
+      });
+  };
   const [form, setForm] = useState({
     darkMode: false,
     emailNotifications: true,
@@ -181,15 +200,13 @@ export default function Profile() {
             <Text style={styles.sectionTitle}>Resources</Text>
 
             <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}
+              onPress={() => handleNavigation('Privacy')}
               style={styles.row}>
               <View style={[styles.rowIcon, { backgroundColor: '#8e8d91' }]}>
                 <FeatherIcon color="#fff" name="flag" size={20} />
               </View>
 
-              <Text style={styles.rowLabel}>Report Bug</Text>
+              <Text style={styles.rowLabel}>Privacy Policy</Text>
 
               <View style={styles.rowSpacer} />
 
@@ -200,15 +217,13 @@ export default function Profile() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}
+              onPress={() => handleWhatsAppLink()}
               style={styles.row}>
               <View style={[styles.rowIcon, { backgroundColor: '#007afe' }]}>
-                <FeatherIcon color="#fff" name="mail" size={20} />
+                <FeatherIcon color="#fff" name="phone" size={20} />
               </View>
 
-              <Text style={styles.rowLabel}>Contact Us</Text>
+              <Text style={styles.rowLabel}>Contact Us (via whatsapp)</Text>
 
               <View style={styles.rowSpacer} />
 

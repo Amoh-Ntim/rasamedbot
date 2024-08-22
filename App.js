@@ -12,6 +12,7 @@ import Diabetes from './Components/BottomTabs/Diabetes';
 import Heart from './Components/BottomTabs/Heart';
 import { Appearance, StyleSheet, useColorScheme } from 'react-native';
 import { ThemeProvider } from './Mode/ThemeContext';
+import PrivacyPolicy from './Components/Privacypolicy';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ const App = () => {
         <Stack.Screen name="Kidney" component={Kidney} options={{ headerShown: false }} />
         <Stack.Screen name="Diabetes" component={Diabetes} options={{ headerShown: false }} />
         <Stack.Screen name="Heart" component={Heart} options={{ headerShown: false }} />
+        <Stack.Screen name="Privacy" component={PrivacyPolicy} options={{ headerShown: false }} />
 
       </Stack.Navigator>
     </NavigationContainer>

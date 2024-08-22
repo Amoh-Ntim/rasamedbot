@@ -3,7 +3,7 @@ import { getDownloadURL } from "firebase/storage";
 import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Linking } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Linking, ScrollView } from 'react-native';
 import { FIREBASE_DATABASE } from "../firebase/FirebaseConfig";
 import { FIREBASE_STORAGE } from "../firebase/FirebaseConfig";
 import { ref } from 'firebase/storage';
@@ -14,14 +14,17 @@ import moment from 'moment';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
 import tw from 'twrnc' 
-import Diabetes from "./BottomTabs/Diabetes";
-import Kidney from "./BottomTabs/Kidney";
-import Liver from "./BottomTabs/Liver";
-import Heart from "./BottomTabs/Heart"
-import Diseases from "./BottomTabs/Diseases";
+
+
+import { useNavigation } from '@react-navigation/native';
 
 function Welcome( { route } ) {
-  // const { uniqueImageName, fileType } = route.params; 
+  // const { uniqueImageName, fileType } = route.params;
+  const navigation = useNavigation();
+
+  const handleNavigation = (screenName) => {
+    navigation.navigate(screenName);
+  }; 
   const [username, setUsername] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [newsData, setNewsData] = useState([]);
@@ -34,14 +37,14 @@ function Welcome( { route } ) {
     // If no unique identifier exists, create a combination of index and url
     return `${index}-${item.url}`;
   }
-  const keywords = ["kidney","heart", "liver", "diabetes"];
+
 
   useEffect(() => {
     
     const fetchData = async () => {
       // Fetch news data from NewsAPI
       const apiKey = '85dd4bb2a84e4780aa0f552c7202aa38'; // Replace with your actual NewsAPI key
-      const newsApiUrl = `https://newsapi.org/v2/everything?q=kidney&apiKey=${apiKey}`;
+      const newsApiUrl = `https://newsapi.org/v2/everything?q=drug&apiKey=${apiKey}`;
       try {
         const newsResponse = await axios.get(newsApiUrl);
         setNewsData(newsResponse.data.articles);
@@ -111,11 +114,57 @@ function Welcome( { route } ) {
         <Text style={tw`text-lg font-bold flex items-center`}>Welcome</Text>
         <Text style={tw`text-5xl font-bold flex items-center text-black`}>{username}!</Text>
       </View>
-    
+      </View>
+
+      {/* diseases scrollview */}
+      <View style={tw`flex justify-center items-center`}>
+      <ScrollView  horizontal>
+      <View style={tw`h-24 mb-4`}>
+        {/* View 1 */}
+        <TouchableOpacity
+          style={tw`flex-1 items-center bg-yellow-600 p-4 m-2 rounded-lg shadow-lg`}
+          onPress={() => handleNavigation('Heart')}
+        >
+          <Image source={require('../assets/heart.png')} style={tw`w-8 h-8 mb-2`} />
+          <Text style={tw`text-lg font-bold text-white`}>Heart</Text>
+        </TouchableOpacity>
+
+      </View>
+      <View style={tw`h-24 mb-4`}>
+        {/* View 2 */}
+        <TouchableOpacity
+          style={tw`flex-1 items-center bg-red-600 p-4 m-2 rounded-lg shadow-lg`}
+          onPress={() => handleNavigation('Diabetes')}
+        >
+          <Image source={require('../assets/diabetes.png')} style={tw`w-8 h-8 mb-2`} />
+          <Text style={tw`text-lg font-bold text-white`}>diabetes</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={tw`h-24 mb-4`}>
+        {/* View 3 */}
+        <TouchableOpacity
+          style={tw`flex-1 items-center bg-blue-600 p-4 m-2 rounded-lg shadow-lg`}
+          onPress={() => handleNavigation('Kidney')}
+        >
+          <Image source={require('../assets/kidney.png')} style={tw`w-8 h-8 mb-2`} />
+          <Text style={tw`text-lg font-bold text-white`}>Kidney</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={tw`h-24`}>
+        {/* View 4 */}
+        <TouchableOpacity
+          style={tw`flex-1 items-center bg-green-600 p-4 m-2 rounded-lg shadow-lg`}
+          onPress={() => handleNavigation('Liver')}
+        >
+          <Image source={require('../assets/liver.png')} style={tw`w-8 h-8 mb-2`} />
+          <Text style={tw`text-lg font-bold text-white`}>Liver</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
       </View>
       {/* grid view */}
       <View style={tw`py-4`}>
-      <Text style={tw`ml-4 font-bold text-xl`}>ALL THE LATEST HEALTH NEWS</Text>
+      <Text style={tw`ml-4 font-bold text-2xl`}>ALL THE LATEST HEALTH NEWS</Text>
       </View>
       <FlatList
       data={newsData}
@@ -140,19 +189,6 @@ function Welcome( { route } ) {
   }} 
        />
 
-       <Tab.Screen name="Predictions" 
-      component={Diseases} 
-      options={{
-      tabBarIcon: ({ focused, color, size }) => {
-      let iconName = focused ? require('../assets/liver.png') : require('../assets/heart.png'); // choose appropriate icon names
-      return <Image source={iconName} resizeMode="cover" style={{ width: 24, height: 24 }} />;
-    },
-    tabBarLabelStyle: {
-      fontSize: 16, // Increase the font size
-      fontWeight: 'bold', // Make the text bold
-    },
-  }} 
-      />
 
 <Tab.Screen name="Profile" 
       component={Profile} 
