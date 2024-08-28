@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { FlatList, Text, TextInput, Button, View, Alert } from 'react-native';
 import tw from 'twrnc';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import Constants from 'expo-constants';
+import Donut from './Donut';
+import Mybarchart from './Mybarchart';
+
 
 const Diabetes = () => {
   const [bmi, setBmi] = useState('');
@@ -25,6 +30,8 @@ const Diabetes = () => {
   const [openHighCholesterol, setOpenHighCholesterol] = useState(false);
   const [openHeavyAlcoholConsumption, setOpenHeavyAlcoholConsumption] = useState(false);
   const [openGeneralHealth, setOpenGeneralHealth] = useState(false); // New state for general health dropdown
+
+  
 
   const incomeItems = [
     { label: '<$10,000', value: 1 },
@@ -85,6 +92,13 @@ const Diabetes = () => {
     setPhysicalHealth(value);
   };
 
+  const bottomSheetRef = useRef(null);
+  const handlePresentSheetPress = () => {
+    if (prediction || error) { // Check if prediction or error exists
+      bottomSheetRef.current.expand();
+    }
+  };
+
   const handlePredictPress = async () => {
     const dataToSend = {
       BMI: bmi,
@@ -102,10 +116,10 @@ const Diabetes = () => {
     console.log('Data to send:', dataToSend);
   
     try {
-      const response = await axios.post('http://192.168.202.69:5000/api/predict_diabetes', dataToSend);
+      const response = await axios.post('http://192.168.166.69:5000/api/predict_diabetes', dataToSend);
       
       setPrediction(response.data.predicted_class);
-      setProbability(response.data.probability);
+      setProbability(response.data.probability * 100);
   
       // alert(`Prediction: ${response.data.predicted_class}\nProbability: ${response.data.probability}`);
   
@@ -113,6 +127,11 @@ const Diabetes = () => {
       console.error('Error making prediction:', error);
       alert('There was an error making the prediction. Please try again later.');
     }
+  };
+
+  const handleCombinedPress = () => {
+    handlePredictPress();
+    handlePresentSheetPress(); // Add the second function here
   };
 
   const data = [
@@ -160,6 +179,24 @@ const Diabetes = () => {
     }
   };
 
+  const dataa = [{
+    percentage: 8,
+    color: 'tomato',
+    max: 10
+  }, {
+    percentage: 14,
+    color: 'skyblue',
+    max: 20
+  }, {
+    percentage: 92,
+    color: 'gold',
+    max: 100
+  }, {
+    percentage: 240,
+    color: '#222',
+    max: 500
+  }]
+
   return (
     <>
       <View style={tw`flex justify-center items-center`}>
@@ -171,10 +208,26 @@ const Diabetes = () => {
         keyExtractor={item => item.key}
         contentContainerStyle={tw`p-4`}
       />
-      {prediction ? <Text>Prediction: {prediction}</Text> : null}
-      {probability ? <Text>Probability: {probability}</Text> : null}
-      {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
-      <Button style={tw`mt-4`} title="Predict" onPress={handlePredictPress} />
+      <Button style={tw`mt-4`} title="Predict" onPress={handleCombinedPress} />
+      <BottomSheet
+           ref={bottomSheetRef}
+           index={0}
+           snapPoints={['25%', '50%' ,'80%', ]}
+           enablePanDownToClose={true}
+           >
+           <BottomSheetView>
+           {prediction ? <Text>Prediction: {prediction}</Text> : null}
+           {probability ? <Text>Probability: {probability} %</Text> : null}
+
+           {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
+           <View style={tw`flex justify-center items-center`}>
+            <Donut percentage={probability} color="tomato" max={100} />
+           </View>
+           <View style={tw`flex justify-center items-center`}>
+            <Mybarchart/>
+           </View>
+           </BottomSheetView>
+      </BottomSheet>
     </>
   );
 };

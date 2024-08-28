@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useRef  } from 'react';
 import { View, ScrollView, Text, SafeAreaView, TextInput, Button, FlatList } from 'react-native';
 import tw from 'twrnc';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import Donut from './Donut';
+import Mybarchart from './Mybarchart';
 
 const Liver = () => {
   const [openGender, setOpenGender] = useState(false);
@@ -53,6 +56,14 @@ const Liver = () => {
             containerStyle={tw`border border-gray-300`}
             style={tw`z-50 elevation-50 border border-gray-300`}
             dropDownStyle={tw`border border-gray-300`}
+            // style={{ backgroundColor: '#fafafa' }}
+        dropDownContainerStyle={{
+          backgroundColor: '#fafafa',
+          zIndex: 1000, // Ensure the dropdown appears above other components
+          elevation: 1000, // For Android
+        }}
+        zIndex={1000} // Ensure the dropdown appears above other components
+        zIndexInverse={3000} // Ensure the dropdown appears above other components
           />
         </View>
       );
@@ -104,6 +115,12 @@ const Liver = () => {
       Alert.alert('Error', error.response?.data?.error || error.message);
     }
   };
+  const bottomSheetRef = useRef(null);
+  const handlePresentSheetPress = () => {
+    if (prediction || error) { // Check if prediction or error exists
+      bottomSheetRef.current.expand();
+    }
+  };
 
   return (
     <SafeAreaView style={tw`flex-1`}>
@@ -119,11 +136,29 @@ const Liver = () => {
         />
       </View>
       <View style={tw`p-4`}>
-      {prediction ? <Text>Prediction: {prediction}</Text> : null}
-      {probability ? <Text>Probability: {probability}</Text> : null}
-      {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
-        <Button title="Predict" onPress={handlePredictPress} />
+        <Button title="Predict" onPress={() => {
+        handlePresentSheetPress();
+        handlePredictPress();
+        }} />
       </View>
+      <BottomSheet
+           ref={bottomSheetRef}
+           index={0}
+           snapPoints={['25%', '50%' ,'80%', ]}
+           enablePanDownToClose={true}
+           >
+           <BottomSheetView>
+           {prediction ? <Text>Prediction: {prediction}</Text> : null}
+           {probability ? <Text>Probability: {probability}</Text> : null}
+           {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
+           <View style={tw`flex justify-center items-center`}>
+            <Donut percentage={probability} color="tomato" max={100} />
+           </View>
+           <View style={tw`flex justify-center items-center`}>
+            <Mybarchart/>
+           </View>
+           </BottomSheetView>
+      </BottomSheet>
     </SafeAreaView>
   );
 };
