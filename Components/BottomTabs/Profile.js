@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Switch,
   Image,
+  Alert, // Import Alert from React Native
 } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { ThemeContext } from '../../Mode/ThemeContext';
@@ -28,7 +29,6 @@ const handleDarkModeToggle = async (darkMode) => {
   await SystemUI.setBackgroundColorAsync(backgroundColor);
 };
 
-
 export default function Profile() {
   const navigation = useNavigation();
 
@@ -37,15 +37,30 @@ export default function Profile() {
   }; 
 
   const handleLogout = async () => {
-    try {
-      await auth.signOut();
-      navigation.replace('SignIn'); // Navigate back to the SignIn screen
-    } catch (error) {
-      console.error(error);
-    }
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Logout canceled"),
+          style: "cancel"
+        },
+        { 
+          text: "Logout", 
+          onPress: async () => {
+            try {
+              await auth.signOut();
+              navigation.replace('SignIn'); // Navigate back to the SignIn screen
+            } catch (error) {
+              console.error("Error logging out:", error);
+            }
+          },
+          style: "destructive"
+        }
+      ]
+    );
   };
-
-  
 
   const handleWhatsAppLink = () => {
     const whatsappUrl = 'https://wa.me/+233206750494';
@@ -58,6 +73,7 @@ export default function Profile() {
         console.error('Error opening WhatsApp:', error);
       });
   };
+
   const [form, setForm] = useState({
     darkMode: false,
     emailNotifications: true,
@@ -69,42 +85,6 @@ export default function Profile() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={[styles.container, { backgroundColor: isDarkMode ? '#000' : '#fff' }]}>
-        {/* <View style={styles.profile}>
-          <TouchableOpacity
-            onPress={() => {
-              // handle onPress
-            }}>
-            <View style={styles.profileAvatarWrapper}>
-              <Image
-                alt=""
-                source={{
-                  uri: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80',
-                }}
-                style={styles.profileAvatar} />
-
-              <TouchableOpacity
-                onPress={() => {
-                  // handle onPress
-                }}>
-                <View style={styles.profileAction}>
-                  <FeatherIcon
-                    color="#fff"
-                    name="edit-3"
-                    size={15} />
-                </View>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-
-          <View>
-            <Text style={styles.profileName}>John Doe</Text>
-
-            <Text style={styles.profileAddress}>
-              123 Maple Street. Anytown, PA 17101
-            </Text>
-          </View>
-        </View> */}
-
         <ScrollView>
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Preferences</Text>
@@ -332,19 +312,16 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 9999,
-    marginRight: 12,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   rowLabel: {
-    fontSize: 17,
-    fontWeight: '400',
-    color: '#0c0c0c',
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#3d3d3d',
+    paddingHorizontal: 12,
   },
   rowSpacer: {
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
+    flex: 1,
   },
 });
