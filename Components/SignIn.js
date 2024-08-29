@@ -4,6 +4,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { FIREBASE_AUTH } from '../firebase/FirebaseConfig';
 import tw from 'twrnc';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { CommonActions } from '@react-navigation/native';
 
 const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -26,7 +27,12 @@ const SignIn = ({ navigation }) => {
       const user = userCredential.user;
 
       if (user) {
-        navigation.navigate('Welcome');
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'Welcome' }],
+          })
+        );
         console.log('Signed in with user:', user.email); // Log the user's email for debugging
       }
     } catch (error) {
@@ -68,7 +74,7 @@ const SignIn = ({ navigation }) => {
             <Text style={tw`text-2xl font-bold flex items-center text-[#6C63FF]`}>SIGN IN</Text>
           </View>
           <View style={tw`text-xl p-2`}>
-            <View style={tw`mt-12`}>
+            <View style={tw`mt-4`}>
               <TextInput
                 style={tw`text-xl border border-gray-400 rounded p-2 text-black bg-white`}
                 value={email}
@@ -76,7 +82,7 @@ const SignIn = ({ navigation }) => {
                 placeholder="Email"
               />
             </View>
-            <View style={tw`mt-12`}>
+            <View style={tw`mt-4`}>
               <TextInput
                 style={tw`text-xl border border-gray-400 rounded p-2 text-black bg-white`}
                 value={password}
@@ -92,7 +98,7 @@ const SignIn = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-            <View style={tw`bg-[#6C63FF] mt-12`}>
+            <View style={tw`bg-[#6C63FF] mt-4`}>
               <Button
                 style={tw`rounded-lg p-8 h-16 flex justify-center items-center`}
                 title={isLoading ? '' : 'Sign In'}

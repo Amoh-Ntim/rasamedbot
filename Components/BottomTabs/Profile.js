@@ -18,14 +18,7 @@ import { Linking } from 'react-native';
 // ...
 import { FIREBASE_AUTH } from '../../firebase/FirebaseConfig';
 
-const logoutUser = async () => {
-  try {
-    await FIREBASE_AUTH().signOut();
-    console.log('User signed out!');
-  } catch (error) {
-    console.error(error);
-  }
-};
+const auth = FIREBASE_AUTH;
 
 const handleDarkModeToggle = async (darkMode) => {
   setForm({ ...form, darkMode });
@@ -42,6 +35,17 @@ export default function Profile() {
   const handleNavigation = (screenName) => {
     navigation.navigate(screenName);
   }; 
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      navigation.replace('SignIn'); // Navigate back to the SignIn screen
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  
 
   const handleWhatsAppLink = () => {
     const whatsappUrl = 'https://wa.me/+233206750494';
@@ -105,25 +109,6 @@ export default function Profile() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Preferences</Text>
 
-            <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}
-              style={styles.row}>
-              <View style={[styles.rowIcon, { backgroundColor: '#fe9400' }]}>
-                <FeatherIcon color="#fff" name="globe" size={20} />
-              </View>
-
-              <Text style={styles.rowLabel}>Language</Text>
-
-              <View style={styles.rowSpacer} />
-
-              <FeatherIcon
-                color="#C6C6C6"
-                name="chevron-right"
-                size={20} />
-            </TouchableOpacity>
-
             <View style={styles.row}>
               <View style={[styles.rowIcon, { backgroundColor: '#007afe' }]}>
                 <FeatherIcon color="#fff" name="moon" size={20} />
@@ -139,9 +124,7 @@ export default function Profile() {
             </View>
 
             <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}
+              onPress={() => handleNavigation('ChangePassword')}
               style={styles.row}>
               <View style={[styles.rowIcon, { backgroundColor: '#32c759' }]}>
                 <FeatherIcon
@@ -150,7 +133,7 @@ export default function Profile() {
                   size={20} />
               </View>
 
-              <Text style={styles.rowLabel}>Location</Text>
+              <Text style={styles.rowLabel}>Change Password</Text>
 
               <View style={styles.rowSpacer} />
 
@@ -194,6 +177,23 @@ export default function Profile() {
                 }
                 value={form.pushNotifications} />
             </View>
+
+            <TouchableOpacity
+              onPress={handleLogout}
+              style={styles.row}>
+              <View style={[styles.rowIcon, { backgroundColor: '#fe9400' }]}>
+                <FeatherIcon color="#fff" name="log-out" size={20} />
+              </View>
+
+              <Text style={styles.rowLabel}>Logout</Text>
+
+              <View style={styles.rowSpacer} />
+
+              <FeatherIcon
+                color="#C6C6C6"
+                name="chevron-right"
+                size={20} />
+            </TouchableOpacity>
           </View>
 
           <View style={styles.section}>
