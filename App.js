@@ -13,6 +13,9 @@ import Heart from './Components/BottomTabs/Heart';
 import { Appearance, StyleSheet, useColorScheme } from 'react-native';
 import { ThemeProvider } from './Mode/ThemeContext';
 import PrivacyPolicy from './Components/Privacypolicy';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Donut from './Components/BottomTabs/Donut';
+import Mybarchart from './Components/BottomTabs/Mybarchart';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +32,10 @@ const App = () => {
   colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
 
   return (
+    
       <ThemeProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+
     <NavigationContainer style={[themeContainerStyle,themeTextStyle]}>
       <Stack.Navigator>
         <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
@@ -43,9 +49,12 @@ const App = () => {
         <Stack.Screen name="Diabetes" component={Diabetes} options={{ headerShown: false }} />
         <Stack.Screen name="Heart" component={Heart} options={{ headerShown: false }} />
         <Stack.Screen name="Privacy" component={PrivacyPolicy} options={{ headerShown: false }} />
+        <Stack.Screen name="Donut" component={Donut} options={{ headerShown: false }} />
+        <Stack.Screen name="BarChart" component={Mybarchart} options={{ headerShown: false }} />
 
       </Stack.Navigator>
     </NavigationContainer>
+      </GestureHandlerRootView>
       </ThemeProvider>
   );
 };

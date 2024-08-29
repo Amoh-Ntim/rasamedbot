@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/precognosis.png",
+      "image": "./assets/precognosissplash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff",
       "userInterfaceStyle": "automatic"

@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { FlatList, Text, TextInput, Button, View, Alert } from 'react-native';
 import tw from 'twrnc';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';  // Import axios
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import Donut from './Donut';
+import Mybarchart from './Mybarchart';
 
 const Kidney = () => {
   const [age, setAge] = useState('');
@@ -55,6 +58,12 @@ const Kidney = () => {
   const [openAppetite, setOpenAppetite] = useState(false);
   const [openRedBloodCells, setOpenRedBloodCells] = useState(false);
   const [openAnemia, setOpenAnemia] = useState(false);
+  const bottomSheetRef = useRef(null);
+  const handlePresentSheetPress = () => {
+    if (prediction || error) { // Check if prediction or error exists
+      bottomSheetRef.current.expand();
+    }
+  };
 
   const handlePredictPress = async () => {
     const requestBody = {
@@ -157,12 +166,26 @@ const Kidney = () => {
         contentContainerStyle={tw`p-4`}
       />
       <View>
-
-      {prediction ? <Text>Prediction: {prediction}</Text> : null}
-      {probability ? <Text>Probability: {probability}</Text> : null}
-      {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
       <Button style={tw`mt-4`} title="Predict" onPress={handlePredictPress} />
       </View>
+      <BottomSheet
+           ref={bottomSheetRef}
+           index={0}
+           snapPoints={['25%', '50%' ,'80%', ]}
+           enablePanDownToClose={true}
+           >
+           <BottomSheetView>
+           {prediction ? <Text>Prediction: {prediction}</Text> : null}
+           {probability ? <Text>Probability: {probability}</Text> : null}
+           {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
+           <View style={tw`flex justify-center items-center`}>
+            <Donut percentage={probability} color="tomato" max={100} />
+           </View>
+           <View style={tw`flex justify-center items-center`}>
+            <Mybarchart/>
+           </View>
+           </BottomSheetView>
+      </BottomSheet>
     </>
   );
 };
