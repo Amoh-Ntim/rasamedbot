@@ -1,9 +1,9 @@
-import React, { useState,useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { FlatList, Text, TextInput, Button, View, Alert } from 'react-native';
 import tw from 'twrnc';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';  // Import axios
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Donut from './Donut';
 import Mybarchart from './Mybarchart';
 
@@ -88,10 +88,10 @@ const Kidney = () => {
     console.log('Request Body:', requestBody);  // Log the request body
 
     try {
-      const response = await axios.post('http://192.168.202.69:5000/api/predict_kidney_disease', requestBody);
+      const response = await axios.post('http://192.168.78.69:5000/api/predict_kidney_disease', requestBody);
 
       setPrediction(response.data.predicted_class);
-      setProbability(response.data.probability);
+      setProbability(response.data.probability  * 100);
       console.log('API Response:', response.data);
       setError('');  // Clear any previous errors
     } catch (error) {
@@ -122,21 +122,24 @@ const Kidney = () => {
     { key: 'anemia', label: 'Anemia', value: anemia, setter: setAnemia, items: anemiaItems, open: openAnemia, setOpen: setOpenAnemia },
   ];
 
+  const handleCombinedPress = () => {
+    handlePredictPress();
+    handlePresentSheetPress();
+  };
+
   const renderItem = ({ item, index }) => {
-    const zIndex = data.length - index;
     if (item.items) {
       return (
         <View key={item.key} style={tw`mb-4`}>
           <Text style={tw`text-black mb-2`}>{item.label}</Text>
-          <DropDownPicker
-            open={item.open}
-            value={item.value}
-            items={item.items}
-            setOpen={item.setOpen}
-            setValue={item.setter}
+          <Dropdown
+            style={tw`border p-2 border-gray-300 rounded-lg`}
+            data={item.items}
+            labelField="label"
+            valueField="value"
             placeholder={`Select ${item.label}`}
-            // zIndex={zIndex}  // Uncomment if needed
-            // containerStyle={{ zIndex }}  // Uncomment if needed
+            value={item.value}
+            onChange={(value) => item.setter(value.value)}
           />
         </View>
       );
@@ -145,6 +148,7 @@ const Kidney = () => {
         <View key={item.key} style={tw`mb-4`}>
           <Text style={tw`text-black mb-2`}>{item.label}</Text>
           <TextInput
+            style={tw`border p-2 border-gray-300 rounded-lg`}
             keyboardType={item.keyboardType}
             placeholder={item.label}
             value={item.value}
@@ -154,6 +158,7 @@ const Kidney = () => {
       );
     }
   }
+
   return (
     <>
       <View style={tw`flex justify-center items-center`}>
@@ -166,25 +171,25 @@ const Kidney = () => {
         contentContainerStyle={tw`p-4`}
       />
       <View>
-      <Button style={tw`mt-4`} title="Predict" onPress={handlePredictPress} />
+        <Button style={tw`mt-4`} title="Predict" onPress = {handleCombinedPress} />
       </View>
       <BottomSheet
-           ref={bottomSheetRef}
-           index={0}
-           snapPoints={['25%', '50%' ,'80%', ]}
-           enablePanDownToClose={true}
-           >
-           <BottomSheetView>
-           {prediction ? <Text>Prediction: {prediction}</Text> : null}
-           {probability ? <Text>Probability: {probability}</Text> : null}
-           {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
-           <View style={tw`flex justify-center items-center`}>
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={['25%', '50%', '80%']}
+        enablePanDownToClose={true}
+      >
+        <BottomSheetView>
+          {prediction ? <Text>Prediction: {prediction}</Text> : null}
+          {probability ? <Text>Probability: {probability}</Text> : null}
+          {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
+          <View style={tw`flex justify-center items-center`}>
             <Donut percentage={probability} color="tomato" max={100} />
-           </View>
-           <View style={tw`flex justify-center items-center`}>
-            <Mybarchart/>
-           </View>
-           </BottomSheetView>
+          </View>
+          <View style={tw`flex justify-center items-center`}>
+            <Mybarchart />
+          </View>
+        </BottomSheetView>
       </BottomSheet>
     </>
   );
