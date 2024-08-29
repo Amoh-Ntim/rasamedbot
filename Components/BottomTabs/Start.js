@@ -1,27 +1,25 @@
-import { View, Text, Image } from 'react-native'
-import React from 'react'
-import { Bubble, GiftedChat, InputToolbar, Send } from 'react-native-gifted-chat'
-import { useState, useEffect, useCallback } from 'react';
-import GlobalApi from '../../Services/GlobalApi';
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import axios from 'axios'
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-const BASE_URL = 'http://192.168.146.69:8000/gemini'; // Replace with your Next.js API's URL
+import { View, Alert } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Bubble, GiftedChat, InputToolbar, Send } from 'react-native-gifted-chat';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import axios from 'axios';
 
-export default function ChatScreen () {
+const BASE_URL = 'http://192.168.148.69:8000/gemini'; // Replace with your Next.js API's URL
+
+export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [savedMessages, setSavedMessages] = useState([]);
 
   useEffect(() => {
     setMessages([
       {
         _id: 1,
-        text: 'Hello, I am your chat bot, How Can I help you?',
+        text: 'Hello, I am your chat bot. How can I help you?',
         createdAt: new Date(),
         user: {
           _id: 2,
-          name: 'React Native',
+          name: 'Chat Bot',
         },
       },
     ]);
@@ -29,158 +27,169 @@ export default function ChatScreen () {
 
   const onSend = useCallback((messages = []) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
+
     if (messages[0].text) {
-      setLoading(true); // Indicate loading state
-  
-      // Call getBardResp to fetch response from Bard API
+      setLoading(true); // Set loading state to true when a message is sent
+
+      // Fetch response from Bard API
       getBardResp(messages[0].text)
-        .then(response => {
-          if (response && response.data) { // Check for response and data existence
-            console.log(response.data);
-          setLoading(false); // Update loading state after successful response
+        .then(responseText => {
           const chatAIResp = {
             _id: Math.random() * (9999999 - 1),
-            text: response.data, // Assuming response.data contains the generated text
+            text: responseText,
             createdAt: new Date(),
             user: {
               _id: 2,
-              name: 'React Native',
+              name: 'Chat Bot',
             },
           };
+
           setMessages(previousMessages => GiftedChat.append(previousMessages, chatAIResp));
-        }
         })
         .catch(error => {
           console.error('Error fetching response from API:', error);
-          setLoading(false); // Update loading state after error
-          setMessages((previousMessages) =>
+          setMessages(previousMessages =>
             GiftedChat.append(previousMessages, {
               _id: Math.random() * (9999999 - 1),
               text: 'Sorry, I encountered an error. Please try again later.',
               createdAt: new Date(),
               user: {
                 _id: 2,
-                name: 'React Native',
+                name: 'Chat Bot',
               },
             })
           );
+        })
+        .finally(() => {
+          setLoading(false); // Ensure loading is set to false once the response is handled
         });
-      }
-    }, []);
-  
+    }
+  }, []);
+
   const getBardResp = async (msg) => {
     try {
-      setLoading(true); // Can potentially move this inside the try block
       const messageArray = Array.isArray(msg) ? msg : [msg];
-      const resp = await axios.post('http://192.168.148.69:8000/gemini', { message: messageArray }); // Assuming Bard API expects a POST request
-      console.log('API response:', resp);
-      if (resp && resp.data && resp.data.generatedText) { // Assuming successful response has data
-        console.log(resp.data);
-        setLoading(false);
-        const chatAIResp = {
-          _id: Math.random() * (9999999 - 1),
-          text: resp.data.generatedText, // Assuming response data contains the generated text
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'React Native',
-          },
-        };
-        setMessages(previousMessages => GiftedChat.append(previousMessages, chatAIResp));
-        // return chatAIResp; // Return the chatAIResp object for onSend to use
+      const resp = await axios.post(`${BASE_URL}`, { message: messageArray }); // Assuming Bard API expects a POST request
+      if (resp && resp.data && resp.data.generatedText) {
+        return resp.data.generatedText; // Return the generated text
       } else {
         console.error('API response does not contain data');
-        setLoading(false);
-        throw new Error('API response does not contain data:', resp); // Re-throw an error for handling in onSend
+        throw new Error('API response does not contain data');
       }
     } catch (error) {
       console.error('Error fetching response from API:', error);
-      setLoading(false);
-      throw error; // Re-throw the error for handling in onSend
+      throw error;
     }
   };
-  
-  
-   const renderBubble =(props)=> {
-        return (
-          <Bubble
-            {...props}
-            wrapperStyle={{
-              right: {
-                backgroundColor: '#0D4CEF',
-               
-              },left:{
-               
-              }
-             
-            }}
-            textStyle={{
-                right:{
-                    // fontSize:20,
-                    padding:2
-                },
-                left: {
-                  color: '#0D4CEF',
-                  // fontSize:20,
-                  padding:2
-                }
-              }}
-          />
-        )
+
+  // Handle long press on a message
+  const handleLongPress = (context, message) => {
+    Alert.alert(
+      'Message Options',
+      'Choose an action',
+      [
+        {
+          text: 'Save',
+          onPress: () => handleSaveMessage(message),
+        },
+        {
+          text: 'Delete',
+          onPress: () => handleDeleteMessage(message),
+          style: 'destructive',
+        },
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  // Save a message
+  const handleSaveMessage = (message) => {
+    setSavedMessages(prevSaved => {
+      if (!prevSaved.find(m => m._id === message._id)) {
+        return [...prevSaved, message];
       }
+      return prevSaved;
+    });
+    Alert.alert('Saved', 'Message has been saved.');
+  };
 
-    const  renderInputToolbar =(props)=> {
-        //Add the extra styles via containerStyle
-       return <InputToolbar {...props} 
-       containerStyle={{
-       padding:3,
-      
-        backgroundColor:'#0D4CEF',
-        color:'#fff',
-        }} 
-        
+  // Delete a message
+  const handleDeleteMessage = (message) => {
+    setMessages(prevMessages => prevMessages.filter(m => m._id !== message._id));
+    Alert.alert('Deleted', 'Message has been deleted.');
+  };
+
+  // Customize the message bubble
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: '#0D4CEF',
+          },
+        }}
+        textStyle={{
+          right: {
+            color: '#fff',
+          },
+          left: {
+            color: '#0D4CEF',
+          },
+        }}
+      />
+    );
+  };
+
+  // Customize the input toolbar
+  const renderInputToolbar = (props) => {
+    return (
+      <InputToolbar
+        {...props}
+        containerStyle={{
+          backgroundColor: '#0D4CEF',
+          padding: 5,
+        }}
         textInputStyle={{ color: "#fff" }}
-         />
-     }
+      />
+    );
+  };
 
-   const  renderSend=(props)=> {
-        return (
-            <Send
-                {...props}
-            >
-                <View style={{marginRight: 10, marginBottom: 5}}>
-                <FontAwesome name="send" size={24} color="white" resizeMode={'center'} />
-                   
-                </View>
-            </Send>
-        );
-    }
+  // Customize the send button
+  const renderSend = (props) => {
+    return (
+      <Send {...props}>
+        <View style={{ marginRight: 10, marginBottom: 5 }}>
+          <FontAwesome name="send" size={24} color="white" />
+        </View>
+      </Send>
+    );
+  };
 
-    const renderAvatar = () => {
-        return <FontAwesome5 name="robot" size={24} color="black" />;
-    }
-    
+  // Customize the avatar
+  const renderAvatar = () => <FontAwesome5 name="robot" size={24} color="black" />;
 
   return (
-    <View style={{ flex: 1,backgroundColor:'#fff' }}>
-
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <GiftedChat
-      messages={messages}
-      isTyping={loading}
-      multiline ={true}
-      onSend={messages => onSend(messages)}
-      user={{
-        _id: 1,
-        name:'React Native'
-      
-      }}
-      renderBubble={renderBubble}
-      renderInputToolbar={renderInputToolbar} 
-      renderSend={renderSend}
-      renderAvatar={renderAvatar}
-    />
-    
-    
+        messages={messages}
+        isTyping={loading}
+        onSend={onSend}
+        user={{
+          _id: 1,
+          name: 'User',
+        }}
+        renderBubble={renderBubble}
+        renderInputToolbar={renderInputToolbar}
+        renderSend={renderSend}
+        renderAvatar={renderAvatar}
+        onLongPress={handleLongPress}
+      />
     </View>
-  )
+  );
 }
