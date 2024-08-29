@@ -4,6 +4,7 @@ import { Button, TextInput, View, Text, Dimensions, Image, KeyboardAvoidingView,
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../firebase/FirebaseConfig';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { CommonActions } from '@react-navigation/native';
 import tw from 'twrnc';
 
 const SignUp = ({ navigation }) => {
@@ -24,7 +25,13 @@ const SignUp = ({ navigation }) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log('User signed up successfully!'); // Log success for debugging
-      navigation.navigate('Home');
+      // Reset the navigation stack
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Home' }],
+      })
+    );
     } catch (error) {
       console.error(error);
       // handle signup errors (e.g., display an error message)
@@ -56,7 +63,7 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.7;
      <Text style={tw`text-2xl font-bold flex items-center text-[#6C63FF]`}> SIGN UP</Text>
     </View>
     <View style={ tw`text-xl p-2` }>
-    <View style={ tw`mt-12` }>
+    <View style={ tw`mt-4` }>
       <TextInput
       style={ tw`text-xl border border-gray-400 rounded p-2 text-black bg-white` }
         value={email}
@@ -64,7 +71,7 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.7;
         placeholder="Email"
       />
     </View>
-      <View style={ tw`mt-12` }>
+      <View style={ tw`mt-4` }>
       <View>
       <TextInput
       style={ tw`text-xl border border-gray-400 rounded p-2 text-black bg-white` }
@@ -84,7 +91,7 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.7;
             </TouchableOpacity>
       </View>
       </View>
-      <View style={ tw`mt-12` }>
+      <View style={ tw`mt-4` }>
       <TextInput
         style={ tw`text-xl border border-gray-400 rounded p-2 text-black bg-white` }
         value={confirmPassword}

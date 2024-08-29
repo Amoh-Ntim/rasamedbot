@@ -16,6 +16,7 @@ import PrivacyPolicy from './Components/Privacypolicy';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Donut from './Components/BottomTabs/Donut';
 import Mybarchart from './Components/BottomTabs/Mybarchart';
+import ChangePassword from './Components/BottomTabs/ChangePassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +52,7 @@ const App = () => {
         <Stack.Screen name="Privacy" component={PrivacyPolicy} options={{ headerShown: false }} />
         <Stack.Screen name="Donut" component={Donut} options={{ headerShown: false }} />
         <Stack.Screen name="BarChart" component={Mybarchart} options={{ headerShown: false }} />
+        <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerShown: false }} />
 
       </Stack.Navigator>
     </NavigationContainer>
