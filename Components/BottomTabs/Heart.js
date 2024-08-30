@@ -6,6 +6,7 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Donut from './Donut';
 import Mybarchart from './Mybarchart';
 import axios from 'axios';
+import HeartChart from './BarCharts/HeartCHart';
 
 const Heart = () => {
   const [age, setAge] = useState('');
@@ -21,7 +22,7 @@ const Heart = () => {
   const [stSlope, setStSlope] = useState(null);
   const [majorVessels, setMajorVessels] = useState('');
   const [thalassemia, setThalassemia] = useState(null);
-
+  const [shap, setShap] = useState('');
   const [prediction, setPrediction] = useState(null);
   const [probability, setProbability] = useState(null);
   const [explanation, setExplanation] = useState('');
@@ -77,7 +78,19 @@ const Heart = () => {
     { key: 'thalassemia', label: 'Thalassemia', value: thalassemia, setter: setThalassemia, items: thalassemiaItems, type: 'dropdown' },
   ];
 
+
   const bottomSheetRef = useRef(null);
+  const bottomSheetRef2 = useRef(null);
+  const handlePresentSheetPress = () => {
+    if (prediction || error) {
+      bottomSheetRef.current.expand();
+    }
+  };
+  const handlePresentSheetPress2 = () => {
+    if (prediction || error) {
+      bottomSheetRef2.current.expand();
+    }
+  };
 
   const handlePredictPress = async () => {
     const dataToSend = {
@@ -104,6 +117,7 @@ const Heart = () => {
       setPrediction(response.data.prediction);
       setProbability(response.data.probability * 100);
       setExplanation(response.data.explanation);
+      setShap(response.data.shap_values)
     } catch (error) {
       console.error('Error making prediction:', error);
       setError('There was an error making the prediction. Please try again later.');
@@ -112,11 +126,16 @@ const Heart = () => {
     handlePresentSheetPress();
   };
 
-  const handlePresentSheetPress = () => {
-    if (prediction || error) {
-      bottomSheetRef.current.expand();
-    }
+
+  const handleCombinedPress = () => {
+    handlePredictPress();
+    handlePresentSheetPress();
   };
+
+  const handle2Press = () => {
+    handlePresentSheetPress2();
+  };
+
 
   const renderItem = ({ item }) => {
     if (item.type === 'dropdown') {
@@ -171,21 +190,46 @@ const Heart = () => {
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}
-        snapPoints={['25%', '50%', '75%']}
+        snapPoints={['25%', '50%', '100%']}
+        enablePanDownToClose={true}
       >
         <BottomSheetView>
         <View style={tw`flex px-2 mt-8`}>
           {prediction ? <Text style={tw`text-2xl font-bold mb-4`}>Prediction: {prediction}</Text> : null}
           {probability ? <Text style={tw`text-2xl font-bold mb-4`}>Probability: {probability} %</Text> : null}
           {explanation ? <Text style={tw`text-xl font-bold`}>Explanation: {explanation}</Text> : null}
+          {shap && typeof shap === 'object' ? (
+         <View style={tw`mt-4`}>
+           <Text style={tw`text-xl font-bold mb-2`}>SHAP Values:</Text>
+           {Object.keys(shap).map((key) => (
+             <Text key={key} style={tw`text-lg text-black`}>
+               {key}: {shap[key]}
+             </Text>
+           ))}
+         </View>
+       ) : null}
         </View>
           <View style={tw`flex justify-center items-center`}>
             <Donut percentage={probability} color="tomato" max={100} />
           </View>
           <View style={tw`flex justify-center items-center`}>
-            <Mybarchart />
           </View>
+          <Button style={tw`mt-4`} title="Show graph" onPress={handle2Press} />
         </BottomSheetView>
+      </BottomSheet>
+
+      {/* 2nd bottomsheet for graph */}
+      <BottomSheet
+        ref={bottomSheetRef2}
+        index={0}
+        snapPoints={['25%', '50%', '80%','100%']}
+        enablePanDownToClose={true}
+      >
+      <BottomSheetView style={tw`flex mt-46`}>
+      <View style={tw``}>
+          <HeartChart shap={shap} />
+      </View>
+      </BottomSheetView>
       </BottomSheet>
     </View>
   );
