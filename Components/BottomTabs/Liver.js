@@ -20,6 +20,7 @@ const Liver = () => {
   const [sex, setSex] = useState(null);
   const [prediction, setPrediction] = useState('');
   const [probability, setProbability] = useState('');
+  const [explanation, setExplanation] = useState('');
   const [error, setError] = useState('');
 
   const sexItems = [
@@ -53,8 +54,9 @@ const Liver = () => {
     try {
       const response = await axios.post('http://192.168.78.69:5000/api/predict_liver', dataToSend);
       
-      setPrediction(response.data.predictions);
-      setProbability(response.data.probabilities * 100);
+      setPrediction(response.data.prediction);
+      setProbability(response.data.probability * 100);
+      setExplanation(response.data.explanation);
     } catch (error) {
       console.error('Error making prediction:', error);
       alert('There was an error making the prediction. Please try again later.');
@@ -175,8 +177,11 @@ const Liver = () => {
         enablePanDownToClose={true}
       >
         <BottomSheetView>
-          {prediction ? <Text>Prediction: {prediction}</Text> : null}
-          {probability ? <Text>Probability: {probability} %</Text> : null}
+        <View style={tw`flex px-2 mt-8`}>
+          {prediction ? <Text style={tw`text-2xl font-bold mb-4`}>Prediction: {prediction}</Text> : null}
+          {probability ? <Text style={tw`text-2xl font-bold mb-4`}>Probability: {probability} %</Text> : null}
+          {explanation ? <Text style={tw`text-xl font-bold`}>Explanation: {explanation}</Text> : null}
+        </View>
 
           {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
           <View style={tw`flex justify-center items-center`}>

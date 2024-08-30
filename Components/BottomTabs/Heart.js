@@ -24,6 +24,7 @@ const Heart = () => {
 
   const [prediction, setPrediction] = useState(null);
   const [probability, setProbability] = useState(null);
+  const [explanation, setExplanation] = useState('');
   const [error, setError] = useState(null);
 
   const sexItems = [
@@ -98,10 +99,11 @@ const Heart = () => {
     console.log('Data to send:', dataToSend);
 
     try {
-      const response = await axios.post('http://192.168.78.69:5000/api/predict_heart_disease', dataToSend);
+      const response = await axios.post('http://192.168.217.69:5000/api/predict_heart_disease', dataToSend);
 
-      setPrediction(response.data.predictions);
-      setProbability(response.data.probabilities * 100);
+      setPrediction(response.data.prediction);
+      setProbability(response.data.probability * 100);
+      setExplanation(response.data.explanation);
     } catch (error) {
       console.error('Error making prediction:', error);
       setError('There was an error making the prediction. Please try again later.');
@@ -152,6 +154,7 @@ const Heart = () => {
   return (
     <View style={tw`flex-1 justify-center p-4`}>
       <ScrollView style={tw`mb-4`}>
+      <Text style={tw`text-center text-xl font-bold mb-4`}>Heart Disease Prediction</Text>
         <FlatList
           data={formFields}
           renderItem={renderItem}
@@ -170,15 +173,18 @@ const Heart = () => {
         index={-1}
         snapPoints={['25%', '50%', '75%']}
       >
-        <BottomSheetView style={tw`p-4`}>
-          {error ? (
-            <Text style={tw`text-red-500`}>{error}</Text>
-          ) : (
-            <View>
-              <Donut percentage={probability} />
-              <Mybarchart />
-            </View>
-          )}
+        <BottomSheetView>
+        <View style={tw`flex px-2 mt-8`}>
+          {prediction ? <Text style={tw`text-2xl font-bold mb-4`}>Prediction: {prediction}</Text> : null}
+          {probability ? <Text style={tw`text-2xl font-bold mb-4`}>Probability: {probability} %</Text> : null}
+          {explanation ? <Text style={tw`text-xl font-bold`}>Explanation: {explanation}</Text> : null}
+        </View>
+          <View style={tw`flex justify-center items-center`}>
+            <Donut percentage={probability} color="tomato" max={100} />
+          </View>
+          <View style={tw`flex justify-center items-center`}>
+            <Mybarchart />
+          </View>
         </BottomSheetView>
       </BottomSheet>
     </View>
