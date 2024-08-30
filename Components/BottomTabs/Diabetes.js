@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { FlatList, Text, TextInput, Button, View, Alert } from 'react-native';
+import { FlatList, Text, TextInput, Button, View, Alert, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Donut from './Donut';
-import Mybarchart from './Mybarchart';
+import DiabetesChart from './BarCharts/DiabetesChart';
 
 const Diabetes = () => {
   const [bmi, setBmi] = useState('');
@@ -21,6 +21,7 @@ const Diabetes = () => {
   const [prediction, setPrediction] = useState('');
   const [probability, setProbability] = useState('');
   const [explanation, setExplanation] = useState('');
+  const [shap, setShap] = useState('');
   const [error, setError] = useState('');
 
   const incomeItems = [
@@ -83,12 +84,22 @@ const Diabetes = () => {
   };
 
   const bottomSheetRef = useRef(null);
+  const bottomSheetRef2 = useRef(null);
   const handlePresentSheetPress = () => {
     if (prediction || error) {
       bottomSheetRef.current.expand();
     }
   };
-
+  const handlePresentSheetPress2 = () => {
+    if (prediction || error) {
+      bottomSheetRef2.current.expand();
+    }
+  };
+  // const handlePresentSheetPressTwo = () => {
+  //   if (prediction || error) {
+  //     bottomSheetRef.current.expand();
+  //   }
+  // };
   const handlePredictPress = async () => {
     const dataToSend = {
       BMI: bmi,
@@ -111,6 +122,7 @@ const Diabetes = () => {
       setPrediction(response.data.prediction);
       setProbability(response.data.probability * 100);
       setExplanation(response.data.explanation);
+      setShap(response.data.shap_values);
 
 
     } catch (error) {
@@ -122,6 +134,10 @@ const Diabetes = () => {
   const handleCombinedPress = () => {
     handlePredictPress();
     handlePresentSheetPress();
+  };
+
+  const handle2Press = () => {
+    handlePresentSheetPress2();
   };
 
   const data = [
@@ -169,6 +185,8 @@ const Diabetes = () => {
     }
   };
 
+  
+
   return (
     <>
       <View style={tw`flex justify-center items-center`}>
@@ -184,24 +202,46 @@ const Diabetes = () => {
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
-        snapPoints={['25%', '50%', '80%']}
+        snapPoints={['25%', '50%', '80%','95%']}
         enablePanDownToClose={true}
       >
-        <BottomSheetView>
+        <BottomSheetView style={tw`flex-1`}>
         <View style={tw`flex px-2 mt-8`}>
           {prediction ? <Text style={tw`text-2xl font-bold mb-4`}>Prediction: {prediction}</Text> : null}
           {probability ? <Text style={tw`text-2xl font-bold mb-4`}>Probability: {probability} %</Text> : null}
           {explanation ? <Text style={tw`text-xl font-bold`}>Explanation: {explanation}</Text> : null}
+          {shap && typeof shap === 'object' ? (
+         <View style={tw`mt-4`}>
+           <Text style={tw`text-xl font-bold mb-2`}>SHAP Values:</Text>
+           {Object.keys(shap).map((key) => (
+             <Text key={key} style={tw`text-lg text-black`}>
+               {key}: {shap[key]}
+             </Text>
+           ))}
+         </View>
+       ) : null}
         </View>
 
           {error ? <Text style={tw`text-red-500`}>Error: {error}</Text> : null}
           <View style={tw`flex justify-center items-center mt-4`}>
             <Donut percentage={probability} color="tomato" max={100} />
           </View>
-          <View style={tw`flex justify-center items-center`}>
-            <Mybarchart />
-          </View>
+          <Button style={tw`mt-4`} title="Show graph" onPress={handle2Press} />
         </BottomSheetView>
+      </BottomSheet>
+
+{/* 2nd bottomsheet for graph */}
+      <BottomSheet
+        ref={bottomSheetRef2}
+        index={0}
+        snapPoints={['25%', '50%', '80%','100%']}
+        enablePanDownToClose={true}
+      >
+      <BottomSheetView style={tw`flex mt-46`}>
+      <View style={tw``}>
+          <DiabetesChart shap={shap} />
+      </View>
+      </BottomSheetView>
       </BottomSheet>
     </>
   );
