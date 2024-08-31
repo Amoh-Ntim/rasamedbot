@@ -217,7 +217,12 @@ const Heart = () => {
           </View>
           <View style={tw`flex justify-center items-center`}>
           </View>
-          <Button style={tw`mt-4`} title="Show graph" onPress={handle2Press} />
+          <TouchableOpacity 
+          style={tw`mt-4 bg-red-700 py-2 px-4 mx-4 rounded-lg`} 
+          onPress={handle2Press}
+          >
+         <Text style={tw`text-white font-bold text-center text-lg`}>Show Graph</Text>
+         </TouchableOpacity>
         </BottomSheetView>
       </BottomSheet>
 

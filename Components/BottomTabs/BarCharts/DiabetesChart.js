@@ -30,11 +30,11 @@ const DiabetesChart = ({ shap }) => {
 
   const chartConfig = {
     backgroundColor: "#e26a00",
-    backgroundGradientFrom: "#fb8c00",
-    backgroundGradientTo: "#ffa726",
+    backgroundGradientFrom: "#ffd8bb",
+    backgroundGradientTo: "#ffe1cb",
     decimalPlaces: 2, 
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    color: (opacity = 1) => `rgba(110, 47, 0, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     style: {
       borderRadius: 16,
     },

@@ -25,8 +25,8 @@ const HeartChart = ({ shap }) => {
 
   const chartConfig = {
     backgroundColor: "#e26a00",
-    backgroundGradientFrom: "#fb8c00",
-    backgroundGradientTo: "#ffa726",
+    backgroundGradientFrom: "#6e0104",
+    backgroundGradientTo: "#b20106",
     decimalPlaces: 2, // optional, defaults to 2dp
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
