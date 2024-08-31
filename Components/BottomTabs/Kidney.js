@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { FlatList, Text, TextInput, Button, View, Alert } from 'react-native';
+import { FlatList, Text, TextInput, Button, View, Alert, SafeAreaView } from 'react-native';
 import tw from 'twrnc';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';  // Import axios
@@ -125,8 +125,8 @@ const Kidney = () => {
   ];
 
   const handleCombinedPress = () => {
-    handlePredictPress();
     handlePresentSheetPress();
+    handlePredictPress();
   };
 
   const renderItem = ({ item, index }) => {
@@ -135,7 +135,7 @@ const Kidney = () => {
         <View key={item.key} style={tw`mb-4`}>
           <Text style={tw`text-black mb-2`}>{item.label}</Text>
           <Dropdown
-            style={tw`border p-2 border-gray-300 rounded-lg`}
+            style={tw`border p-2 border-blue-400 rounded-lg`}
             data={item.items}
             labelField="label"
             valueField="value"
@@ -150,7 +150,7 @@ const Kidney = () => {
         <View key={item.key} style={tw`mb-4`}>
           <Text style={tw`text-black mb-2`}>{item.label}</Text>
           <TextInput
-            style={tw`border p-2 border-gray-300 rounded-lg`}
+            style={tw`border p-2 border-blue-400 rounded-lg`}
             keyboardType={item.keyboardType}
             placeholder={item.label}
             value={item.value}
@@ -162,23 +162,24 @@ const Kidney = () => {
   }
 
   return (
-    <>
-      <View style={tw`flex justify-center items-center`}>
-        <Text style={tw`text-black font-bold`}>KIDNEY DISEASE</Text>
+    <View style={{flex: 1}}>
+    <SafeAreaView style={tw`flex-1 justify-center p-4`}>
+      <View style={tw`flex justify-center items-center p-4`}>
+        <Text style={tw`text-black text-lg text-blue-900 font-bold`}>KIDNEY DISEASE</Text>
       </View>
       <FlatList
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.key}
-        contentContainerStyle={tw`p-4`}
+        contentContainerStyle={tw``}
       />
       <View>
-        <Button style={tw`mt-4`} title="Predict" onPress = {handleCombinedPress} />
+        <Button style={tw`mt-4`} title="Tap twice to Predict" onPress = {handleCombinedPress} />
       </View>
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
-        snapPoints={['25%', '50%', '80%']}
+        snapPoints={['25%', '60%']}
         enablePanDownToClose={true}
       >
         <BottomSheetView>
@@ -191,11 +192,12 @@ const Kidney = () => {
             <Donut percentage={probability} color="tomato" max={100} />
           </View>
           <View style={tw`flex justify-center items-center`}>
-            <Mybarchart />
+            {/* <Mybarchart /> */}
           </View>
         </BottomSheetView>
       </BottomSheet>
-    </>
+    </SafeAreaView>
+    </View>
   );
 };
 

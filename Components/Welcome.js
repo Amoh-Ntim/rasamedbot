@@ -122,7 +122,7 @@ function Welcome( { route } ) {
       <View style={tw`h-24 mb-4`}>
         {/* View 1 */}
         <TouchableOpacity
-          style={tw`flex-1 items-center bg-yellow-600 p-4 m-2 rounded-lg shadow-lg`}
+          style={tw`flex-1 items-center bg-red-400 p-4 m-2 rounded-lg shadow-lg`}
           onPress={() => handleNavigation('Heart')}
         >
           <Image source={require('../assets/heart.png')} style={tw`w-8 h-8 mb-2`} />
@@ -133,7 +133,7 @@ function Welcome( { route } ) {
       <View style={tw`h-24 mb-4`}>
         {/* View 2 */}
         <TouchableOpacity
-          style={tw`flex-1 items-center bg-red-600 p-4 m-2 rounded-lg shadow-lg`}
+          style={tw`flex-1 items-center bg-yellow-600 p-4 m-2 rounded-lg shadow-lg`}
           onPress={() => handleNavigation('Diabetes')}
         >
           <Image source={require('../assets/diabetes.png')} style={tw`w-8 h-8 mb-2`} />
