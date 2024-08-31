@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { FlatList, Text, TextInput, Button, View, Alert, ScrollView } from 'react-native';
+import { FlatList, Text, TextInput, Button, View, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
@@ -99,7 +99,7 @@ const Liver = () => {
         <View key={item.key} style={tw`mb-4`}>
           <Text style={tw`text-black mb-2`}>{item.label}</Text>
           <Dropdown
-            style={tw`border p-2 border-gray-300`}
+            style={tw`border p-2 border-green-400`}
             data={item.items}
             labelField="label"
             valueField="value"
@@ -118,7 +118,7 @@ const Liver = () => {
             placeholder={item.label}
             value={item.value}
             onChangeText={item.setter}
-            style={tw`border p-2 border-gray-300`}
+            style={tw`border p-2 border-green-400`}
           />
         </View>
       );
@@ -126,17 +126,23 @@ const Liver = () => {
   };
 
   return (
-    <>
-      <View style={tw`flex justify-center items-center`}>
+    <View style={tw`flex-1 justify-center p-4`}>
+      <View style={tw`flex justify-center items-center p-4`}>
         <Text style={tw`text-black font-bold`}>LIVER DISEASE PREDICTION</Text>
       </View>
       <FlatList
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.key}
-        contentContainerStyle={tw`p-4`}
+        contentContainerStyle={tw``}
       />
-      <Button style={tw`mt-4`} title="Predict" onPress={handleCombinedPress} />
+      {/* predict button */}
+      <TouchableOpacity 
+       style={tw`mt-4 bg-green-800 py-2 px-4 rounded-lg`} 
+       onPress={handleCombinedPress}
+      >
+        <Text style={tw`text-white font-bold text-center`}>Tap twice to Predict</Text>
+      </TouchableOpacity>
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
@@ -182,7 +188,7 @@ const Liver = () => {
       </View>
       </BottomSheetView>
       </BottomSheet>
-    </>
+    </View>
   );
 };
 

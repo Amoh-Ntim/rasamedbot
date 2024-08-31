@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { View, ScrollView, Text, TextInput, Button, FlatList } from 'react-native';
+import { View, ScrollView, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { Dropdown } from 'react-native-element-dropdown';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Donut from './Donut';
 import Mybarchart from './Mybarchart';
 import axios from 'axios';
-import HeartChart from './BarCharts/HeartCHart';
+import HeartChart from './BarCharts/HeartChart';
 
 const Heart = () => {
   const [age, setAge] = useState('');
@@ -150,7 +150,7 @@ const Heart = () => {
             value={item.value}
             onChange={item.setter}
             containerStyle={tw`border border-gray-300`}
-            style={tw`border border-gray-300 p-2 rounded`}
+            style={tw`border border-red-500 p-2 rounded`}
           />
         </View>
       );
@@ -163,7 +163,7 @@ const Heart = () => {
             value={item.value}
             onChangeText={item.setter}
             placeholder={item.label}
-            style={tw`border border-gray-300 p-2 rounded`}
+            style={tw`border border-red-500 p-2 rounded`}
           />
         </View>
       );
@@ -172,8 +172,8 @@ const Heart = () => {
 
   return (
     <View style={tw`flex-1 justify-center p-4`}>
+      <Text style={tw`text-center text-xl text-red-900 font-bold mb-4 py-4`}>Heart Disease Prediction</Text>
       <ScrollView style={tw`mb-4`}>
-      <Text style={tw`text-center text-xl font-bold mb-4`}>Heart Disease Prediction</Text>
         <FlatList
           data={formFields}
           renderItem={renderItem}
@@ -182,10 +182,13 @@ const Heart = () => {
         />
       </ScrollView>
 
-      <Button
-        title="Predict"
-        onPress={handlePredictPress}
-      />
+     {/* predict button */}
+     <TouchableOpacity 
+       style={tw`mt-4 bg-red-800 py-2 px-4 rounded-lg`} 
+       onPress={handleCombinedPress}
+      >
+        <Text style={tw`text-white font-bold text-center`}>Tap twice to Predict</Text>
+      </TouchableOpacity>
 
       <BottomSheet
         ref={bottomSheetRef}
