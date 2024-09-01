@@ -115,7 +115,8 @@ function Welcome( { route } ) {
         <Text style={tw`text-5xl font-bold flex items-center text-black`}>{username}!</Text>
       </View>
       </View>
-
+      
+      <Text style={tw`text-xl px-4 font-bold flex items-center`}>DISEASE PREDICTIONS</Text>
       {/* diseases scrollview */}
       <View style={tw`flex justify-center items-center`}>
       <ScrollView  horizontal>

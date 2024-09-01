@@ -66,9 +66,8 @@ const Home = ({ navigation }) => {
      <Text style={tw`text-3xl font-bold flex items-center`}> CREATE PROFILE</Text>
     </View>
     <View style={tw`text-2xl font-bold flex justify-center items-center mb-4`}>
-      <Text style={tw`text-lg font-semibold`} >Choose a username and picture</Text>
-      <Text style={tw`text-lg font-semibold`} >for your account</Text>
-      <Text style={tw`text-lg font-semibold mt-4`}>You can always change it later</Text>
+      <Text style={tw`text-xl font-semibold`} >Choose a username</Text>
+      <Text style={tw`text-xl font-semibold`} >for your account</Text>
     </View>
     {/* profile pic */}
     {/* <View style={tw`flex justify-center items-center mt-4 mb-4`}>

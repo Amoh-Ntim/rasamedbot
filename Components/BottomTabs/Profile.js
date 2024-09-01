@@ -89,7 +89,7 @@ export default function Profile() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Preferences</Text>
 
-            <View style={styles.row}>
+            {/* <View style={styles.row}>
               <View style={[styles.rowIcon, { backgroundColor: '#007afe' }]}>
                 <FeatherIcon color="#fff" name="moon" size={20} />
               </View>
@@ -101,7 +101,7 @@ export default function Profile() {
               <Switch
                 onValueChange={toggleTheme}
                 value={form.darkMode} />
-            </View>
+            </View> */}
 
             <TouchableOpacity
               onPress={() => handleNavigation('ChangePassword')}
@@ -123,7 +123,7 @@ export default function Profile() {
                 size={20} />
             </TouchableOpacity>
 
-            <View style={styles.row}>
+            {/* <View style={styles.row}>
               <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
                 <FeatherIcon
                   color="#fff"
@@ -140,9 +140,9 @@ export default function Profile() {
                   setForm({ ...form, emailNotifications })
                 }
                 value={form.emailNotifications} />
-            </View>
+            </View> */}
 
-            <View style={styles.row}>
+            {/* <View style={styles.row}>
               <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
                 <FeatherIcon color="#fff" name="bell" size={20} />
               </View>
@@ -156,7 +156,7 @@ export default function Profile() {
                   setForm({ ...form, pushNotifications })
                 }
                 value={form.pushNotifications} />
-            </View>
+            </View> */}
 
             <TouchableOpacity
               onPress={handleLogout}
