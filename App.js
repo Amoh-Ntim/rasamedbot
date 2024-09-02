@@ -19,25 +19,12 @@ import Mybarchart from './Components/BottomTabs/Mybarchart';
 import ChangePassword from './Components/BottomTabs/ChangePassword';
 
 const Stack = createNativeStackNavigator();
-
-
-// const MyScreen = ({ title }) => {
-//   return <Text>{title}</Text>;
-// };
-
 const App = () => {
-  const colorScheme = useColorScheme();
-
-  const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const themeContainerStyle =
-  colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
-
   return (
-    
-      <ThemeProvider>
+
       <GestureHandlerRootView style={{ flex: 1 }}>
 
-    <NavigationContainer style={[themeContainerStyle,themeTextStyle]}>
+    <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
@@ -57,7 +44,6 @@ const App = () => {
       </Stack.Navigator>
     </NavigationContainer>
       </GestureHandlerRootView>
-      </ThemeProvider>
   );
 };
 const styles = StyleSheet.create({

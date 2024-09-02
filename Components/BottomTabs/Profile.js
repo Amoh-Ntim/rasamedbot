@@ -11,8 +11,6 @@ import {
   Alert, // Import Alert from React Native
 } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import { ThemeContext } from '../../Mode/ThemeContext';
-import * as SystemUI from 'expo-system-ui';
 import { useNavigation } from '@react-navigation/native';
 import { Linking } from 'react-native';
 
@@ -20,14 +18,6 @@ import { Linking } from 'react-native';
 import { FIREBASE_AUTH } from '../../firebase/FirebaseConfig';
 
 const auth = FIREBASE_AUTH;
-
-const handleDarkModeToggle = async (darkMode) => {
-  setForm({ ...form, darkMode });
-
-  // Set the background color based on dark mode
-  const backgroundColor = darkMode ? 'black' : 'white';
-  await SystemUI.setBackgroundColorAsync(backgroundColor);
-};
 
 export default function Profile() {
   const navigation = useNavigation();
@@ -74,34 +64,13 @@ export default function Profile() {
       });
   };
 
-  const [form, setForm] = useState({
-    darkMode: false,
-    emailNotifications: true,
-    pushNotifications: false,
-  });
-
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <View style={[styles.container, { backgroundColor: isDarkMode ? '#000' : '#fff' }]}>
+      <View style={styles.container}>
         <ScrollView>
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Preferences</Text>
-
-            {/* <View style={styles.row}>
-              <View style={[styles.rowIcon, { backgroundColor: '#007afe' }]}>
-                <FeatherIcon color="#fff" name="moon" size={20} />
-              </View>
-
-              <Text style={styles.rowLabel}>Dark Mode</Text>
-
-              <View style={styles.rowSpacer}/>
-
-              <Switch
-                onValueChange={toggleTheme}
-                value={form.darkMode} />
-            </View> */}
 
             <TouchableOpacity
               onPress={() => handleNavigation('ChangePassword')}
@@ -122,41 +91,6 @@ export default function Profile() {
                 name="chevron-right"
                 size={20} />
             </TouchableOpacity>
-
-            {/* <View style={styles.row}>
-              <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
-                <FeatherIcon
-                  color="#fff"
-                  name="at-sign"
-                  size={20} />
-              </View>
-
-              <Text style={styles.rowLabel}>Email Notifications</Text>
-
-              <View style={styles.rowSpacer} />
-
-              <Switch
-                onValueChange={emailNotifications =>
-                  setForm({ ...form, emailNotifications })
-                }
-                value={form.emailNotifications} />
-            </View> */}
-
-            {/* <View style={styles.row}>
-              <View style={[styles.rowIcon, { backgroundColor: '#38C959' }]}>
-                <FeatherIcon color="#fff" name="bell" size={20} />
-              </View>
-
-              <Text style={styles.rowLabel}>Push Notifications</Text>
-
-              <View style={styles.rowSpacer} />
-
-              <Switch
-                onValueChange={pushNotifications =>
-                  setForm({ ...form, pushNotifications })
-                }
-                value={form.pushNotifications} />
-            </View> */}
 
             <TouchableOpacity
               onPress={handleLogout}
