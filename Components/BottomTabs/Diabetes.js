@@ -117,7 +117,7 @@ const Diabetes = () => {
     console.log('Data to send:', dataToSend);
 
     try {
-      const response = await axios.post('http://192.168.217.69:5000/api/predict_diabetes', dataToSend);
+      const response = await axios.post('http://192.168.117.69:5000/api/predict_diabetes', dataToSend);
 
       setPrediction(response.data.prediction);
       setProbability(response.data.probability * 100);
