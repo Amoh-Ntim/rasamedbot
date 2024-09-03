@@ -232,7 +232,12 @@ const Diabetes = () => {
           <View style={tw`flex justify-center items-center mt-4`}>
             <Donut percentage={probability} color="tomato" max={100} />
           </View>
-          <Button style={tw`mt-4`} title="Show graph" onPress={handle2Press} />
+          <TouchableOpacity 
+          style={tw`mt-4 bg-yellow-700 py-2 px-4 mx-4 rounded-lg`} 
+          onPress={handle2Press}
+          >
+         <Text style={tw`text-white font-bold text-center text-lg`}>Show Graph</Text>
+         </TouchableOpacity>
         </BottomSheetView>
       </BottomSheet>
 

@@ -19,31 +19,18 @@ import Mybarchart from './Components/BottomTabs/Mybarchart';
 import ChangePassword from './Components/BottomTabs/ChangePassword';
 
 const Stack = createNativeStackNavigator();
-
-
-// const MyScreen = ({ title }) => {
-//   return <Text>{title}</Text>;
-// };
-
 const App = () => {
-  const colorScheme = useColorScheme();
-
-  const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const themeContainerStyle =
-  colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
-
   return (
-    
-      <ThemeProvider>
+
       <GestureHandlerRootView style={{ flex: 1 }}>
 
-    <NavigationContainer style={[themeContainerStyle,themeTextStyle]}>
+    <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />  
         <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />  
+        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />  
         {/* Adding the new screens */}
         <Stack.Screen name="Liver" component={Liver} options={{ headerShown: false }} />
         <Stack.Screen name="Kidney" component={Kidney} options={{ headerShown: false }} />
@@ -57,7 +44,6 @@ const App = () => {
       </Stack.Navigator>
     </NavigationContainer>
       </GestureHandlerRootView>
-      </ThemeProvider>
   );
 };
 const styles = StyleSheet.create({
