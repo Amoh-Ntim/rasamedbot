@@ -80,23 +80,29 @@ const SignIn = ({ navigation }) => {
                 value={email}
                 onChangeText={setEmail}
                 placeholder="Email"
+                keyboardType="email-address"
               />
             </View>
             <View style={tw`mt-4`}>
-              <TextInput
-                style={tw`text-xl border border-gray-400 rounded p-2 text-black bg-white`}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Password"
-                secureTextEntry={!showPassword}
-              />
-              <TouchableOpacity onPress={toggleShowPassword}>
-                <MaterialCommunityIcons
-                  name={showPassword ? 'eye-off' : 'eye'}
-                  size={24}
-                  color="gray"
+              <View style={tw`relative`}>
+                <TextInput
+                  style={tw`text-xl border border-gray-400 rounded p-2 text-black bg-white pr-10`} // Add padding to the right to make room for the icon
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Password"
+                  secureTextEntry={!showPassword}
                 />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={toggleShowPassword}
+                  style={tw`absolute right-2 top-2`} // Position the icon within the input field
+                >
+                  <MaterialCommunityIcons
+                    name={showPassword ? 'eye-off' : 'eye'}
+                    size={24}
+                    color="gray"
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
             <View style={tw`bg-[#6C63FF] mt-4`}>
               <Button

@@ -95,11 +95,11 @@ function Welcome( { route } ) {
     <Tab.Navigator screenOptions={{
       headerShown: false,  // This line hides the header
     }}>
-      <Tab.Screen name="News" 
+      <Tab.Screen name="Hospital" 
       options={{
       tabBarIcon: ({ focused, color, size }) => {
-      let iconName = focused ? 'home' : 'home-outline'; // choose appropriate icon names
-      return <Ionicons name={iconName} size={size} color={color} />;
+      let iconName = focused ? 'hospital-box' : 'hospital-box-outline'; // choose appropriate icon names
+      return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
     },
     tabBarLabelStyle: {
       fontSize: 16, // Increase the font size

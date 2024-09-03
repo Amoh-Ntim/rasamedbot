@@ -25,42 +25,44 @@ export default function ChatScreen() {
     ]);
   }, []);
 
-  const onSend = useCallback(async (messages = []) => {
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
+  const onSend = useCallback((messages = []) => {
+    setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
 
-    if (messages[0]?.text) {
-      setLoading(true);
+    if (messages[0].text) {
+      setLoading(true); // Set loading state to true when a message is sent
 
-      try {
-        const responseText = await getBardResp(messages[0].text);
-        const chatAIResp = {
-          _id: Math.random() * (9999999 - 1),
-          text: responseText,
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'Chat Bot',
-          },
-        };
-        setMessages((previousMessages) =>
-          GiftedChat.append(previousMessages, chatAIResp)
-        );
-      } catch (error) {
-        console.error('Error fetching response from API:', error);
-        setMessages((previousMessages) =>
-          GiftedChat.append(previousMessages, {
+      // Fetch response from Bard API
+      getBardResp(messages[0].text)
+        .then(responseText => {
+          const chatAIResp = {
             _id: Math.random() * (9999999 - 1),
-            text: 'Sorry, I encountered an error. Please try again later.',
+            text: responseText,
             createdAt: new Date(),
             user: {
               _id: 2,
               name: 'Chat Bot',
             },
-          })
-        );
-      } finally {
-        setLoading(false);
-      }
+          };
+
+          setMessages(previousMessages => GiftedChat.append(previousMessages, chatAIResp));
+        })
+        .catch(error => {
+          console.error('Error fetching response from API:', error);
+          setMessages(previousMessages =>
+            GiftedChat.append(previousMessages, {
+              _id: Math.random() * (9999999 - 1),
+              text: 'Sorry, I encountered an error. Please try again later.',
+              createdAt: new Date(),
+              user: {
+                _id: 2,
+                name: 'Chat Bot',
+              },
+            })
+          );
+        })
+        .finally(() => {
+          setLoading(false); // Ensure loading is set to false once the response is handled
+        });
     }
   }, []);
 
@@ -68,7 +70,7 @@ export default function ChatScreen() {
     try {
       const messageArray = Array.isArray(msg) ? msg : [msg];
       const resp = await axios.post(`${BASE_URL}`, { message: messageArray }); // Assuming Bard API expects a POST request
-      if (resp?.data?.generatedText) {
+      if (resp && resp.data && resp.data.generatedText) {
         return resp.data.generatedText; // Return the generated text
       } else {
         console.error('API response does not contain data');
@@ -107,8 +109,8 @@ export default function ChatScreen() {
 
   // Save a message
   const handleSaveMessage = (message) => {
-    setSavedMessages((prevSaved) => {
-      if (!prevSaved.find((m) => m._id === message._id)) {
+    setSavedMessages(prevSaved => {
+      if (!prevSaved.find(m => m._id === message._id)) {
         return [...prevSaved, message];
       }
       return prevSaved;
@@ -118,7 +120,7 @@ export default function ChatScreen() {
 
   // Delete a message
   const handleDeleteMessage = (message) => {
-    setMessages((prevMessages) => prevMessages.filter((m) => m._id !== message._id));
+    setMessages(prevMessages => prevMessages.filter(m => m._id !== message._id));
     Alert.alert('Deleted', 'Message has been deleted.');
   };
 
@@ -155,31 +157,24 @@ export default function ChatScreen() {
           backgroundColor: '#0D4CEF',
           padding: 5,
         }}
-        textInputStyle={{ color: '#fff' }}
+        textInputStyle={{ color: "#fff" }}
       />
     );
   };
 
   // Customize the send button
   const renderSend = (props) => {
-    const { text, onSend } = props;
     return (
       <Send {...props}>
         <View style={{ marginRight: 10, marginBottom: 5 }}>
-          <FontAwesome
-            name="send"
-            size={24}
-            color={text.trim().length > 0 ? 'white' : 'transparent'} // Show button only if there's text
-          />
+          <FontAwesome name="send" size={24} color="white" />
         </View>
       </Send>
     );
   };
 
-  // Customize the avatar with default size
-  const renderAvatar = ({ size = 24 }) => (
-    <FontAwesome5 name="robot" size={size} color="black" />
-  );
+  // Customize the avatar
+  const renderAvatar = () => <FontAwesome5 name="robot" size={24} color="black" />;
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
