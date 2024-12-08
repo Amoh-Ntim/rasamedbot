@@ -4,7 +4,7 @@ import { Bubble, GiftedChat, InputToolbar, Send } from 'react-native-gifted-chat
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.117.69:8000/gemini'; // Replace with your Next.js API's URL
+const BASE_URL = 'http://192.168.7.69:8000/gemini'; // Replace with your Next.js API's URL
 
 export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
