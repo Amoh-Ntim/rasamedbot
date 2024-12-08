@@ -55,7 +55,7 @@ const SignUp = ({ navigation }) => {
       <View style={tw`flex`}>
         <View style={tw`rounded-b overflow-hidden`}>
           <Image
-            source={require('../assets/undraw_medicine.png')}
+            source={require('../assets/precognosislogo.png')}
             style={{
               width: ITEM_WIDTH,
               height: ITEM_HEIGHT,
@@ -67,12 +67,12 @@ const SignUp = ({ navigation }) => {
         </View>
         <View style={tw`rounded-lg m-4`}>
           <View style={tw`flex justify-center items-center`}>
-            <Text style={tw`text-2xl font-bold flex items-center text-[#6C63FF]`}>SIGN UP</Text>
+            <Text style={tw`text-2xl font-bold flex items-center text-blue-600`}>SIGN UP</Text>
           </View>
           <View style={tw`text-xl p-2`}>
             <View style={tw`mt-4`}>
               <TextInput
-                style={tw`text-xl border border-gray-400 rounded p-2 text-black bg-white`}
+                style={tw`text-xl border border-blue-700 rounded-xl p-2 text-black bg-white`}
                 value={email}
                 onChangeText={setEmail}
                 placeholder="Email"
@@ -82,7 +82,7 @@ const SignUp = ({ navigation }) => {
             <View style={tw`mt-4`}>
               <View style={tw`relative`}>
                 <TextInput
-                  style={tw`text-xl border border-gray-400 rounded p-2 text-black bg-white pr-10`}
+                  style={tw`text-xl border border-blue-700 rounded-xl p-2 text-black bg-white pr-10`}
                   value={password}
                   onChangeText={setPassword}
                   placeholder="Password"
@@ -95,7 +95,7 @@ const SignUp = ({ navigation }) => {
                   <MaterialCommunityIcons
                     name={showPassword ? 'eye-off' : 'eye'}
                     size={24}
-                    color="gray"
+                    color="blue"
                   />
                 </TouchableOpacity>
               </View>
@@ -103,7 +103,7 @@ const SignUp = ({ navigation }) => {
             <View style={tw`mt-4`}>
               <View style={tw`relative`}>
                 <TextInput
-                  style={tw`text-xl border border-gray-400 rounded p-2 text-black bg-white pr-10`}
+                  style={tw`text-xl border border-blue-700 rounded-xl p-2 text-black bg-white pr-10`}
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
                   placeholder="Confirm Password"
@@ -116,7 +116,7 @@ const SignUp = ({ navigation }) => {
                   <MaterialCommunityIcons
                     name={showPassword ? 'eye-off' : 'eye'}
                     size={24}
-                    color="gray"
+                    color="blue"
                   />
                 </TouchableOpacity>
               </View>
@@ -132,7 +132,7 @@ const SignUp = ({ navigation }) => {
               </Button>
             </View>
             <View style={tw`flex justify-center items-center mt-12`}>
-              <Text style={tw`text-xl`}>Already have an account? <Text style={tw`text-[#6C63FF] text-xl`} onPress={() => navigation.navigate('SignIn')}>Sign In</Text></Text>
+              <Text style={tw`text-xl`}>Already have an account? <Text style={tw`text-blue-600 text-xl`} onPress={() => navigation.navigate('SignIn')}>Sign In</Text></Text>
             </View>
           </View>
         </View>
