@@ -43,21 +43,24 @@ function Welcome({ route }) {
     }
   };
 
-  useEffect(() => {
     const fetchUsername = async () => {
-      const docRef = doc(FIREBASE_DATABASE, "users/eJi1FNZ7xFvYctcLTwmW"); // Replace with correct path
       try {
+        const docRef = doc(FIREBASE_DATABASE, "users", "eJi1FNZ7xFvYctcLTwmW"); // Use the correct path structure
         const docSnapshot = await getDoc(docRef);
         if (docSnapshot.exists()) {
-          setUsername(docSnapshot.data().username);
+          setUsername(docSnapshot.data().username || 'Guest'); // Fallback to 'Guest' if username is missing
         } else {
           console.log("No such document!");
+          setUsername('Guest'); // Handle case where document does not exist
         }
       } catch (error) {
-        console.error("Error fetching username:", error);
+        console.error("Error fetching username:", error.message); // Log detailed error message
+        setUsername('Guest'); // Provide a fallback in case of an error
       }
     };
   
+
+  useEffect(() => {
     fetchNewsData(); // Fetch news articles
     fetchUsername(); // Fetch the username
   }, []);
@@ -91,30 +94,16 @@ function Welcome({ route }) {
       }}>
         {() => (
             <LinearGradient
-              colors={['#dffefe', '#eefefe', '#ffffff']} // from-blue-500 via-purple-500 to-pink-500
+              colors={['#cbfefe', '#eefefe', '#ffffff']} // from-blue-500 via-purple-500 to-pink-500
               style={tw`flex-1`}
             >
           <View style={tw`flex-1`}>
             <View style={tw`h-1/6 px-4 flex flex-row justify-between items-center rounded-bl-3xl rounded-br-3xl`}>
             <View style={tw`mt-4`}>
-  <Text style={tw`text-xl font-bold flex items-center`}>
-    Welcome
-  </Text>
-  <MaskedView
-    maskElement={
-      <Text style={[tw`text-xl font-bold`, { backgroundColor: 'transparent' }]}>
-        {username}!
-      </Text>
-    }
-  >
-    <LinearGradient
-      colors={['#FF6B6B', '#FFD93D', '#6BCB77']} // Gradient colors
-      start={{ x: 0, y: 0 }} // Start of the gradient
-      end={{ x: 1, y: 0 }} // End of the gradient
-      style={{ flex: 1 }}
-    />
-  </MaskedView>
-</View>
+              <Text style={tw`text-xl font-bold flex items-center`}>
+                Welcome <Text style={tw`text-blue-500 text-2xl mt-2`}>{username}!</Text>
+              </Text>
+            </View>
 
             </View>
             
@@ -122,10 +111,10 @@ function Welcome({ route }) {
             <View style={tw`flex justify-center items-center`}>
             <ScrollView horizontal style={tw`px-4`}>
   {[
-    { label: 'Heart', bgColor: 'bg-white', image: require('../assets/heart.png'), screen: 'Heart' },
-    { label: 'Diabetes', bgColor: 'bg-white', image: require('../assets/diabetes.png'), screen: 'Diabetes' },
-    { label: 'Kidney', bgColor: 'bg-white', image: require('../assets/kidney.png'), screen: 'Kidney' },
-    { label: 'Liver', bgColor: 'bg-white', image: require('../assets/liver.png'), screen: 'Liver' },
+    { label: 'Heart', bgColor: 'bg-red-200', image: require('../assets/heart.png'), screen: 'Heart' },
+    { label: 'Diabetes', bgColor: 'bg-green-200', image: require('../assets/diabetes.png'), screen: 'Diabetes' },
+    { label: 'Kidney', bgColor: 'bg-yellow-200', image: require('../assets/kidney.png'), screen: 'Kidney' },
+    { label: 'Liver', bgColor: 'bg-blue-200', image: require('../assets/liver.png'), screen: 'Liver' },
   ].map((item, index) => (
     <TouchableOpacity
       key={index}
