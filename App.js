@@ -26,11 +26,11 @@ const App = () => {
 
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />  
         <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />  
-        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />  
         {/* Adding the new screens */}
         <Stack.Screen name="Liver" component={Liver} options={{ headerShown: false }} />
         <Stack.Screen name="Kidney" component={Kidney} options={{ headerShown: false }} />
