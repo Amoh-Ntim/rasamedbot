@@ -173,7 +173,7 @@ const handleSignUp = async () => {
             {/* Sign-Up Button */}
             <View style={tw`bg-[#6C63FF] mt-12`}>
               <Button
-                style={tw`rounded-lg p-8 h-16 flex justify-center items-center`}
+                style={tw`rounded-full p-8 h-16 flex justify-center items-center`}
                 title={isLoading ? '' : 'Sign Up'}
                 onPress={handleSignUp}
                 disabled={isLoading}
