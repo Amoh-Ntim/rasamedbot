@@ -147,13 +147,13 @@ function Welcome() {
           <View style={tw`flex-1`}>
             {/* Header with Linear Gradient */}
             <LinearGradient
-              colors={["#84C1FF", "#A1EAFB"]}
+              colors={["#1767fc", "#82adfd", "#a3c3fe"]}
               style={tw`pb-6 rounded-bl-3xl rounded-br-3xl`}
             >
               <View style={tw`px-6`}>
                 <Text style={tw`text-2xl font-bold text-white mt-6`}>
                   Welcome{" "}
-                  <Text style={tw`text-white font-extrabold`}>{username}</Text>
+                  <Text style={tw`text-white font-extrabold`}>{username}!</Text>
                 </Text>
                 {/* Search Bar */}
                 <View
