@@ -153,7 +153,7 @@ export default function ChatScreen() {
       const renderInputToolbar = (props) => (
         <InputToolbar
           {...props}
-          // containerStyle={{
+          containerStyle={{
           //   backgroundColor: '#FFFFFF', // Light background for the toolbar
           //   marginRight: 10,
           //   borderWidth: 0, // No border
@@ -165,7 +165,7 @@ export default function ChatScreen() {
           //   shadowOpacity: 0.1,
           //   shadowRadius: 4,
           //   elevation: 2, // Slight elevation for material design
-          // }}
+          }}
           textInputStyle={{
             color: "#000", // Black text color
             flex: 1,
@@ -175,7 +175,7 @@ export default function ChatScreen() {
             paddingHorizontal: 16, // Inner spacing for text
             borderRadius: 50, // Rounded input field
             borderWidth: 1, // Subtle border
-            borderColor: "#E0E0E0", // Light border color
+            borderColor: "#0d4cef", // Light border color
           }}
         />
       );
@@ -187,7 +187,7 @@ export default function ChatScreen() {
               style={{
                 marginRight: 10,
                 marginBottom: 5,
-                backgroundColor: "#000000", // Black background for send button
+                backgroundColor: "#0d4cef", // Black background for send button
                 width: 40,
                 height: 40,
                 borderRadius: 20, // Circular button
