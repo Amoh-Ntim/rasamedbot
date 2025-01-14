@@ -17,7 +17,7 @@ const { width, height } = Dimensions.get('screen');
 const DATA = [
   {
     title: 'Emphatic AI Wellness Chatbot For All.',
-    description: 'Experience compassionate and personalized care with our AI chatbot.',
+    description: 'Experience compassionate and personalized care with our Lucy AI.',
     image: require('../assets/m3.png'), // Update with your asset path
   },
   {
@@ -162,7 +162,9 @@ const styles = StyleSheet.create({
   },
   skipText: {
     fontSize: 16,
+    marginTop: 30,
     color: '#6C63FF',
+    fontSize: 25,
     fontWeight: '600',
   },
   contentContainer: {

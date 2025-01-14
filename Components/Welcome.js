@@ -167,7 +167,7 @@ function Welcome() {
                   />
                   <TextInput
                     style={tw`flex-1 text-base text-gray-800`}
-                    placeholder="Search resources..."
+                    placeholder="Search Health News..."
                     placeholderTextColor="#888"
                     value={searchQuery}
                     onChangeText={setSearchQuery}
@@ -180,7 +180,7 @@ function Welcome() {
             {/* Suggested Categories */}
             <View>
               <Text style={tw`text-lg font-bold mt-6 px-6`}>
-                Suggested Category
+                Disease Predictions
               </Text>
               <ScrollView
                 horizontal
@@ -212,7 +212,7 @@ function Welcome() {
             {/* Featured Resources */}
             <View style={tw`mt-6`}>
               <Text style={tw`text-lg font-bold px-6`}>
-                Featured Resources
+                Health News
               </Text>
               <FlatList
                 data={newsData}
