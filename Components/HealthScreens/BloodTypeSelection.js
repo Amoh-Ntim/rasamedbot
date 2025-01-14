@@ -17,7 +17,7 @@ const BloodTypeSelection = ({ navigation }) => {
       {/* Header */}
       <View style={tw`flex-row justify-between items-center mt-12`}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={tw`text-lg`}>←</Text>
+          <Text style={tw`text-3xl font-bold`}>←</Text>
         </TouchableOpacity>
         <Text style={tw`text-sm text-gray-500`}>Skip</Text>
       </View>
@@ -79,7 +79,7 @@ const BloodTypeSelection = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => {
           console.log('Selected Blood Type:', `${selectedType}${rhFactor}`);
-          navigation.navigate('NextScreen');
+          navigation.navigate('Welcome');
         }}
         style={tw`bg-blue-500 py-4 rounded-lg flex-row justify-center items-center mt-8`}
       >
