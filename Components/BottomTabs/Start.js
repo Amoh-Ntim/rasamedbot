@@ -154,10 +154,23 @@ export default function ChatScreen() {
       <InputToolbar
         {...props}
         containerStyle={{
-          backgroundColor: '#0D4CEF',
-          padding: 5,
+          backgroundColor: '#f5fefe',
+          marginRight: 10,
+          borderWidth: 0, // No border
+          borderRadius: 9999
         }}
-        textInputStyle={{ color: "#fff" }}
+        textInputStyle={{
+           color: "#fff",
+           flex: 1,
+      fontSize: 16,
+      color: "#000",
+      backgroundColor: "#ffffff",
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 9999,
+      borderWidth: 1,
+      borderColor: "#ccc",
+         }}
       />
     );
   };
@@ -177,7 +190,7 @@ export default function ChatScreen() {
   const renderAvatar = () => <FontAwesome5 name="robot" size={24} color="black" />;
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: '#f5fefe' }}>
       <GiftedChat
         messages={messages}
         isTyping={loading}

@@ -17,6 +17,11 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Donut from './Components/BottomTabs/Donut';
 import Mybarchart from './Components/BottomTabs/Mybarchart';
 import ChangePassword from './Components/BottomTabs/ChangePassword';
+import HealthGoals from './Components/HealthScreens/HealthGoals';
+import GenderSelection from './Components/HealthScreens/GenderSelection';
+import WeightInput from './Components/HealthScreens/WeightInput';
+import AgeSelection from './Components/HealthScreens/AgeSelection';
+import BloodTypeSelection from './Components/HealthScreens/BloodTypeSelection';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -29,6 +34,11 @@ const App = () => {
         <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+        <Stack.Screen name="HealthGoals" component={HealthGoals} options={{ headerShown: false }} />
+        <Stack.Screen name="Gender" component={GenderSelection} options={{ headerShown: false }} />
+        <Stack.Screen name="Weight" component={WeightInput} options={{ headerShown: false }} />
+        <Stack.Screen name="Age" component={AgeSelection} options={{ headerShown: false }} />
+        <Stack.Screen name="Blood" component={BloodTypeSelection} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />  
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />  
         {/* Adding the new screens */}
