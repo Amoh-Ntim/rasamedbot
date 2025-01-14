@@ -1,8 +1,9 @@
-import { View, Alert } from 'react-native';
+import { View, Alert, TouchableOpacity, Image, Text } from 'react-native';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Bubble, GiftedChat, InputToolbar, Send } from 'react-native-gifted-chat';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import axios from 'axios';
+import tw from 'twrnc'
 
 const BASE_URL = 'http://192.168.7.69:8000/gemini'; // Replace with your Next.js API's URL
 
@@ -15,7 +16,7 @@ export default function ChatScreen() {
     setMessages([
       {
         _id: 1,
-        text: 'Hello, I am your chat bot. How can I help you?',
+        text: 'Hello, I am Lucy. How can I help you today?',
         createdAt: new Date(),
         user: {
           _id: 2,
@@ -140,7 +141,7 @@ export default function ChatScreen() {
             fontSize: 18,
           },
           left: {
-            color: '#0D4CEF',
+            color: '#000000',
             fontSize: 18,
           },
         }}
@@ -149,48 +150,90 @@ export default function ChatScreen() {
   };
 
   // Customize the input toolbar
-  const renderInputToolbar = (props) => {
-    return (
-      <InputToolbar
-        {...props}
-        containerStyle={{
-          backgroundColor: '#f5fefe',
-          marginRight: 10,
-          borderWidth: 0, // No border
-          borderRadius: 9999
-        }}
-        textInputStyle={{
-           color: "#fff",
-           flex: 1,
-      fontSize: 16,
-      color: "#000",
-      backgroundColor: "#ffffff",
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      borderRadius: 9999,
-      borderWidth: 1,
-      borderColor: "#ccc",
-         }}
-      />
-    );
-  };
+      const renderInputToolbar = (props) => (
+        <InputToolbar
+          {...props}
+          // containerStyle={{
+          //   backgroundColor: '#FFFFFF', // Light background for the toolbar
+          //   marginRight: 10,
+          //   borderWidth: 0, // No border
+          //   borderRadius: 50, // Rounded container
+          //   paddingVertical: 4, // Padding for better alignment
+          //   paddingHorizontal: 8, // Inner spacing
+          //   shadowColor: "#000",
+          //   shadowOffset: { width: 0, height: 2 },
+          //   shadowOpacity: 0.1,
+          //   shadowRadius: 4,
+          //   elevation: 2, // Slight elevation for material design
+          // }}
+          textInputStyle={{
+            color: "#000", // Black text color
+            flex: 1,
+            fontSize: 16,
+            backgroundColor: "#fff", // Light gray background for input
+            paddingVertical: 10, // Adjust vertical padding
+            paddingHorizontal: 16, // Inner spacing for text
+            borderRadius: 50, // Rounded input field
+            borderWidth: 1, // Subtle border
+            borderColor: "#E0E0E0", // Light border color
+          }}
+        />
+      );
+      
+      const renderSend = (props) => {
+        return (
+          <Send {...props}>
+            <View
+              style={{
+                marginRight: 10,
+                marginBottom: 5,
+                backgroundColor: "#000000", // Black background for send button
+                width: 40,
+                height: 40,
+                borderRadius: 20, // Circular button
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <FontAwesome name="send" size={20} color="white" />
+            </View>
+          </Send>
+        );
+      };
+      
 
-  // Customize the send button
-  const renderSend = (props) => {
-    return (
-      <Send {...props}>
-        <View style={{ marginRight: 10, marginBottom: 5 }}>
-          <FontAwesome name="send" size={24} color="white" />
-        </View>
-      </Send>
-    );
-  };
 
   // Customize the avatar
-  const renderAvatar = () => <FontAwesome5 name="robot" size={24} color="black" />;
+  const renderAvatar = () => <Image
+  source={require("../../assets/Robot.png")} // Replace with actual bot image
+  style={tw`w-14 h-14 rounded-full`}
+/>;
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#f5fefe' }}>
+    <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
+    <View style={tw`flex-row items-center justify-between p-4 bg-white shadow-md`}>
+      {/* Back Button */}
+      <TouchableOpacity style={tw`p-2`}>
+        <Text style={tw`text-gray-500 text-3xl`}>&larr;</Text>
+      </TouchableOpacity>
+
+      {/* Profile Details */}
+      <View style={tw`flex-row items-center`}>
+        <Image
+          source={require("../../assets/Robot.png")} // Replace with actual bot image
+          style={tw`w-10 h-10 rounded-full`}
+        />
+        <View style={tw`ml-3`}>
+          <Text style={tw`text-black font-bold text-lg`}>LucyAI</Text>
+          <Text style={tw`text-green-500 text-sm`}>Always active</Text>
+        </View>
+      </View>
+
+      {/* Options Menu */}
+      <TouchableOpacity style={tw`p-2`}>
+        <Text style={tw`text-gray-500 text-3xl`}>⋮</Text>
+      </TouchableOpacity>
+    </View>
       <GiftedChat
         messages={messages}
         isTyping={loading}

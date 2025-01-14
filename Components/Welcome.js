@@ -84,7 +84,7 @@ function Welcome() {
           source={
             item.urlToImage
               ? { uri: item.urlToImage }
-              : require("../assets/gender.png") // Fallback image
+              : require("../assets/placeholder.png") // Fallback image
           }
           style={styles.cardImg}
         />
