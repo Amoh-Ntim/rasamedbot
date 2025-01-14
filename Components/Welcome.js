@@ -8,7 +8,8 @@ import {
   View,
   TextInput,
   ScrollView,
-  Linking, // Import Linking for external URLs
+  Linking,
+  SafeAreaView, // Import Linking for external URLs
 } from "react-native";
 import { getDoc, doc } from "firebase/firestore";
 import { FIREBASE_DATABASE } from "../firebase/FirebaseConfig";
@@ -45,7 +46,7 @@ function Welcome() {
     }
   };
 
-  const fetchNewsData = async (query = "drug") => {
+  const fetchNewsData = async (query = "health") => {
     const apiKey = "85dd4bb2a84e4780aa0f552c7202aa38";
     const newsApiUrl = `https://newsapi.org/v2/everything?q=${query}&apiKey=${apiKey}`;
     try {
@@ -144,17 +145,38 @@ function Welcome() {
         }}
       >
         {() => (
-          <View style={tw`flex-1`}>
+          <SafeAreaView style={tw`flex-1`}>
             {/* Header with Linear Gradient */}
-            <LinearGradient
-              colors={["#1767fc", "#82adfd", "#a3c3fe"]}
+            {/* <LinearGradient
+              colors={["#fff" , '#fff']}
               style={tw`pb-6 rounded-bl-3xl rounded-br-3xl`}
-            >
+            > */}
               <View style={tw`px-6`}>
-                <Text style={tw`text-2xl font-bold text-white mt-6`}>
-                  Welcome{" "}
-                  <Text style={tw`text-white font-extrabold`}>{username}!</Text>
-                </Text>
+              <View style={tw`flex-row justify-between items-center mt-0`}>
+        {/* Left Icon */}
+        <View style={tw`mt-6`}>
+          <Text style={tw`text-lg font-bold text-black`}>Welcome</Text>
+          <Text style={tw`text-2xl font-extrabold text-black`}>{username}!</Text>
+        </View>
+
+
+        {/* Right Icons */}
+        <View style={tw`flex-row space-x-4`}>
+          
+          <TouchableOpacity style={tw`p-2`}>
+            <Image
+              source={require("../assets/notification.png")} // Replace with your actual image path for notification icon
+              style={tw`w-6 h-6 rounded-full`}
+              resizeMode="contain"
+            />
+            {/* Red dot for notification */}
+            <View
+              style={tw`absolute top-0 right-0 bg-red-500 w-3 h-3 rounded-full border border-white`}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+                
                 {/* Search Bar */}
                 <View
                   style={tw`flex-row items-center bg-white rounded-full p-3 mt-4 shadow-lg`}
@@ -175,11 +197,11 @@ function Welcome() {
                   />
                 </View>
               </View>
-            </LinearGradient>
+            {/* </LinearGradient> */}
 
             {/* Suggested Categories */}
             <View>
-              <Text style={tw`text-lg font-bold mt-6 px-6`}>
+              <Text style={tw`text-lg font-bold mt-2 px-6`}>
                 Disease Predictions
               </Text>
               <ScrollView
@@ -210,8 +232,8 @@ function Welcome() {
             </View>
 
             {/* Featured Resources */}
-            <View style={tw`mt-6`}>
-              <Text style={tw`text-lg font-bold px-6`}>
+            <View style={tw`mt-2`}>
+              <Text style={tw`text-lg font-bold px-6  mb-2`}>
                 Health News
               </Text>
               <FlatList
@@ -221,7 +243,7 @@ function Welcome() {
                 style={tw`mt-0 px-4`}
               />
             </View>
-          </View>
+          </SafeAreaView>
         )}
       </Tab.Screen>
       <Tab.Screen
