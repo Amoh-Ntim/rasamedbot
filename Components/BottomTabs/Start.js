@@ -202,7 +202,6 @@ export default function ChatScreen() {
       };
       
 
-
   // Customize the avatar
   const renderAvatar = () => <Image
   source={require("../../assets/Robot.png")} // Replace with actual bot image
