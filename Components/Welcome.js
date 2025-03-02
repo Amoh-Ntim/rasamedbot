@@ -22,6 +22,8 @@ import axios from "axios";
 import moment from "moment";
 import Start from "./BottomTabs/Start";
 import Profile from "./BottomTabs/Profile";
+import News from "./BottomTabs/News";
+import GoProCard from "./Counsela/CounselaNav";
 
 const Tab = createBottomTabNavigator();
 
@@ -105,25 +107,29 @@ function Welcome() {
   const diseasePredictions = [
     {
       label: "Heart",
-      bgColor: "#FCD3D3",
+      iconBgColor: "#F87171", // red
+      bgColor: "#fff2f2",
       image: require("../assets/heart.png"),
       screen: "Heart", // Add the screen name for navigation
     },
     {
       label: "Diabetes",
-      bgColor: "#C5E1A5",
+      bgColor: "#e0f3ff",
+      iconBgColor: "#60A5FA", // blue
       image: require("../assets/diabetes.png"),
       screen: "Diabetes", // Add the screen name for navigation
     },
     {
       label: "Kidney",
-      bgColor: "#FFF9C4",
+      bgColor: "#e9ffe8",
+      iconBgColor: "#34D399", // green
       image: require("../assets/kidney.png"),
       screen: "Kidney", // Add the screen name for navigation
     },
     {
       label: "Liver",
-      bgColor: "#BBDEFB",
+      bgColor: "#fffade",
+      iconBgColor: "#FBBF24", // yellow
       image: require("../assets/liver.png"),
       screen: "Liver", // Add the screen name for navigation
     },
@@ -147,23 +153,23 @@ function Welcome() {
         {() => (
           <SafeAreaView style={tw`flex-1`}>
             {/* Header with Linear Gradient */}
-            {/* <LinearGradient
-              colors={["#fff" , '#fff']}
-              style={tw`pb-6 rounded-bl-3xl rounded-br-3xl`}
-            > */}
-              <View style={tw`px-6`}>
+            <LinearGradient
+              colors={["#a2cafc" , '#fff']}
+              style={tw`pb-16 rounded-bl-3xl rounded-br-3xl`}
+            >
+              <View style={tw`px-6 mt-4`}>
               <View style={tw`flex-row justify-between items-center mt-0`}>
         {/* Left Icon */}
         <View style={tw`mt-6`}>
-          <Text style={tw`text-lg font-bold text-black`}>Welcome</Text>
-          <Text style={tw`text-2xl font-extrabold text-black`}>{username}!</Text>
+          <Text style={tw`text-2xl font-bold text-black`}>Welcome <Text style={tw`text-2xl font-extrabold text-black`}>{username}!</Text></Text>
+          
         </View>
 
 
         {/* Right Icons */}
         <View style={tw`flex-row space-x-4`}>
           
-          <TouchableOpacity style={tw`p-2`}>
+          <TouchableOpacity style={tw`p-2 mt-4`}>
             <Image
               source={require("../assets/notification.png")} // Replace with your actual image path for notification icon
               style={tw`w-6 h-6 rounded-full`}
@@ -177,72 +183,68 @@ function Welcome() {
         </View>
       </View>
                 
-                {/* Search Bar */}
-                <View
-                  style={tw`flex-row items-center bg-white rounded-full p-3 mt-4 shadow-lg`}
-                >
-                  <MaterialCommunityIcons
-                    name="magnify"
-                    size={24}
-                    color="#888"
-                    style={tw`mr-2`}
-                  />
-                  <TextInput
-                    style={tw`flex-1 text-base text-gray-800`}
-                    placeholder="Search Health News..."
-                    placeholderTextColor="#888"
-                    value={searchQuery}
-                    onChangeText={setSearchQuery}
-                    onSubmitEditing={handleSearch}
-                  />
-                </View>
+                
               </View>
-            {/* </LinearGradient> */}
 
             {/* Suggested Categories */}
             <View>
               <Text style={tw`text-lg font-bold mt-2 px-6`}>
                 Disease Predictions
               </Text>
-              <ScrollView
-                horizontal
-                style={tw`px-4 mt-4`}
-                showsHorizontalScrollIndicator={false}
-              >
-                {diseasePredictions.map((item, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={[
-                      tw`p-4 rounded-lg mr-4 flex justify-center items-center`,
-                      { backgroundColor: item.bgColor, width: 90 },
-                    ]}
-                    onPress={() => handleCategoryPress(item.screen)}
-                  >
-                    <Image
-                      source={item.image}
-                      style={tw`w-12 h-12 mb-2`}
-                      resizeMode="contain"
-                    />
-                    <Text style={tw`text-center font-bold text-gray-800`}>
-                      {item.label}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
+              <View style={tw`flex-row flex-wrap justify-between px-4 mt-4`}>
+      {diseasePredictions.map((item, index) => (
+        <TouchableOpacity
+          key={index}
+          style={[
+            tw`rounded-2xl mb-4 p-3 shadow-xl`,
+            // Each card takes ~half width to form a 2x2 grid:
+            { width: '48%', backgroundColor: item.bgColor || '#1c1c1c' }
+          ]}
+          onPress={() => handleCategoryPress(item.screen)}
+        >
+          {/* Top row: icon (top-left), 3-dot menu (top-right) */}
+          <View style={tw`flex-row justify-between items-center`}>
+            {/* Item image (top-left) */}
+            <View style={[tw`rounded-xl p-4`, { backgroundColor: item.iconBgColor || 'blue' }]}>
+            <Image
+              source={item.image}
+              style={tw`w-8 h-8 p-4`}
+              resizeMode="contain"
+            />
+            </View>
+
+            {/* Optional 3-dot menu icon (top-right) */}
+            <TouchableOpacity>
+              {/* <Image
+                source={require('../assets/3dots.png')} // Replace with your 3-dot icon
+                style={tw`w-4 h-4`}
+                resizeMode="contain"
+              /> */}
+            </TouchableOpacity>
+          </View>
+
+          {/* Text area (below the icon) */}
+          <View style={tw`mt-3`}>
+            {/* Main label (e.g., "Knee Hurts") */}
+            <Text style={tw`text-black font-bold text-lg`}>
+              {item.label}
+            </Text>
+
+            {/* Secondary info (e.g., "251 Total - Serious") */}
+            <Text style={tw`text-gray-300 text-sm mt-1`}>
+              {item.subLabel} {/* e.g. "251 Total - Serious" */}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </View>
             </View>
 
             {/* Featured Resources */}
             <View style={tw`mt-2`}>
-              <Text style={tw`text-lg font-bold px-6  mb-2`}>
-                Health News
-              </Text>
-              <FlatList
-                data={newsData}
-                keyExtractor={(item, index) => `${index}-${item.url}`}
-                renderItem={renderNewsItem}
-                style={tw`mt-0 px-4`}
-              />
+              <GoProCard/>
             </View>
+            </LinearGradient>
           </SafeAreaView>
         )}
       </Tab.Screen>
@@ -253,6 +255,20 @@ function Welcome() {
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               name={focused ? "robot" : "robot-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+          tabBarLabelStyle: { fontSize: 16, fontWeight: "bold" },
+        }}
+      />
+      <Tab.Screen
+        name="News"
+        component={News}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? "reader" : "reader-outline"}
               size={size}
               color={color}
             />

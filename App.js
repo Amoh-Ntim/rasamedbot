@@ -22,6 +22,9 @@ import GenderSelection from './Components/HealthScreens/GenderSelection';
 import WeightInput from './Components/HealthScreens/WeightInput';
 import AgeSelection from './Components/HealthScreens/AgeSelection';
 import BloodTypeSelection from './Components/HealthScreens/BloodTypeSelection';
+import Complaint1 from './Components/Counsela/Complaint1'
+import SpecificComplaint from './Components/Counsela/SpecificComplaint'
+import CounselaResponse from './Components/Counsela/CounselaResponse'
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -32,8 +35,8 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
-        <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-        <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} /> */}
+        {/* <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} /> */}
         <Stack.Screen name="HealthGoals" component={HealthGoals} options={{ headerShown: false }} />
         <Stack.Screen name="Gender" component={GenderSelection} options={{ headerShown: false }} />
         <Stack.Screen name="Weight" component={WeightInput} options={{ headerShown: false }} />
@@ -47,6 +50,9 @@ const App = () => {
         <Stack.Screen name="Diabetes" component={Diabetes} options={{ headerShown: false }} />
         <Stack.Screen name="Heart" component={Heart} options={{ headerShown: false }} />
         <Stack.Screen name="Privacy" component={PrivacyPolicy} options={{ headerShown: false }} />
+        <Stack.Screen name="Complaint" component={Complaint1} options={{ headerShown: false }} />
+        <Stack.Screen name="SpecificComplaint" component={SpecificComplaint} options={{ headerShown: false }} />
+        <Stack.Screen name="Counsela" component={CounselaResponse} options={{ headerShown: false }} />
         <Stack.Screen name="Donut" component={Donut} options={{ headerShown: false }} />
         <Stack.Screen name="BarChart" component={Mybarchart} options={{ headerShown: false }} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerShown: false }} />

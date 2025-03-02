@@ -65,7 +65,7 @@ export default function Onboarding({ navigation }) {
     if (currentIndex < DATA.length - 1) {
       flatListRef.current.scrollToIndex({ index: currentIndex + 1 });
     } else {
-      navigation.navigate('SignUp'); // Navigate to the next screen after the last slide
+      navigation.navigate('Welcome'); // Navigate to the next screen after the last slide
     }
   };
 
