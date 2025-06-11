@@ -9,7 +9,11 @@ module.exports = {
     "./Services/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Geist Sans', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }
